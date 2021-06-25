@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>Python 设计模式之建造者模式 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2019-11-25-python-design-pattern-builder" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>Python 设计模式之建造者模式</h1>
+  
+
+      </header>
+      <div>
+      2019-11-25
+      
+        / 
+        
+          <span><a href="/tags/Java/">#Java</a></span>
+        
+          <span><a href="/tags/Python/">#Python</a></span>
+        
+          <span><a href="/tags/Design-Pattern/">#Design Pattern</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+
+        </div>
+
+        <p><strong>意图：</strong> 将一个复杂对象的构建与它的表示分离，使得同样的构建过程可以创建不同的表示。</p>
+<p><strong>适用性：</strong> 当创建复杂对象的算法应该独立于该对象的组成部分以及它们的装配方式时。</p>
+<p>当构建过程必须允许被构造的对象有不同的表示时。</p>
+<pre><code class="python"># coding:utf-8
+
+
+# 建造者基类
+class PersonBuilder(object):
+    def BuildHead(self):
+        pass
+
+    def BuildBody(self):
+        pass
+
+    def BuildArm(self):
+        pass
+
+    def BuildLeg(self):
+        pass
+
+
+# 胖子
+class PersonFatBuilder(PersonBuilder):
+    type = &#39;胖子&#39;
+
+    def BuildHead(self):
+        print(&#39;构建%s的头&#39; % self.type)
+
+    def BuildBody(self):
+        print(&#39;构建%s的身体&#39; % self.type)
+
+    def BuildArm(self):
+        print(&#39;构建%s的胳膊&#39; % self.type)
+
+    def BuildLeg(self):
+        print(&#39;构建%s的脚&#39; % self.type)
+
+
+# 瘦子
+class PersonThinBuilder(PersonBuilder):
+    type = &#39;瘦子&#39;
+
+    def BuildHead(self):
+        print(&#39;构建%s的头&#39; % self.type)
+
+    def BuildBody(self):
+        print(&#39;构建%s的身体&#39; % self.type)
+
+    def BuildArm(self):
+        print(&#39;构建%s的胳膊&#39; % self.type)
+
+    def BuildLeg(self):
+        print(&#39;构建%s的脚&#39; % self.type)
+
+
+# 指挥者
+class PersonDirector(object):
+    pb: PersonBuilder = None
+
+    def __init__(self, pb):
+        self.pb = pb
+
+    def CreatePerson(self):
+        self.pb.BuildHead()
+        self.pb.BuildBody()
+        self.pb.BuildArm()
+        self.pb.BuildLeg()
+
+
+def clientUI():
+    pb = PersonThinBuilder()
+    pd = PersonDirector(pb)
+    pd.CreatePerson()
+
+    pb = PersonFatBuilder()
+    pd = PersonDirector(pb)
+    pd.CreatePerson()
+    return
+</code></pre>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

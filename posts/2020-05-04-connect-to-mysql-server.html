@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>MySQL 数据库连接 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2020-05-04-connect-to-mysql-server" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>MySQL 数据库连接</h1>
+  
+
+      </header>
+      <div>
+      2020-05-04
+      
+        / 
+        
+          <span><a href="/tags/MySQL/">#MySQL</a></span>
+        
+          <span><a href="/tags/Development/">#Development</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#01-查看-MySQL-服务状态"><span class="toc-text">01 查看 MySQL 服务状态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#02-命令行连接-MySQL-服务"><span class="toc-text">02 命令行连接 MySQL 服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#03-其他客户端连接-MySQL-服务"><span class="toc-text">03 其他客户端连接 MySQL 服务</span></a></li></ol>
+  </div>
+
+
+        </div>
+
+        <p>之前一篇文章是关于如何在 Windows 环境中安装 MySQL 服务的。</p>
+<h3 id="01-查看-MySQL-服务状态"><a href="#01-查看-MySQL-服务状态" class="headerlink" title="01 查看 MySQL 服务状态"></a>01 查看 MySQL 服务状态</h3><p>在命令提示符中使用 <code>net start</code> 即可查看 MySQL 是否正在运行。当然也可以直接打开 Windows 服务查看 MySQL 服务是否正在运行。</p>
+<p><img src="https://upload.ismdeep.com/images/2020/08/07/fe9666d44e22473afa645bc1396897d5-3aa614.png" alt="image-20200504112645380"></p>
+<p><img src="https://upload.ismdeep.com/images/2020/08/07/88c513d3d549592ff5dcd8697bb6fc1f-1f4b89.png" alt="image-20200504112711751"></p>
+<h3 id="02-命令行连接-MySQL-服务"><a href="#02-命令行连接-MySQL-服务" class="headerlink" title="02 命令行连接 MySQL 服务"></a>02 命令行连接 MySQL 服务</h3><p><strong>注意：</strong>当 MySQL 服务在运行的时候才能连上 MySQL 服务。这个应该能够理解吧。这事情就好比只有你男朋友手机是开机的情况下你才有可能打通电话，对吧。</p>
+<p>打开命令提示符并切换至 MySQL 目录的 <code>bin</code> 子目录。再执行 <code>mysql -uroot -p</code> ，换行后如果你的 root 账号有密码则输入密码，如果没有则直接换行即可。</p>
+<p>进入之后执行 <code>show databases;</code> 查看当前帐号可以访问的数据库列表。</p>
+<p><img src="https://upload.ismdeep.com/images/2020/08/07/958856f4b9c961114e85eed5eb49e182-13716c.png" alt="image-20200504113338879"></p>
+<p>到此，如果没有出现啥问题，则表明你通过命令行访问数据库的操作一切正常。</p>
+<h3 id="03-其他客户端连接-MySQL-服务"><a href="#03-其他客户端连接-MySQL-服务" class="headerlink" title="03 其他客户端连接 MySQL 服务"></a>03 其他客户端连接 MySQL 服务</h3><p>接下来和大家聊一聊 MySQL 服务和 MySQL 客户端的关系。</p>
+<p>一个完整可运行的 MySQL 服务软件是不需要包括 MySQL 客户端的，MySQL 服务端软件其实就是一个运行在后台的进程。这个进程你看不见摸不着。默默在后台处理着各种来自客户端的命令。而这里所说的客户端有很多种，有来自数据库管理员（DBA）对数据库管理所使用的命令行或者其他工具；也有开发人员用来测试并访问数据库使用的工具；甚至还有是用 C 语言或者是 PHP 写的程序代码执行时调用的 MySQL 库。而这些所有连接数据库的原理都是一样的。它们都通过 MySQL 标准的数据通信协议与 MySQL 进行数据交互（如：数据插入、数据删除、数据修改、数据查询等。）</p>
+<p>于是对数据库访问并操作的工具有特别多，甚至你要是有一点创造力还可以自己动手写一个小工具（[/呲牙]）。</p>
+<p>以下给大家推荐几款笔者觉得还算不错的可在 Windows 上使用的 MySQL 客户端软件。</p>
+<ul>
+<li>DataGrip （JetBrains家的东西就是香呀。这个 DataGrip 是 JetBrains 专门用来管理数据库的软件。）</li>
+<li>JetBrains 其他产品，当然除了上面的 DataGrip， JetBrains 家的其他产品上也有对应的插件去连接并管理数据库。其优势在于：<strong>你在一个开发的工具中既可以完成代码编写工作，也可以进行数据库的管理。这样会很方便，无需在各种界面中切换。</strong></li>
+<li>Navicat 推荐用 Navicat Premium 11 ，网上也有不错的破解工具。</li>
+<li><a href="https://dbeaver.io/" target="_blank" rel="noopener">DBeaver</a> <strong>优点：免费</strong></li>
+</ul>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

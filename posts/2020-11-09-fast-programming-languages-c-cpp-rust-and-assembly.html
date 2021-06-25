@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>高性能编程语言：C，C++，Rust，汇编语言 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2020-11-09-fast-programming-languages-c-cpp-rust-and-assembly" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>高性能编程语言：C，C++，Rust，汇编语言</h1>
+  
+
+      </header>
+      <div>
+      2020-11-09
+      
+        / 
+        
+          <span><a href="/tags/Hacker/">#Hacker</a></span>
+        
+          <span><a href="/tags/C/">#C</a></span>
+        
+          <span><a href="/tags/Rust/">#Rust</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#C-还是-C-？-或者都是？"><span class="toc-text">C 还是 C++ ？ 或者都是？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#C-开发操作系统内核"><span class="toc-text">C++ 开发操作系统内核</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#C-异常"><span class="toc-text">C++ 异常</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#C-仍然不错？"><span class="toc-text">C++ 仍然不错？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GOTO-C-的力量所在"><span class="toc-text">GOTO - C 的力量所在</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#当汇编比-C-容易时"><span class="toc-text">当汇编比 C 容易时</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Rust-一览"><span class="toc-text">Rust 一览</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#C-和-Rust-中的可靠性和安全性"><span class="toc-text">C++ 和 Rust 中的可靠性和安全性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#计算机语言的基准测试"><span class="toc-text">计算机语言的基准测试</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#性能分析"><span class="toc-text">性能分析</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Rust-作为系统编程语言？"><span class="toc-text">Rust 作为系统编程语言？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#相关文章"><span class="toc-text">相关文章</span></a></li></ol>
+  </div>
+
+
+        </div>
+
+        <p>本文并不是在讨论哪种编程语言更好，而是讨论用于开发最快的服务器端系统软件（例如数据库引擎和 HTTPS 服务器）的最强大的工具集。这类软件有着以下几个特定的属性：</p>
+<ul>
+<li>相对较大的代码库，超过 100,000 行 C 或 C++ 代码。尽管可以用汇编语言编写特定的最“热门”的函数，但用汇编语言编写整个程序是不切实际的。</li>
+<li>数据库和 Web 服务器是关键性支撑软件。多年以来我们已经习惯了使用有 MySQL 和 Nginx 进程的 Linux 系统。有一些<a href="https://github.com/tempesta-tech/tempesta/wiki/High-availability" target="_blank" rel="noopener">简单的高可用</a>最佳实践可以缓解由于可能的奔溃而导致的停机时间，但这是另一篇文章的主题。同时，值得一提的是，如果你真的在乎可用性，那么你应该在假设系统的任何组件随时可能奔溃的前提下构建基础架构，就像 <a href="https://lwn.net/Articles/801871/" target="_blank" rel="noopener">Facebook 是这样做的</a>一样，该公司在最新的 Linux 推出之后，就立刻部署使用了。</li>
+</ul>
+<p>多年来，我们一直在开发使用 <a href="http://tempesta-tech.com/c++-services" target="_blank" rel="noopener">C，C++ 和汇编语言最快的软件</a>。 既然 Rust 一直<a href="https://en.wikipedia.org/wiki/Rust_(programming_language" target="_blank" rel="noopener">“专注于性能”</a>，我们当然对此非常感兴趣。虽然有些怀疑，想想当年 Java 编程语言的兴起：有许多报道表明 JIT 编译产生的代码比 C++ 更快。现在很难出现这种 C++ 比 Java 慢的情况，请参见<a href="https://benchmarksgame-team.pages.debian.net/benchmarksgame/fastest/java.html" target="_blank" rel="noopener">基准测试</a>的例子。还值得一题的是，Java 中的内存垃圾回收（GC）会导致较高的尾部等待时间，并且很难甚至根本无法解决该问题。由于 GC，不能将 Go 语言用于高性能编程。</p>
+<h2 id="C-还是-C-？-或者都是？"><a href="#C-还是-C-？-或者都是？" class="headerlink" title="C 还是 C++ ？ 或者都是？"></a>C 还是 C++ ？ 或者都是？</h2><p>C 语言在系统编程中占着主导地位。操作系统内核是最复杂的系统软件之一，不仅因为它直接与硬件打交道，而且还由于严格的性能要求。Linux 和 FreeBSD 内核以及其他 UNIX 和 Windows 内核都是用 C 编写的。让我们从这个高性能系统软件的出色示例开始进行讨论。</p>
+<h3 id="C-开发操作系统内核"><a href="#C-开发操作系统内核" class="headerlink" title="C++ 开发操作系统内核"></a>C++ 开发操作系统内核</h3><p>FreeBSD <a href="https://forums.freebsd.org/threads/driver-building-in-c.35701/" target="_blank" rel="noopener">已经支持 C++ 模块</a> 有一段时间了。虽然 Linux 内核从不支持 C++，但是有一个用 C++ 编写并用作 Linux 内核模块的 <a href="https://pdos.csail.mit.edu/papers/click:tocs00/paper.pdf" target="_blank" rel="noopener">Click 模块化路由器</a>。如果您对操作系统内核开发的 C++ 适用性感兴趣，那么可以在 <a href="https://wiki.osdev.org/C++" target="_blank" rel="noopener">C++</a> 和 <a href="https://wiki.osdev.org/C++_Bare_Bones" target="_blank" rel="noopener">Bare bones</a> 文章中找到相当不错的讨论。但是，有一些本质的原因反对使用 C++ 进行操作系统内核开发：</p>
+<ul>
+<li>不需要 <code>libstdc++</code> 和 <a href="https://en.wikipedia.org/wiki/Run-time_type_information" target="_blank" rel="noopener">RTTI</a> ，以及内核空间异常处理。事实上，<code>dynamic_cast</code> 并不经常使用，并且有很多 C++ 项目并没有 RTTI 编译。如果需要异常处理，则必须将它们一直到内核中。<code>libstdc++</code> 使用基本的 C 分配，因此必须对内核进行大量修改。</li>
+<li>不能使用 STL 和 Boost 库。实际上，所有内核都已经拥有自己的库。C++ 引入了文件系统，线程和网络库，这在操作系统内核中是毫无意义的。另一方面，现代的操作系统提供了高级同步原语，而这些原语在标准 C++ 中仍然不可用（例如，在 C++ 中仍然没有读写自旋锁）。 </li>
+<li>Linux 内核提供的内存分配的数量（SLAB，页面 <code>vmalloc()</code>, <code>kmalloc()</code> 等），因此你必须使用 <a href="https://en.cppreference.com/w/cpp/language/new" target="_blank" rel="noopener"><code>placement new</code></a> 和/或 只使用 C 函数的内存分配和释放。对齐内存对于提高性能至关重要，但是你需要编写特殊的包装程序才能对齐使用 <code>new</code>.</li>
+<li>当原始内存指针经常被强制转换为某些数据结构时，强类型安全性对于系统编程而言并不那么舒适。尽管还是有争议的：虽然有些人不习惯用冗长的 <code>reinterpret_cast&lt;Foo *&gt;(ptr)</code> 替代不是简短的 <code>(Foo *)ptr</code>. 但其他人却拥有更多的类型和更多的类型安全性。</li>
+<li>命名空间和函数重载，必须要 C++ 的<a href="https://en.wikipedia.org/wiki/Name_mangling" target="_blank" rel="noopener">名称处理</a>。而这使函数很难从汇编调用，因此需要使用 <code>extern &quot;C&quot;</code>. </li>
+<li>你必须为静态对象的构造函数和析构函数 <code>.ctor</code> 以及 <code>.dtor</code> 相应的对象创建特殊的代码段。</li>
+<li>C++ 异常不能跨越<em>上下文</em>边界，即：你不能在一个线程中抛出异常而在另一个线程中捕获它。操作系统内核需要处理更复杂的上下文模型：内核线程，进入内核的用户空间线程，延迟和硬件中断。上下文可以以自愿或合作的方式相互抢占，因此当前上下文的异常处理可以被另一个上下文抢占。还有内存管理和上下文切换代码，它们可能与异常处理代码冲突。就像 RTTI 一样，可以在内核中实现该机制，但是不能使用当前的标准库。</li>
+<li>虽然 Clang 和 G++ 支持 <code>__restrict__</code> 扩展，但是官方的 C++ 标准 <a href="https://www.quora.com/Why-doesnt-C++-have-an-equivalent-of-Cs-restrict-specifier" target="_blank" rel="noopener">不支持</a>.</li>
+<li><a href="https://lwn.net/Articles/749064/" target="_blank" rel="noopener">不鼓励</a> 在 Linux 内核中使用可变长数组（VLA），在某些情况下它们仍然很方便，但是 <a href="https://groups.google.com/g/comp.std.c++/c/K_4lgA1JYeg?pli=1" target="_blank" rel="noopener">在 C++ 中完全不可用</a>。</li>
+</ul>
+<p>因此，在内核空间中使用 C++，基本上只有模版，类继承和一些语法糖（如 lambda 函数）。由于系统代码很少需要复杂的抽象和继承，那么在内核空间中使用 C++ 仍然有意义吗？</p>
+<h3 id="C-异常"><a href="#C-异常" class="headerlink" title="C++ 异常"></a>C++ 异常</h3><p>这是最<a href="https://herbsutter.com/2010/03/13/trip-report-march-2010-iso-c-standards-meeting/" target="_blank" rel="noopener">值得争辩</a> 的 C++ 功能之一，值得写上一章。例如：MySQL 的项目，以下为 <a href="https://google.github.io/styleguide/cppguide.html#Exceptions" target="_blank" rel="noopener">Google 编码风格</a>， <a href="https://dev.mysql.com/doc/dev/mysql-server/latest/PAGE_CODING_GUIDELINES.html" target="_blank" rel="noopener">不使用异常</a>。Google 编码风格提供了优秀的使用异常的优缺点列表。在这里，我们仅关注性能方面。</p>
+<p>当我们不得不在可能的地方处理错误代码时，异常可以提高性能，例如（让函数内联并且很小）</p>
+<pre><code class="c">if (func_1())
+    return -EINVAL;
+if (func_2())
+    return -EINVAL;
+....
+if (func_100())
+    return -EINVAL;
+</code></pre>
+<p>该代码的问题是存在额外的条件跳转。现代 CPU 可以很好地进行分支预测，但是仍然会影响性能。在 C++ 中，我们可以编写</p>
+<pre><code class="cpp">try {
+    func_1();
+    func_2();
+    ...
+    func_100();
+} catch (...) {
+    return -EINVAL;
+}   
+</code></pre>
+<p>，因此<em>热</em>路径中没有多余的条件。但是，这不是自由的：你的 C++ 代码中的大多数函数都必须带有额外的结尾，这些异常表带有这些函数可以捕获的异常表和适当的清除表。函数结尾没有在正常的工作流中执行，但是它们增加了代码的大小，从而导致 CPU 指令缓存中的额外污染。你可以在 <a href="https://monoinfinito.wordpress.com/series/exception-handling-in-c/" target="_blank" rel="noopener">Nico Brailovsky</a> 的博客中找到有关 C++ 异常处理内部的详细信息。</p>
+<h3 id="C-仍然不错？"><a href="#C-仍然不错？" class="headerlink" title="C++ 仍然不错？"></a>C++ 仍然不错？</h3><p>是的。首先，实际上并不是整个代码都必须尽可能快，并且在大多数情况下，我们不需要自定义内存分配，也不在乎异常开销。大多数项目（尤其是新项目）都是在用户空间中开发的，并且受益于相对丰富的 C++ 标准和 Boost 库（虽然不如 Java 丰富）。</p>
+<p>其次，C++ 最大的特点就是：<strong>它是 C</strong>。如果你不想使用异常或 RTTI，则只需要关闭功能即可。大多数 C 程序都可以使用 C++ 编译器进行编译，只需进行很小的更改或完全不进行任何更改。举个例子，我们只需要这个微不足道的更改</p>
+<pre><code class="bash">$ diff -up nbody.c nbody-new.cc
+    @@ -112,9 +112,9 @@ static void advance(body bodies[]){
+         // ROUNDED_INTERACTIONS_COUNT elements to simplify one of the following
+         // loops and to also keep the second and third arrays in position_Deltas
+         // aligned properly.
+    -    static alignas(__m128d) double
+    -      position_Deltas[3][ROUNDED_INTERACTIONS_COUNT],
+    -      magnitudes[ROUNDED_INTERACTIONS_COUNT];
+    +    static double
+    +      position_Deltas[3][ROUNDED_INTERACTIONS_COUNT] __attribute__((aligned(16))),
+    +      magnitudes[ROUNDED_INTERACTIONS_COUNT] __attribute__((aligned(16)));
+
+         // Calculate the position_Deltas between the bodies for each interaction.
+         for(intnative_t i=0, k=0; i &lt; BODIES_COUNT-1; ++i)    
+</code></pre>
+<p>用 G++ 编译器编译 <a href="https://benchmarksgame-team.pages.debian.net/benchmarksgame/program/nbody-clang-8.html" target="_blank" rel="noopener">C 程序</a> 。现代的 C++ 编译器提供了 C 兼容性扩展，例如 <code>_restrict</code> 关键字。我们总是可以用 C 风格编写 C++ 程序中性能最关键的代码。如果你不喜欢 <a href="https://250bpm.com/blog:8/" target="_blank" rel="noopener">带有额外开销的 STL 容器</a>，则可以使用 <a href="https://www.boost.org/doc/libs/1_74_0/doc/html/intrusive.html" target="_blank" rel="noopener">Boost.intrusive</a> ，或者甚至从 Linux 内核或其他高速 C 项目移植类似的容器。在大多数情况下，这不会感到痛苦。例如，请参阅如何在 C++ <a href="https://github.com/tempesta-tech/blog/tree/master/htrie" target="_blank" rel="noopener">benchmark</a> 中使用 PostgreSQL 的哈希表，<a href="https://github.com/tempesta-tech/tempesta/tree/master/tempesta_db" target="_blank" rel="noopener">Tempesta DB</a> 的 HTrie 以及 Linux 内核读/写自旋锁（全部都是用 C 编写的。）</p>
+<p>关于使用 C++ 编写高性能程序的最后一件事必须提到的是<a href="https://en.wikipedia.org/wiki/Template_metaprogramming" target="_blank" rel="noopener">模板元编程</a>。对于现代 C++ 标准而言，令人兴奋的是，使用模板可以编写非常复杂的逻辑，这些逻辑在编译时就可以完全计算出来，而在运行时则不增加任何负担。</p>
+<h2 id="GOTO-C-的力量所在"><a href="#GOTO-C-的力量所在" class="headerlink" title="GOTO - C 的力量所在"></a>GOTO - C 的力量所在</h2><p><strong>专业的工具必须允许你以最有效的方式使用它。</strong> 高级和高性能的编程语言的目标是生成最高效的机器代码。每种硬件体系结构都支持 <em>jumps</em> 指令，这意味着你可以在任何条件下跳转到任何地址。C 和 C++ 编程语言中最接近跳转的抽象就是<code>goto</code> 操作符。它不像汇编那样灵活 <code>jmp</code> ，但是 C 编译器提供了扩展，使操作符几乎可以完全等同于汇编的 <code>jmp</code>. 不幸的是，Rust <a href="https://internals.rust-lang.org/t/gotos-in-restricted-functions/4393" target="_blank" rel="noopener">并不支持 goto</a>，这使它在整个性能关键性任务中都显得笨拙。</p>
+<p>我们谈论解析器。这里并不是说通过一堆 <code>switch</code> 和 <code>if</code> 语言完美完成的配置文件解析器，而是关于大型且非常快速的解析器（如 HTTP 解析器）。你可能会认为这是 “太狭窄” 或 “太具体” 的任务，但是回想一下解析器生成器，例如 <a href="http://www.colm.net/open-source/ragel/" target="_blank" rel="noopener">Ragel</a> 或 <a href="https://www.gnu.org/software/bison/" target="_blank" rel="noopener">GNU Bison</a>. 如果开发这样的解析器生成器，那么你将永远不知道将出现多大的解析器。（顺便说一下，Ragel 广泛使用 <code>goto</code> 生成非常快的解析器。）还要注意每个 RDMS 中的 SQL 解析器。实际上，我们可以将任务的类别概括为<em>大型和快速的有限状态机</em>，例如：正则表达式。</p>
+<p><a href="https://github.com/tempesta-tech/tempesta/" target="_blank" rel="noopener">Tempesta FW</a>  中的 <a href="https://github.com/tempesta-tech/tempesta/blob/master/tempesta_fw/http_parser.c" target="_blank" rel="noopener">HTTP 解析器</a> 比其他 Web 服务器中的 HTTP 解析器要大得多，因为，除了基本的 HTTP 解析，也做了很多的安全检查，严格验证对 RFC 的输入。此外，我们的解析器还可以处理零拷贝数据，因此也非常关心数据块。在 <a href="https://www.socallinuxexpo.org/scale/17x/presentations/fast-http-string-processing-algorithms" target="_blank" rel="noopener">SCALE 17x 会议</a>上的演讲中描述了解析器的技术细节，您可以观看<a href="https://youtu.be/LQc4er8ng64?t=25501" target="_blank" rel="noopener">演讲视频</a>或者<a href="http://tempesta-tech.com/research/http_str.pdf" target="_blank" rel="noopener">幻灯片</a>。</p>
+<p>通常，HTTP 解析器被实现为输入字符和嵌套 <code>switch</code> 语句的循环，以获取允许的字符和可用状态。例如 <a href="https://github.com/nginx/nginx/blob/master/src/http/ngx_http_parse.c#L104" target="_blank" rel="noopener"><code>ngx_http_parse_request_line()</code></a> ，请参见 <a href="https://github.com/nginx/nginx/blob/master/src/http/ngx_http_parse.c" target="_blank" rel="noopener">Nginx 解析器源代码</a>。为了简洁其间，让我们考虑一个简化的代码版本：</p>
+<pre><code class="c">while (++str_ptr) {
+    switch (current_state) {
+    case 0:
+        ...
+    case 1:
+        ...
+    ...
+    case 100:
+        switch (*str_ptr) {
+        case &#39;a&#39;:
+            ...
+            current_state = 200;
+            break;
+        case &#39;b&#39;:
+            ...
+            current_state = 101;
+            break;
+        }
+        break;
+    case 101:
+        ...
+    ...
+    }
+}
+</code></pre>
+<p>假设解析器已经完成了对处于状态 <code>100</code> 的先前数据块的解析，而当前数据库从字符 <code>b</code> 开始。不管 <a href="http://tempesta-tech.com/research/http_str.pdf" target="_blank" rel="noopener">switch语句优化</a>（可以由编译器使用查找表或二进制搜索进行优化），代码都存在以下三个问题：</p>
+<ol>
+<li>查找状态 <code>100</code> 仍然比直接跳转更耗时。</li>
+<li>当状态码放置在状态 <code>100</code> 后的状态 <code>101</code> 时，我们必须重新进入 <code>while</code> 和 <code>switch</code> 语句，即再次查找下一个状态，而不是仅一步移动一个字符并直接跳到下一个状态。</li>
+<li>即使我们总是在状态 <code>100</code> 后的状态 <code>101</code>，编译器也可以通过以下方式重新组织代码：将状态 <code>101</code> 放在 <code>switch</code> 语句的开头，而将状态 <code>100</code> 放在语句的末尾。</li>
+</ol>
+<p>Tempesta FW 使用 <code>goto</code> 语句和标签的 GCC 编译器扩展（<a href="https://gcc.gnu.org/onlinedocs/gcc/Labels-as-Values.html" target="_blank" rel="noopener">标签变量</a> 和 <a href="https://gcc.gnu.org/onlinedocs/gcc/Label-Attributes.html" target="_blank" rel="noopener">标签属性</a>）通过以下代码解决了所有问题：</p>
+<pre><code class="c">// Use labels as values to remember the current state when we
+// exit the state machine at the end of current data chunk.
+parser-&gt;state = &amp;&amp;state_100;
+goto *parser-&gt;state;
+
+while (true) {
+state_0:
+    ...
+state_1:
+    ...
+// The state is placed by a compiler closer to the beginning
+// of the code.
+state_100: __attribute__((hot))
+    // We still use small switches for small character sets. 
+    switch (*str_ptr) {
+    case &#39;a&#39;:
+        ...
+        ++str_ptr;
+        goto state_200;
+    case &#39;b&#39;:
+        ...
+        ++str_ptr;
+        // Just fall through to the state 101.
+    }
+// This state is placed by the compiler after state_100.
+state_101: __attribute__((cold))
+    ...
+}   
+</code></pre>
+<p>由于 Rust 不支持 <code>goto</code> 语句，因此我们需要使用汇编语言通过直接跳转和最佳代码布局来实现状态机。</p>
+<h2 id="当汇编比-C-容易时"><a href="#当汇编比-C-容易时" class="headerlink" title="当汇编比 C 容易时"></a>当汇编比 C 容易时</h2><p>现在我们先看一个示例，该示例中的汇编语言不仅可以生成更快的代码，还可以以更有效率的方式编写程序。此示例是关于多精度整数运算。</p>
+<p>公钥密码学和椭圆曲线密码算法尤其依赖大整数运算。Tom St Denis所著的《<a href="https://www.amazon.com/BigNum-Math-Implementing-Cryptographic-Arithmetic/dp/1597491128" target="_blank" rel="noopener">BigNum Math：实现加密多精度算术</a>》一书提供了有关该主题以及许多算法的 C 实现的详细细节，但现在让我们考虑一下 64 位上 128 位长的两个大整数的基本加法机。大整数包括<em>几个块</em>，两个64位 <code>long</code>。为了求和整数，我们必须关心块之间的进位，因此生成的C代码看起来像（参见书中的4.2.1）：</p>
+<pre><code class="c">// a := a + b
+// x[0] is the less significant limb,
+// x[1] is the most significant limb.
+void s_mp_add(unsigned long *a, unsigned long *b)
+{
+    unsigned long carry;
+
+    a[0] += b[0];
+    carry = (a[0] &lt; b[0]);
+
+    a[1] += b[1] + carry;
+}    
+</code></pre>
+<p>代码虽小又简单，但是你可能不得不考虑使用进行操作的正确性的 <code>carry</code>。幸运的事，x86-64 是 <a href="https://en.wikipedia.org/wiki/Complex_instruction_set_computer" target="_blank" rel="noopener">CISC</a> 体系结构，它为我们提供了许多计算功能，其中就有带进位的计算，因此上面的代码只用两条指令就可以完成，而无需进行比较：</p>
+<pre><code class="c">// Pointer to a is in %RDI, pointer to b is in %RSI
+movq    (%rdi), %r8
+movq    8(%rdi), %r9
+
+addq    (%rsi), %r8     // add with carry
+addc    8(%rsi), %r9    // use the carry in the next addition
+
+movq    (%r8), (%rdi)
+movq    (%r9), 8(%rdi)
+
+</code></pre>
+<p>如果您查看任何经过优化的加密库，例如 <a href="https://www.openssl.org/" target="_blank" rel="noopener">OpenSSL</a> 或 <a href="https://github.com/tempesta-tech/tempesta/tree/master/tls" target="_blank" rel="noopener">Tempesta TLS</a>，那么您会发现很多汇编代码（OpenSSL实际上使用Perl脚本生成了汇编源代码）。</p>
+<h2 id="Rust-一览"><a href="#Rust-一览" class="headerlink" title="Rust 一览"></a>Rust 一览</h2><p>乍一看，Rust具备开发非常高效的代码的精良装备：<a href="https://doc.rust-lang.org/edition-guide/rust-2018/simd-for-faster-computing.html" target="_blank" rel="noopener">SIMD内在函数</a>，<a href="https://doc.rust-lang.org/reference/type-layout.html" target="_blank" rel="noopener">内存对齐</a>，<a href="https://doc.rust-lang.org/std/sync/atomic/fn.fence.html" target="_blank" rel="noopener">内存屏障</a>，<a href="https://doc.rust-lang.org/1.8.0/book/inline-assembly.html" target="_blank" rel="noopener">内联汇编</a>。Rust 与 C 或 C++ 有很多比较，例如 <a href="https://kornel.ski/rust-c-speed" target="_blank" rel="noopener">Rust与C</a> 或 <a href="https://www.viva64.com/en/b/0733/" target="_blank" rel="noopener">C++ 的速度比 Rust 更快，更安全：Yandex 基准测试</a>。但是，如果你考虑使用 Rust 开发基准测试领先产品，那么您可能会面临一些障碍以及缺少 <code>goto</code> 操作符的麻烦：</p>
+<ul>
+<li>从技术上讲，Rust支持自定义内存分配器，但是存在<a href="https://www.reddit.com/r/rust/comments/80jqvn/allocator_story_in_rust/" target="_blank" rel="noopener">严重的局限性</a>。值得一提的是，任何<a href="https://natsys-lab.blogspot.com/2015/09/fast-memory-pool-allocators-boost-nginx.html" target="_blank" rel="noopener">高性能软件都使用许多临时内存分配器</a>。</li>
+<li>就像 C++ 一样，Rust 不提供 VLA 。但是，如果 C++ 仍然可以使用 <code>alloca(3)</code>，Rust 根本不会提供堆栈分配。太可惜了，因为栈分配是消耗最小的，而由于先前的考虑，自定义内存分配器不是一个选择。</li>
+<li>这似乎<a href="https://doc.rust-lang.org/std/intrinsics/fn.unlikely.html" target="_blank" rel="noopener">可能/不可能</a>支持是比现代的C或C ++编译器强大得多。</li>
+<li>在 Rust 中可以从原始内存读写数据结构，但是比 C 甚至 C++ 需要<a href="https://users.rust-lang.org/t/reading-structures-in-memory-via-pointers/33886" target="_blank" rel="noopener">更多的代码</a>。不过没什么大不了的。</li>
+<li>Rust的<a href="https://doc.rust-lang.org/book/ch10-01-syntax.html" target="_blank" rel="noopener">泛型</a>和<a href="https://doc.rust-lang.org/book/ch19-06-macros.html" target="_blank" rel="noopener">宏</a>功能<a href="https://users.rust-lang.org/t/generic-functions-c-vs-rust/21965/" target="_blank" rel="noopener">远不及</a> C++ 模板和 C 宏所提供的<a href="https://users.rust-lang.org/t/generic-functions-c-vs-rust/21965/" target="_blank" rel="noopener">功能强大</a>。虽然，这也不是那么关键。</li>
+</ul>
+<p>关于Rust系统编程的最关键的失望是它处理原始内存的能力有限，这是内存安全的另一方面。</p>
+<h2 id="C-和-Rust-中的可靠性和安全性"><a href="#C-和-Rust-中的可靠性和安全性" class="headerlink" title="C++ 和 Rust 中的可靠性和安全性"></a>C++ 和 Rust 中的可靠性和安全性</h2><p>如果不解决 Rust 和 C++ 编程语言提供的可靠性和安全性，本文将是不完整的。幸运的是，<a href="https://www.youtube.com/watch?v=_pQGRr4P16w" target="_blank" rel="noopener">Microsoft 的 Sunny Chatterjee 最近在 CppCon 2020上发表了这个话题</a>。Rust的主要好处是内存和并发安全性，但是现代的C ++也解决了这些主题。在本演示中，Sunny 解决了 Rust 与 C++ 之间的以下6个差距：转换，switch 语句，更智能的循环，更智能的复制，生存期和可变性。让我们回顾一下差距。</p>
+<ul>
+<li>带有编译器选项的现代 C 和 C++ 编译器可以很好地处理类型<strong>转换</strong> <code>-Wall</code>。</li>
+<li><strong><code>switch</code></strong>语句也使用进行处理 <code>-Wall</code>。此外，GCC 还<a href="https://lwn.net/Articles/794944/" target="_blank" rel="noopener">引入了</a> <code>-Wimplicit-fallthrough</code>编译器选项，该选项使“通过”明确。</li>
+<li>自 C++ 11起，<strong>更聪明的循环</strong>由基于C ++<a href="https://en.cppreference.com/w/cpp/language/range-for" target="_blank" rel="noopener">范围的for循环解决</a>。</li>
+<li><code>const auto &amp;</code>参考和细粒度的复制和移动语义会注意<strong>智能复制</strong>。</li>
+<li><a href="https://en.wikipedia.org/wiki/Resource_acquisition_is_initialization" target="_blank" rel="noopener">RAII</a>提供了强大的<strong>生命周期</strong>，但不幸的<em>是并非涵盖所有情况</em>。</li>
+<li><code>const</code>带有或不带有<code>mutable</code>成员，<code>const</code>引用和变量的C ++类提供了细粒度的<strong>可变性</strong>，但是bust也<em>不能涵盖所有情况</em>。</li>
+</ul>
+<p>演示最后以“ <a href="https://github.com/isocpp/CppCoreGuidelines" target="_blank" rel="noopener">C++ 核心准则</a>规定许多重大项目”进行了总结，且现代 C 和 C++ 编译器趋向于实现忽略检查。还值得一提的是，C / C++世界有效地使用了地址清理器（例如，<a href="https://github.com/google/sanitizers/wiki/AddressSanitizer" target="_blank" rel="noopener">ASAN</a>内置于LLVM和GCC编译器的现代版本中）来捕获<a href="https://github.com/google/sanitizers/wiki/AddressSanitizer" target="_blank" rel="noopener">越界</a>内存访问。毕竟，<code>unsafe</code>就像在C ++中使用原始指针一样，您仍然可以使用Rust中的代码来产生错误。</p>
+<h2 id="计算机语言的基准测试"><a href="#计算机语言的基准测试" class="headerlink" title="计算机语言的基准测试"></a>计算机语言的基准测试</h2><p>由于我们在谈论性能，因此我们必须看一下“<a href="https://benchmarksgame-team.pages.debian.net/benchmarksgame/index.html" target="_blank" rel="noopener">计算机语言基准测试”</a>。要比较不同语言的性能，您需要以相同的方式在所有语言中实现相同的任务。这不是人们通常要做的事情，因此很难找到不同语言的真实代码示例，这些示例使您可以将桔子与桔子进行比较，而不是将桔子与苹果进行比较。虽然Benchmarks游戏是一款游戏，它会比较一些小的特定任务的实现，但这是我们拥有的最好的游戏之一。所述<a href="https://github.com/dmitryikh/rust-vs-cpp-bench" target="_blank" rel="noopener">VS锈比较C ++ 11</a>是C ++和Rust中相等实现的又一比较。Benchmarks游戏中没有汇编语言，但是相应地有Rust（用于G ++编译器的C ++）和两个用于Clang和GCC编译器的C。在撰写本文时，实现的性能为（以秒为单位，越少越好）：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Problem</th>
+<th style="text-align:left">G++</th>
+<th style="text-align:left">GCC</th>
+<th style="text-align:left">Clang</th>
+<th style="text-align:left">Rust</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">fannkuch-redux</td>
+<td style="text-align:left">8.07</td>
+<td style="text-align:left">7.53</td>
+<td style="text-align:left">9.45</td>
+<td style="text-align:left"><strong>6.88</strong></td>
+</tr>
+<tr>
+<td style="text-align:left">spectral-norm</td>
+<td style="text-align:left">0.72</td>
+<td style="text-align:left">0.72</td>
+<td style="text-align:left">0.72</td>
+<td style="text-align:left"><strong>0.71</strong></td>
+</tr>
+<tr>
+<td style="text-align:left">n-body</td>
+<td style="text-align:left">4.09</td>
+<td style="text-align:left">4.30</td>
+<td style="text-align:left"><strong>3.31</strong></td>
+<td style="text-align:left"><strong>3.31</strong></td>
+</tr>
+<tr>
+<td style="text-align:left">binary-trees</td>
+<td style="text-align:left"><strong>1.12</strong></td>
+<td style="text-align:left">1.78</td>
+<td style="text-align:left">1.88</td>
+<td style="text-align:left">1.20</td>
+</tr>
+<tr>
+<td style="text-align:left">fasta</td>
+<td style="text-align:left">1.04</td>
+<td style="text-align:left"><strong>0.82</strong></td>
+<td style="text-align:left">0.88</td>
+<td style="text-align:left">0.91</td>
+</tr>
+<tr>
+<td style="text-align:left">pidigits</td>
+<td style="text-align:left"><strong>0.71</strong></td>
+<td style="text-align:left">0.73</td>
+<td style="text-align:left">0.81</td>
+<td style="text-align:left">0.74</td>
+</tr>
+<tr>
+<td style="text-align:left">mandelbrot</td>
+<td style="text-align:left"><strong>0.84</strong></td>
+<td style="text-align:left">1.27</td>
+<td style="text-align:left">2.09</td>
+<td style="text-align:left">0.92</td>
+</tr>
+<tr>
+<td style="text-align:left">regex-redux</td>
+<td style="text-align:left">1.08</td>
+<td style="text-align:left"><strong>0.80</strong></td>
+<td style="text-align:left">0.81</td>
+<td style="text-align:left">1.28</td>
+</tr>
+<tr>
+<td style="text-align:left">reverse-complement</td>
+<td style="text-align:left"><strong>0.63</strong></td>
+<td style="text-align:left">0.87</td>
+<td style="text-align:left">0.98</td>
+<td style="text-align:left">0.75</td>
+</tr>
+<tr>
+<td style="text-align:left">k-nucleotide</td>
+<td style="text-align:left"><strong>1.93</strong></td>
+<td style="text-align:left">3.71</td>
+<td style="text-align:left">6.19</td>
+<td style="text-align:left">3.29</td>
+</tr>
+</tbody>
+</table>
+<p>只有一个测试，第一个测试，其中 Rust 或多或少明显优于 C 和 C++ 实现。</p>
+<h3 id="性能分析"><a href="#性能分析" class="headerlink" title="性能分析"></a>性能分析</h3><p>您可能很好奇，为什么 <a href="https://benchmarksgame-team.pages.debian.net/benchmarksgame/program/fannkuchredux-rust-5.html" target="_blank" rel="noopener">Rust中</a> 的 <em>fannkuch-redux</em> <a href="https://benchmarksgame-team.pages.debian.net/benchmarksgame/program/fannkuchredux-rust-5.html" target="_blank" rel="noopener">实现</a>比 <a href="https://benchmarksgame-team.pages.debian.net/benchmarksgame/program/fannkuchredux-gcc-5.html" target="_blank" rel="noopener">C 实现</a>更快？我们也是。这两个程序的副本已附在下文：</p>
+<p>C 程序</p>
+<pre><code class="c">// The Computer Language Benchmarks Game
+// https://salsa.debian.org/benchmarksgame-team/benchmarksgame/
+//
+// Contributed by Jeremy Zerfas
+// Based on the Ada program by Jonathan Parker and Georg Bauhaus which in turn
+// was based on code by Dave Fladebo, Eckehard Berns, Heiner Marxen, Hongwei Xi,
+// and The Anh Tran and also the Java program by Oleg Mazurov.
+
+// This value controls how many blocks the workload is broken up into (as long
+// as the value is less than or equal to the factorial of the argument to this
+// program) in order to allow the blocks to be processed in parallel if
+// possible. PREFERRED_NUMBER_OF_BLOCKS_TO_USE should be some number which
+// divides evenly into all factorials larger than it. It should also be around
+// 2-8 times the amount of threads you want to use in order to create enough
+// blocks to more evenly distribute the workload amongst the threads.
+#define PREFERRED_NUMBER_OF_BLOCKS_TO_USE 12
+
+#include &lt;stdint.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;stdio.h&gt;
+
+// intptr_t should be the native integer type on most sane systems.
+typedef intptr_t intnative_t;
+
+
+int main(int argc, char ** argv){
+   const intnative_t n=atoi(argv[1]);
+
+   // Create and initialize factorial_Lookup_Table.
+   intnative_t factorial_Lookup_Table[n+1];
+   factorial_Lookup_Table[0]=1;
+   for(intnative_t i=0; ++i&lt;=n;)
+      factorial_Lookup_Table[i]=i*factorial_Lookup_Table[i-1];
+
+   // Determine the block_Size to use. If n! is less than
+   // PREFERRED_NUMBER_OF_BLOCKS_TO_USE then just use a single block to prevent
+   // block_Size from being set to 0. This also causes smaller values of n to
+   // be computed serially which is faster and uses less resources for small
+   // values of n.
+   const intnative_t block_Size=factorial_Lookup_Table[n]/
+     (factorial_Lookup_Table[n]&lt;PREFERRED_NUMBER_OF_BLOCKS_TO_USE ?
+     1 : PREFERRED_NUMBER_OF_BLOCKS_TO_USE);
+
+   intnative_t maximum_Flip_Count=0, checksum=0;
+
+   // Iterate over each block.
+   #pragma omp parallel for \
+     reduction(max:maximum_Flip_Count) reduction(+:checksum)
+   for(intnative_t initial_Permutation_Index_For_Block=0;
+     initial_Permutation_Index_For_Block&lt;factorial_Lookup_Table[n];
+     initial_Permutation_Index_For_Block+=block_Size){
+
+      intnative_t count[n];
+      int8_t temp_Permutation[n], current_Permutation[n];
+
+
+      // Initialize count and current_Permutation.
+      count[0]=0;
+      for(intnative_t i=0; i&lt;n; ++i)
+         current_Permutation[i]=i;
+      for(intnative_t i=n-1,
+        permutation_Index=initial_Permutation_Index_For_Block; i&gt;0; --i){
+         const intnative_t d=permutation_Index/factorial_Lookup_Table[i];
+         permutation_Index=permutation_Index%factorial_Lookup_Table[i];
+         count[i]=d;
+
+         for(intnative_t j=0; j&lt;n; ++j)
+            temp_Permutation[j]=current_Permutation[j];
+         for(intnative_t j=0; j&lt;=i; ++j)
+            current_Permutation[j]= j+d&lt;=i ?
+              temp_Permutation[j+d] : temp_Permutation[j+d-i-1];
+      }
+
+
+      // Iterate over each permutation in the block.
+      const intnative_t last_Permutation_Index_In_Block=
+        initial_Permutation_Index_For_Block+block_Size-1;
+      for(intnative_t permutation_Index=initial_Permutation_Index_For_Block; ;
+        ++permutation_Index){
+
+         // If the first value in the current_Permutation is not 1 (0) then
+         // we will need to do at least one flip for the current_Permutation.
+         if(current_Permutation[0]&gt;0){
+
+            // Make a copy of current_Permutation[] to work on. Note that we
+            // don&#39;t need to copy the first value since that will be stored
+            // in a separate variable since it gets used a lot.
+            for(intnative_t i=0; ++i&lt;n;)
+               temp_Permutation[i]=current_Permutation[i];
+
+            intnative_t flip_Count=1;
+
+            // Flip temp_Permutation until the element at the first_Value
+            // index is 1 (0).
+            for(intnative_t first_Value=current_Permutation[0];
+              temp_Permutation[first_Value]&gt;0; ++flip_Count){
+
+               // Record the new_First_Value and restore the old
+               // first_Value at its new flipped position.
+               const int8_t new_First_Value=temp_Permutation[first_Value];
+               temp_Permutation[first_Value]=first_Value;
+
+               // If first_Value is greater than 3 (2) then we are flipping
+               // a series of four or more values so we will also need to
+               // flip additional elements in the middle of the
+               // temp_Permutation.
+               if(first_Value&gt;2){
+                  intnative_t low_Index=1, high_Index=first_Value-1;
+                  // Note that this loop is written so that it will run at
+                  // most 16 times so that compilers will be more willing
+                  // to unroll it. Consequently this won&#39;t work right when
+                  // n is greater than 35. This would probably be the
+                  // least of your concerns since 21! won&#39;t fit into 64
+                  // bit integers and even if it did you probably wouldn&#39;t
+                  // want to run this program with a value that large
+                  // since it would take thousands of years to do on a
+                  // modern desktop computer. ;-)
+                  do{
+                     const int8_t temp=temp_Permutation[high_Index];
+                     temp_Permutation[high_Index]=
+                       temp_Permutation[low_Index];
+                     temp_Permutation[low_Index]=temp;
+                  }while(low_Index+++3&lt;=high_Index-- &amp;&amp; low_Index&lt;16);
+               }
+
+               // Update first_Value to new_First_Value that we recorded
+               // earlier.
+               first_Value=new_First_Value;
+            }
+
+
+            // Update the checksum.
+            if(permutation_Index%2==0)
+               checksum+=flip_Count;
+            else
+               checksum-=flip_Count;
+
+            // Update maximum_Flip_Count if necessary.
+            if(flip_Count&gt;maximum_Flip_Count)
+               maximum_Flip_Count=flip_Count;
+         }
+
+
+         // Break out of the loop when we get to the
+         // last_Permutation_Index_In_Block.
+         if(permutation_Index&gt;=last_Permutation_Index_In_Block)
+            break;
+
+         // Generate the next permutation.
+         int8_t first_Value=current_Permutation[1];
+         current_Permutation[1]=current_Permutation[0];
+         current_Permutation[0]=first_Value;
+         for(intnative_t i=1; ++count[i]&gt;i;){
+            count[i++]=0;
+            const int8_t new_First_Value=current_Permutation[0]=
+              current_Permutation[1];
+
+            for(intnative_t j=0; ++j&lt;i;)
+               current_Permutation[j]=current_Permutation[j+1];
+
+            current_Permutation[i]=first_Value;
+            first_Value=new_First_Value;
+         }
+      }
+   }
+
+
+   // Output the results to stdout.
+   printf(&quot;%jd\nPfannkuchen(%jd) = %jd\n&quot;, (intmax_t)checksum, (intmax_t)n,
+     (intmax_t)maximum_Flip_Count);
+
+   return 0;
+}
+</code></pre>
+<p>Rust 程序</p>
+<pre><code class="rust">// The Computer Language Benchmarks Game
+// https://salsa.debian.org/benchmarksgame-team/benchmarksgame/
+//
+// Contributed by Cliff L. Biffle, translated from Jeremy Zerfas&#39;s C program.
+//
+// The C program was based on the Ada program by Jonathan Parker and Georg
+// Bauhaus which in turn was based on code by Dave Fladebo, Eckehard Berns,
+// Heiner Marxen, Hongwei Xi, and The Anh Tran and also the Java program by Oleg
+// Mazurov.
+
+extern crate rayon;
+
+use rayon::prelude::*;
+use std::mem::replace;
+
+// This value controls how many blocks the workload is broken up into (as long
+// as the value is less than or equal to the factorial of the argument to this
+// program) in order to allow the blocks to be processed in parallel if
+// possible. PREFERRED_NUMBER_OF_BLOCKS_TO_USE should be some number which
+// divides evenly into all factorials larger than it. It should also be around
+// 2-8 times the amount of threads you want to use in order to create enough
+// blocks to more evenly distribute the workload amongst the threads.
+const PREFERRED_NUMBER_OF_BLOCKS_TO_USE: usize = 12;
+
+// One greater than the maximum `n` value. Used to size stack arrays.
+const MAX_N: usize = 16;
+
+fn main() {
+    let n = std::env::args().nth(1).unwrap().parse().unwrap();
+
+    // This assert eliminates several bounds checks.
+    assert!(n &lt; MAX_N);
+
+    // Create and initialize factorial_lookup_table.
+    let factorial_lookup_table = {
+        let mut table: [usize; MAX_N] = [0; MAX_N];
+        table[0] = 1;
+        for i in 1..MAX_N {
+            table[i] = i * table[i - 1];
+        }
+        table
+    };
+
+    // Determine the block_size to use. If n! is less than
+    // PREFERRED_NUMBER_OF_BLOCKS_TO_USE then just use a single block to prevent
+    // block_size from being set to 0. This also causes smaller values of n to
+    // be computed serially which is faster and uses less resources for small
+    // values of n.
+    let block_size =
+        1.max(factorial_lookup_table[n] / PREFERRED_NUMBER_OF_BLOCKS_TO_USE);
+    let block_count = factorial_lookup_table[n] / block_size;
+
+    // Iterate over each block.
+    let (checksum, max_flip_count) = (0..block_count)
+        .into_par_iter()
+        .map(|bn| {
+            let initial_permutation_index = bn * block_size;
+
+            let mut count: [usize; MAX_N] = [0; MAX_N];
+            let mut current_permutation: [u8; MAX_N] =
+                [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+
+            // Initialize count and current_permutation.
+            {
+                let mut temp_permutation: [u8; MAX_N] = [0; MAX_N];
+                let mut permutation_index = initial_permutation_index;
+                for i in (1..n).rev() {
+                    let f = factorial_lookup_table[i];
+                    let d = permutation_index / f;
+
+                    count[i] = d;
+
+                    // Rotate the permutation left by d places. This is faster
+                    // than using slice::rotate_left.
+                    temp_permutation[0..=i - d]
+                        .copy_from_slice(&amp;current_permutation[d..=i]);
+                    temp_permutation[i - d + 1..=i]
+                        .copy_from_slice(&amp;current_permutation[..d]);
+                    current_permutation = temp_permutation;
+
+                    permutation_index = permutation_index % f;
+                }
+            }
+
+            let mut max_flip_count = 0;
+            let mut checksum = 0;
+
+            // Iterate over each permutation in the block.
+            let last_permutation_index = initial_permutation_index + block_size;
+            for permutation_index in
+                initial_permutation_index..last_permutation_index
+            {
+                // If the first value in the current_permutation is not 1 (0)
+                // then we will need to do at least one flip for the
+                // current_permutation.
+                if current_permutation[0] &gt; 0 {
+                    // Make a copy of current_permutation[] to work on.
+                    let mut temp_permutation = current_permutation;
+
+                    let mut flip_count: usize = 1;
+
+                    // Flip temp_permutation until the element at the
+                    // first_value index is 1 (0).
+                    let mut first_value = current_permutation[0] as usize &amp; 0xF;
+                    while temp_permutation[first_value] &gt; 0 {
+                        // Record the new_first_value and restore the old
+                        // first_value at its new flipped position.
+                        let new_first_value = replace(
+                            &amp;mut temp_permutation[first_value],
+                            first_value as u8,
+                        );
+
+                        // If first_value is greater than 3 (2) then we are
+                        // flipping a series of four or more values so we will
+                        // also need to flip additional elements in the middle
+                        // of the temp_permutation.
+                        if first_value &gt; 2 {
+                            for (low_index, high_index) in
+                                (1..first_value).zip((1..first_value).rev())
+                            {
+                                temp_permutation.swap(high_index, low_index);
+
+                                if low_index + 3 &gt; high_index {
+                                    break;
+                                }
+                            }
+                        }
+
+                        // Update first_value to new_first_value that we
+                        // recorded earlier.
+                        first_value = new_first_value as usize &amp; 0xF;
+                        flip_count += 1;
+                    }
+
+                    // Update the checksum.
+                    if permutation_index % 2 == 0 {
+                        checksum += flip_count;
+                    } else {
+                        checksum -= flip_count;
+                    }
+
+                    // Update max_flip_count if necessary.
+                    max_flip_count = max_flip_count.max(flip_count);
+                }
+
+                // Generate the next permutation.
+                current_permutation.swap(0, 1);
+                let mut first_value = current_permutation[0];
+                for i in 1..MAX_N - 2 {
+                    count[i] += 1;
+                    if count[i] &lt;= i {
+                        break;
+                    }
+                    count[i] = 0;
+
+                    let new_first_value = current_permutation[1];
+
+                    for j in 0..i + 1 {
+                        current_permutation[j] = current_permutation[j + 1];
+                    }
+
+                    current_permutation[i + 1] = first_value;
+                    first_value = new_first_value;
+                }
+            }
+            (checksum, max_flip_count)
+        })
+        .reduce(
+            || (0, 0),
+            |(cs1, mf1), (cs2, mf2)| (cs1 + cs2, mf1.max(mf2)),
+        );
+
+    // Output the results to stdout.
+    println!(&quot;{}&quot;, checksum);
+    println!(&quot;Pfannkuchen({}) = {}&quot;, n, max_flip_count);
+}
+</code></pre>
+<p>让我们启动C程序，并使用<a href="https://perf.wiki.kernel.org/index.php/Main_Page" target="_blank" rel="noopener">Linux perf工具</a>收集该程序的性能概况。我们可以通过程序中最热门的代码<code>perf report</code>或看到<code>perf annotate</code>什么：</p>
+<pre><code class="c">    0.46 |       movzbl    -0x9(%r15,%rax,1),%ecx
+    0.96 |       movzbl    0x9(%r15),%r8d
+         |       mov       %r8b,-0x9(%r15,%rax,1)
+    2.31 |       mov       %cl,0x9(%r15)
+         |       lea       -0xa(%rax),%rcx
+   12.76 |       cmp       $0xb,%rdi
+
+</code></pre>
+<p>性能杀手获得了12.76％的时间是展开循环的一部分</p>
+<pre><code class="c">do{
+   const int8_t temp=temp_Permutation[high_Index];
+   temp_Permutation[high_Index]=
+     temp_Permutation[low_Index];
+   temp_Permutation[low_Index]=temp;
+}while(low_Index+++3&lt;=high_Index-- &amp;&amp; low_Index&lt;16);
+</code></pre>
+<p>和<code>cmp</code>指令的部分<code>while</code>循环条件。实际上，他的循环只是反转数组中的字节。尽管C实现使用带有数组索引的朴素操作和繁重操作，而Rust实现使用<a href="https://users.rust-lang.org/t/how-to-zip-two-slices-efficiently/2048/2" target="_blank" rel="noopener">高效的double迭代器</a>：</p>
+<pre><code class="c">if first_value &gt; 2 {
+    for (low_index, high_index) in
+        (1..first_value).zip((1..first_value).rev())
+    {
+        temp_permutation.swap(high_index, low_index);
+
+        if low_index + 3 &gt; high_index {
+            break;
+        }
+    }
+}
+</code></pre>
+<p><a href="https://dev.to/wunk/fast-array-reversal-with-simd-j3p" target="_blank" rel="noopener">使用SIMD进行快速阵列反转！</a>介绍了几种提高C程序性能的方法（本文使用C ++）。第一种是只使用一个索引<code>i</code>和迭代仅直到与所述阵列的经置换的部分的中间<code>temp_Permutation[i]</code>和<code>temp_Permutation[high_Index - i]</code>。那将与Rust双迭代器非常接近。顺便说一下，提高两个程序性能的更高级的方法是使用<code>PSHUFB</code>SSSE3指令或<code>_mm_shuffle_epi8()</code>内部指令，而不是整个循环。由于混洗掩码的数量很少，因此可以在编译时定义所有混洗掩码，然后将它们立即加载到指令的控制掩码寄存器中。</p>
+<p>但是，这不是实现之间的唯一区别。Rust程序利用最大输入数<code>const MAX_N: usize = 16</code>。由于编译器现在可以对循环和静态数组进行更好的优化，因此这种小的改进可能对性能的影响最大。该程序显式使用静态数组初始化 </p>
+<pre><code class="c">let mut current_permutation: [u8; MAX_N] =
+    [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+</code></pre>
+<p>, 而 C 实现在运行时无需输入数据即可进行此操作</p>
+<pre><code class="c">for(intnative_t i=0; i&lt;n; ++i)
+   current_Permutation[i]=i;
+</code></pre>
+<p>Rust 程序使用内置内存复制功能复制阵列</p>
+<pre><code class="c">let mut temp_permutation = current_permutation;
+</code></pre>
+<p>，而 C 程序再次循环执行此操作</p>
+<pre><code class="c">for(intnative_t i=0; ++i&lt;n;)
+   temp_Permutation[i]=current_Permutation[i];
+</code></pre>
+<p>这些并不是C程序中的所有低效率，在Rust实施中已将其消除（这两个程序都基于相同的初始Ada程序）。在大多数地方，该程序的优化版本不仅会更快，而且会更短。</p>
+<p>因此，在这种情况下，当Rust实现的速度快于C时，性能的差异不是关于更好的编译器，而是关于程序的更有效的结构，这使编译器可以更好地优化代码。</p>
+<h2 id="Rust-作为系统编程语言？"><a href="#Rust-作为系统编程语言？" class="headerlink" title="Rust 作为系统编程语言？"></a>Rust 作为系统编程语言？</h2><p><strong>真正的高级系统编程语言必须与C兼容。</strong>仅考虑我们现实生活项目中的2个示例。</p>
+<p>第一个是Web应用程序防火墙（WAF）。这种软件<a href="http://tempesta-tech.com/blog/waf-acceleration" target="_blank" rel="noopener">通常基于Nginx或HAproxy</a> HTTPS服务器（它们是用C编写）<a href="http://tempesta-tech.com/blog/waf-acceleration" target="_blank" rel="noopener">构建的。为Nginx</a>编写 C++ 模块很容易，但是我们需要额外的粘合代码才能在Rust中开发该模块并维护所有补丁。 Nginx的C代码。相同的开发人员可以轻松地在代码的C和C ++部分之间切换。</p>
+<p>在第二种情况下，我们的客户希望使用<a href="https://github.com/mysqludf/lib_mysqludf_sys" target="_blank" rel="noopener">MySQL用户定义函数（UDF）</a>与操作系统进行交互来执行一些外部逻辑。我们可以用任何编程语言开发逻辑，但是有一个限制：我们必须在每个CPU内核上每秒执行5000个程序！即使使用<code>posix_spawnp()</code>Linux中执行程序的最快方法，也无法实现这一点。我们最终为MySQL开发了一个自定义UDF，这是一个加载到MySQL服务器进程中的共享对象。使用C ++非常简单。</p>
+<p>将Rust用作Nginx模块的一个相反的示例是CloudFlare的<a href="https://github.com/cloudflare/quiche" target="_blank" rel="noopener">Quiche</a>，这是一种Nginx扩展，支持QUIC和HTTP / 3协议。尽管绝对可以将Rust用于此类任务，但是除了用于<a href="https://github.com/cloudflare/quiche/issues/6" target="_blank" rel="noopener">C / C ++绑定</a>的<a href="https://github.com/cloudflare/quiche/blob/master/src/ffi.rs" target="_blank" rel="noopener">FFI代码</a>之外，这些家伙仍然必须编写一些C代码来<a href="https://github.com/cloudflare/quiche/blob/master/extras/nginx/nginx-1.16.patch" target="_blank" rel="noopener">修补Nginx</a>。这意味着：</p>
+<ul>
+<li>您必须为 C / C++ 绑定编写一些额外的样板代码</li>
+<li>而且您仍然必须处理 C / C++ <strong>和</strong> 第二种语言，这使项目更加复杂。</li>
+</ul>
+<p>（顺便说一下，同样适用于<a href="https://dlang.org/" target="_blank" rel="noopener">D编程语言</a>，它也不能直接包含C标头。）Quiche项目中的FFI和Nginx补丁程序仅约5,000行代码，即整个代码的10％项目，这是40,000行Rust代码。如果该项目是用C或C ++开发的，那么他们也将需要Nginx补丁，但是不需要第二语言。但是在Nginx主代码库中采用代码的机会为零。这就是实际发生的情况：Nginx团队<a href="https://www.nginx.com/blog/introducing-technology-preview-nginx-support-for-quic-http-3/" target="_blank" rel="noopener">拥有</a>大供应商的生产就绪QUIC实现，因此开发<a href="https://www.nginx.com/blog/introducing-technology-preview-nginx-support-for-quic-http-3/" target="_blank" rel="noopener">了自己的C实现</a>。很难说“绑定”代码是可以忽略的还是开发人员在样板代码上花费了多少时间。问题是，Rust内存安全性（现代核心C ++，静态分析和地址清理器也可以实现）是否使开发如此高效，以至于额外的代码和以两种不同语言维护的代码库变得可以忽略不计？</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>我们意识到，在为Tempesta FW开发<a href="https://github.com/tempesta-tech/tempesta/blob/master/tempesta_fw/http_parser.c" target="_blank" rel="noopener">HTTP解析器</a>时，我们达到了C语言的极限：如果没有在<code>switch</code>语句中进行查找，就无法直接跳到解析器的所需状态，也无法获得令人满意的代码布局。那时我们考虑将内联汇编引入解析器的代码中。零拷贝状态机已经非常复杂，我们对此想法不满意。在编译器扩展中找到计算的标签和热/冷属性真是太令人惊讶了！由于这些功能，编译器为解析器生成了最佳代码。</p>
+<p><a href="https://en.wikipedia.org/wiki/There&#39;s_more_than_one_way_to_do_it" target="_blank" rel="noopener">TIMTOWTDI</a>表示C ++的强大功能是“有多种方法可以做到” 。是的，这是Perl的想法，但是在很多情况下，C ++允许您使用高级STL或经过优化的自定义算法和数据结构，以纯C语言，在模板元编程中编写程序。现代C ++非常复杂，需要多年的经验才能熟练使用该语言，但是它是一种专业工具，可以使专业开发人员创建最快，最可靠的软件。</p>
+<p>不仅Rust不成熟，而且语言设计者似乎故意限制了语言。有许多不良的程序在滥用<code>goto</code>，因此它们只是删除了运算符：对初级用户有利，但对专业人员而言太有限了。当您在复杂的技术任务中苦苦挣扎时，语言和编译器不可能给您带来惊喜。取而代之的是，当您需要做一些简单的事情时，很可能是您在C或C ++时代所做的事情，您会感到失望，并开始与编译器抗争。作为一个例子，<code>likely</code>和<code>unlikely</code>编译器提示在Linux内核的年龄和使用它们在用户空间C / C ++编程如此流行，它们被<a href="https://en.cppreference.com/w/cpp/language/attributes/likely" target="_blank" rel="noopener">包含在C ++ 20</a>标准（在程序员不得不使用编译器内部函数之前）。但是使用Rust，您会发现<a href="https://doc.rust-lang.org/std/intrinsics/fn.unlikely.html" target="_blank" rel="noopener">该API是试验性的，<code>if</code>仅适用于语句</a>。</p>
+<h2 id="相关文章"><a href="#相关文章" class="headerlink" title="相关文章"></a>相关文章</h2><p><a href="http://tempesta-tech.com/blog/waf-acceleration" target="_blank" rel="noopener">Web应用程序防火墙加速</a><br>从我们在开发Web应用程序防火墙（WAF）的自定义核心逻辑方面的经验，我们了解到大多数或什至所有现代WAF典型的一些性能问题，这些问题可能导致高昂的拥有成本和/或拒绝服务。在本文中，我们介绍了WAF加速器，它与Web加速器一样，可以提高WAF的性能并保护其免受DDoS攻击。</p>
+<p><a href="http://tempesta-tech.com/blog/natsys-lab-blog" target="_blank" rel="noopener">回顾 NatSys Lab. 博客</a><br>我们回顾了自2011年以来最古老的 NatSys Laboratory 博客中最有趣的帖子：最近的 CPU 漏洞对 Linux 系统调用性能的影响，深入研究HTTP代理功能以及使用 Nginx 和 HAProxy 的 Tempesta FW 的性能比较，快速字符串处理算法，无锁数据结构和内存分配器。很多技术细节！</p>
+<p>转载自：<a href="http://tempesta-tech.com/blog/fast-programming-languages-c-c++-rust-assembly" target="_blank" rel="noopener">http://tempesta-tech.com/blog/fast-programming-languages-c-c++-rust-assembly</a></p>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

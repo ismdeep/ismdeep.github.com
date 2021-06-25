@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>2020年蓝桥杯全国总决赛——皮亚诺曲线 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2020-11-17-hilbert-curve" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>2020年蓝桥杯全国总决赛——皮亚诺曲线</h1>
+  
+
+      </header>
+      <div>
+      2020-11-17
+      
+        / 
+        
+          <span><a href="/tags/Algorithm/">#Algorithm</a></span>
+        
+          <span><a href="/tags/Math/">#Math</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-问题描述"><span class="toc-text">1. 问题描述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-问题分析"><span class="toc-text">2. 问题分析</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-皮亚诺曲线实现"><span class="toc-text">3. 皮亚诺曲线实现</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-问题求解过程"><span class="toc-text">4. 问题求解过程</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-解题代码"><span class="toc-text">5. 解题代码</span></a></li></ol>
+  </div>
+
+
+        </div>
+
+        <p>皮亚诺曲线（英语：Peano Curve，也称：希尔伯特曲线，Hilbert Curve）是一条能够填满正方形的曲线。在传统概念中，曲线的数维是1维，正方形是2维的。详细介绍见：<a href="https://zh.wikipedia.org/zh-cn/%E7%9A%AE%E4%BA%9A%E8%AF%BA%E6%9B%B2%E7%BA%BF" target="_blank" rel="noopener">维基百科：皮亚诺曲线</a></p>
+<h1 id="1-问题描述"><a href="#1-问题描述" class="headerlink" title="1. 问题描述"></a>1. 问题描述</h1><p>皮亚诺曲线是一条平面内的曲线，下图给出了皮亚诺曲线的 1 阶情形，它是从左下角出发，经过一个 3 × 3 的方格中的每一个格子，最终到达右上角的一条曲线。</p>
+<p><img src="https://upload.ismdeep.com/images/2020/11/17/3f282b6c64756110753712d0f3cf5e81-f86fc3.png" alt="img"></p>
+<p>下图给出了皮亚诺曲线的 2 阶情形，它是经过一个 32 × 32 的方格中的每一个格子的一条曲线。它是将 1 阶曲线的每个方格由 1 阶曲线替换而成。</p>
+<p><img src="https://upload.ismdeep.com/images/2020/11/17/e4756f6a8d6f793ea06b2d3e5fd364f1-028733.png" alt="img"></p>
+<p>下图给出了皮亚诺曲线的 3 阶情形，它是经过一个 33 × 33 的方格中的每一个格子的一条曲线。它是将 2 阶曲线的每个方格由 1 阶曲线替换而成。</p>
+<p><img src="https://upload.ismdeep.com/images/2020/11/17/9f4c990545830ede819aca69522f9cf3-d44c33.png" alt="img"></p>
+<p>皮亚诺曲线总是从左下角开始出发，最终到达右上角。</p>
+<p><strong>问题：求给定阶数的皮亚诺曲线中任意两个相邻点数值差之和。</strong>比如：</p>
+<p>$1$ 阶皮亚诺曲线所有相邻点差值和为 $24$.</p>
+<p>$2$ 阶皮亚诺曲线所有相邻点差值和为 $816$.</p>
+<p>比赛中题目最后要求的是 $n = 14$ ，即求 $14$ 阶皮亚诺曲线中任意两个相邻点数值差的和。</p>
+<h1 id="2-问题分析"><a href="#2-问题分析" class="headerlink" title="2. 问题分析"></a>2. 问题分析</h1><p>首先，如果通过暴力打表，然后将所有相邻点差值的和累加起来，当然是不现实的。想想空间复杂度和时间复杂度就明白了。这里我们能够很容易得到空间复杂度是 $O((3^n)^2)$，估算一下当 $n = 14$ 时，内存至少需要 $170445$ GB.</p>
+<pre><code>&gt;&gt;&gt; (3 ** 14) ** 2 * 8.0 / 1024.0 / 1024.0 / 1024.0
+170445.38598478585
+</code></pre><p>别做梦了，暴力杯并不是所有题都是可以暴力的。</p>
+<p>那这样的题目应该怎么做呢？虽然 $n = 14$ 我们做不到，但是 $n$ 比较小的时候还是能够处理的嘛。比如：$n = 1$， $n = 2$ 这样的。先写一个模拟出来，再找找规律看看。（<em>其实这样的一个解题思路基本上是么得问题的。</em>）</p>
+<p>对于这个东西该怎么模拟呢，请先看下面两张图，分别为 $1$ 阶皮亚诺曲线和 $2$ 阶皮亚诺曲线大致走向示意图。</p>
+<p><img src="https://upload.ismdeep.com/images/2020/11/17/e2568c2d390c3517808ca11a71ff942d-057a40.jpg" alt="MnTOZP18TPSHNIm+aFmeRg_thumb_6b1" style="zoom: 25%;"></p>
+<p><img src="https://upload.ismdeep.com/images/2020/11/17/96a33f5d08d8b33cc722ed9696810538-411135.jpg" alt="yuQ3JrzlSnSezgL+XhF%Ag_thumb_6ae" style="zoom: 25%;"></p>
+<p>我们发现在所有的皮亚诺曲线中，大致走向只有四个方向：↗️、↖️、↘️、↙️，依次编号为1，2，3，4.</p>
+<ol>
+<li>↗️</li>
+<li>↖️</li>
+<li>↘️</li>
+<li>↙️</li>
+</ol>
+<p>而皮亚诺曲线升阶（比如1阶变到2阶）过程，就是对基阶皮亚诺曲线进行扩展操作。比如我们看 $1$ 阶升阶为 $2$ 阶就是对↗️走向扩展为 9 个走向↗️↖️↗️ ↘️↙️↘️ ↗️↖️↗️. 到这里如果都能看明白，其他对这个题目解题就很有帮助了。我们接下来要做的就是将四个方向扩展出来的方向列表搞出来，这个可以从二阶扩展到三阶的皮亚诺曲线中得到。</p>
+<ol>
+<li>↗️ 扩展为 ↗️↖️↗️ ↘️↙️↘️ ↗️↖️↗️ 对应编号为 <code>121 343 121</code></li>
+<li>↖️ 扩展为 ↖️↗️↖️ ↙️↘️↙️ ↖️↗️↖️ 对应编号为 <code>212 434 212</code></li>
+<li>↘️ 扩展为 ↘️↙️↘️ ↗️↖️↗️ ↘️↙️↘️ 对应编号为 <code>343 121 343</code></li>
+<li>↙️ 扩展为 ↙️↘️↙️ ↖️↗️↖️ ↙️↘️↙️ 对应编号为 <code>434 212 434</code></li>
+</ol>
+<p>到这里接下来就变得简单了，当然还有一点需要处理，那就是各个大致行走方向怎么接上的问题，比如：先↗️走，接下来需要↖️走，但是我应该怎样让↗️结束后的那个位置接上↖️开始的位置呢？</p>
+<p>那么我们对于所有可能的组合进行的表示（当然并不是所有的方向组合都在这个方向中的，比如↗️接下来就不可能是↙️）：</p>
+<p><img src="https://upload.ismdeep.com/images/2020/11/17/840fb3fcad1124b4846e5eb846c95113-fdd6e7.jpg" alt="J41Ora9ESyuBnG7xh9tvdg_thumb_6b7" style="zoom: 33%;"></p>
+<p>那对于大致方向与大致方向之间的连接关系我们也得到了。</p>
+<p>下来就是把大致方向（↗️、↖️、↘️、↙️）表示成详细的行走方向（⬆️、⬇️、⬅️、➡️）即可。</p>
+<h1 id="3-皮亚诺曲线实现"><a href="#3-皮亚诺曲线实现" class="headerlink" title="3. 皮亚诺曲线实现"></a>3. 皮亚诺曲线实现</h1><p><code>Dir.java</code> 详细行走方向类，后面需要用到。</p>
+<pre><code class="java">public class Dir {
+    public int ic;
+    public int jc;
+
+    public Dir(int _ic_, int _jc_) {
+        this.ic = _ic_;
+        this.jc = _jc_;
+    }
+}
+</code></pre>
+<p><code>DirUtil.java</code> 方向处理工具类，<strong>核心部分</strong>，用于升阶扩展操作，以及将大致行走方向表示成详细的行走方向。</p>
+<pre><code class="java">import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class DirUtil {
+    private static final Dir UP = new Dir(1, 0);
+    private static final Dir DOWN = new Dir(-1, 0);
+    private static final Dir RIGHT = new Dir(0, 1);
+    private static final Dir LEFT = new Dir(0, -1);
+
+
+    public static Dir[] dir1 = new Dir[]{
+            UP, UP, RIGHT, DOWN, DOWN, RIGHT, UP, UP
+    };
+
+
+    public static Dir[] dir2 = new Dir[]{
+            UP, UP, LEFT, DOWN, DOWN, LEFT, UP, UP
+    };
+
+
+    public static Dir[] dir3 = new Dir[]{
+            DOWN, DOWN, RIGHT, UP, UP, RIGHT, DOWN, DOWN
+    };
+
+
+    public static Dir[] dir4 = new Dir[]{
+            DOWN, DOWN, LEFT, UP, UP, LEFT, DOWN, DOWN
+    };
+
+    public static Dir[] getDir(DirTester.Point s, DirTester.Point t) {
+        if (s.x &lt; t.x &amp;&amp; s.y &lt; t.y) return dir1;
+        if (s.x &lt; t.x &amp;&amp; s.y &gt; t.y) return dir2;
+        if (s.x &gt; t.x &amp;&amp; s.y &lt; t.y) return dir3;
+        return dir4;
+    }
+
+    public static Dir[] getDirById(int __id__) {
+        switch (__id__) {
+            case 1:
+                return dir1;
+            case 2:
+                return dir2;
+            case 3:
+                return dir3;
+            case 4:
+                return dir4;
+        }
+        return null;
+    }
+
+    // 升阶扩展操作
+    public static List&lt;Integer&gt; expandDirGroup(List&lt;Integer&gt; list) {
+        List&lt;Integer&gt; expandedList = new ArrayList&lt;&gt;();
+
+        for (int item : list) {
+            switch (item) {
+                case 1:
+                    expandedList.addAll(Arrays.asList(1, 2, 1, 3, 4, 3, 1, 2, 1));
+                    break;
+                case 2:
+                    expandedList.addAll(Arrays.asList(2, 1, 2, 4, 3, 4, 2, 1, 2));
+                    break;
+                case 3:
+                    expandedList.addAll(Arrays.asList(3, 4, 3, 1, 2, 1, 3, 4, 3));
+                    break;
+                case 4:
+                    expandedList.addAll(Arrays.asList(4, 3, 4, 2, 1, 2, 4, 3, 4));
+                    break;
+            }
+        }
+
+        return expandedList;
+    }
+
+    // 将大致行走方向展开为完整的行走方向
+    public static List&lt;Dir&gt; expandAsStepList(List&lt;Integer&gt; dirGroupList) {
+        List&lt;Dir&gt; dirs = new ArrayList&lt;&gt;();
+
+        int prevDirId = 0;
+
+        for (int dirGroupId : dirGroupList) {
+            Dir[] dirsTmp = getDirById(dirGroupId);
+            switch (prevDirId * 10 + dirGroupId) {
+                case 12:
+                case 21:
+                    dirs.add(UP);
+                    break;
+                case 13:
+                case 31:
+                    dirs.add(RIGHT);
+                    break;
+                case 24:
+                case 42:
+                    dirs.add(LEFT);
+                    break;
+                case 34:
+                case 43:
+                    dirs.add(DOWN);
+                    break;
+            }
+            assert dirsTmp != null;
+            dirs.addAll(Arrays.asList(dirsTmp));
+            prevDirId = dirGroupId;
+        }
+
+        return dirs;
+    }
+}
+</code></pre>
+<p><code>HilbertCurveTester.java</code> 则是对曲线结果进行测试了。</p>
+<pre><code class="java">import java.util.*;
+
+public class HilbertCurveTester {
+
+    static class Point {
+        public int x, y;
+
+        public Point() {
+        }
+
+        public Point(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+    }
+
+
+    public static int[][] genMap(int level) {
+        if (level &lt; 1) {
+            return null;
+        }
+
+        int mapSize = pow(3, level);
+        int[][] a = new int[mapSize][mapSize];
+
+
+        List&lt;Integer&gt; dirGroupList = new ArrayList&lt;&gt;();
+        dirGroupList.add(1);
+        for (int i = 2; i &lt;= level; i++) {
+            dirGroupList = DirUtil.expandDirGroup(dirGroupList);
+        }
+
+        List&lt;Dir&gt; dirList = DirUtil.expandAsStepList(dirGroupList);
+
+        int x = 0;
+        int y = 0;
+
+        int val = 1;
+        a[x][y] = val++;
+
+        for (Dir dir : dirList) {
+            x += dir.ic;
+            y += dir.jc;
+            a[x][y] = val++;
+        }
+
+        return a;
+    }
+
+    public static int pow(int a, int n) {
+        int ans = 1;
+        for (int i = 0; i &lt; n; i++) {
+            ans *= a;
+        }
+        return ans;
+    }
+
+    public static void display(int[][] a) {
+        for (int i = a.length - 1; i &gt;= 0; i--) {
+            for (int j = 0; j &lt; a[i].length; j++) {
+                System.out.printf(&quot;%2d &quot;, a[i][j]);
+            }
+            System.out.println();
+        }
+    }
+
+    public static void main(String[] args) {
+        System.out.print(&quot;[n] &gt; &quot;);
+        Scanner in = new Scanner(System.in);
+        int n = in.nextInt();
+        int[][] a = genMap(n);
+        int sum = 0;
+
+        assert a != null;
+
+        display(a);
+    }
+}
+</code></pre>
+<pre><code class="text">[n] &gt; 1
+ 3  4  9 
+ 2  5  8 
+ 1  6  7 
+</code></pre>
+<pre><code>[n] &gt; 2
+21 22 27 28 33 34 75 76 81 
+20 23 26 29 32 35 74 77 80 
+19 24 25 30 31 36 73 78 79 
+18 13 12 43 42 37 72 67 66 
+17 14 11 44 41 38 71 68 65 
+16 15 10 45 40 39 70 69 64 
+ 3  4  9 46 51 52 57 58 63 
+ 2  5  8 47 50 53 56 59 62 
+ 1  6  7 48 49 54 55 60 61 
+</code></pre><h1 id="4-问题求解过程"><a href="#4-问题求解过程" class="headerlink" title="4. 问题求解过程"></a>4. 问题求解过程</h1><p>接下来我们就可以对生成的皮亚诺曲线进行找规律了，我们可以将所有距离都打了出来，形成一个 $(距离，个数)$ 表示形式。比如：</p>
+<pre><code class="text">[n] &gt; 1
+(1, 8)
+(5, 2)
+(3, 2)
+</code></pre>
+<p>与给的样例是一样的 $1 \times 8 + 5 \times 2 + 3 \times 2 = 24$</p>
+<pre><code>[n] &gt; 2
+(1, 80)
+(3, 20)
+(5, 20)
+(11, 6)
+(13, 6)
+(31, 2)
+(33, 2)
+(35, 2)
+(37, 2)
+(39, 2)
+(41, 2)
+</code></pre><p>这里与给的样例计算结果也是一样的。</p>
+<p>我发现接下去打表就更长了，规律不好找了。于是我突发奇想，我想着直接把同样个数的数值都给加起来看看。</p>
+<p>于是就有了以下关于不同 $n$ 的计算式子：</p>
+<pre><code>1 (24)        =&gt; 1*8      + 8*2
+2 (816)       =&gt; 1*80     + 8*20     + 24*6     + 216*2
+3 (23496)     =&gt; 1*728    + 8*182    + 24*60    + 216*20    + 648*6    + 5832*2
+4 (647520)    =&gt; 1*6560   + 8*1640   + 24*546   + 216*182   + 648*60   + 5832*20   + 17496*6   + 157464*2
+5 (17601144)  =&gt; 1*59048  + 8*14762  + 24*4920  + 216*1640  + 648*546  + 5832*182  + 17496*60  + 157464*20  + 472392*6  + 4251528*2
+6 (476293776) =&gt; 1*531440 + 8*132860 + 24*44286 + 216*14762 + 648*4920 + 5832*1640 + 17496*546 + 157464*182 + 472392*60 + 4251528*20  + 12754584*6 + 114791256*2
+
+</code></pre><p>接下来就是快乐的找规律时间了。</p>
+<p>我们将乘法左右给拆分出来，分成两个列表 <code>list1</code> 和 <code>list2</code></p>
+<p><code>list1</code></p>
+<pre><code>1 (24)        =&gt; 1 8
+2 (816)       =&gt; 1 8 24 216
+3 (23496)     =&gt; 1 8 24 216 648 5832
+4 (647520)    =&gt; 1 8 24 216 648 5832 17496 157464
+5 (17601144)  =&gt; 1 8 24 216 648 5832 17496 157464 472392 4251528
+6 (476293776) =&gt; 1 8 24 216 648 5832 17496 157464 472392 4251528 12754584 114791256
+</code></pre><p><code>list2</code></p>
+<pre><code>1 (24)        =&gt; 8      2
+2 (816)       =&gt; 80     20     6     2
+3 (23496)     =&gt; 728    182    60    20    6    2
+4 (647520)    =&gt; 6560   1640   546   182   60   20   6   2
+5 (17601144)  =&gt; 59048  14762  4920  1640  546  182  60  20  6  2
+6 (476293776) =&gt; 531440 132860 44286 14762 4920 1640 546 182 60 20 6 2
+</code></pre><p>至此，规律就变得很容易找了。</p>
+<p>这里就不去过多赘述了。见下面的代码吧。</p>
+<h1 id="5-解题代码"><a href="#5-解题代码" class="headerlink" title="5. 解题代码"></a>5. 解题代码</h1><pre><code class="java">import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class Main {
+
+    public static long pow(long a, int n) {
+        long ans = 1;
+        for (int i = 0; i &lt; n; i++) {
+            ans *= a;
+        }
+        return ans;
+    }
+
+
+    public static List&lt;Long&gt; genList1(int n) {
+        if (n &lt; 1) {
+            return new ArrayList&lt;&gt;();
+        }
+
+        if (n == 1) {
+            List&lt;Long&gt; result = new ArrayList&lt;&gt;();
+            result.add(1L);
+            result.add(8L);
+            return result;
+        }
+
+        List&lt;Long&gt; prev = genList1(n - 1);
+        List&lt;Long&gt; result = new ArrayList&lt;&gt;(prev);
+
+        result.add(result.get(result.size() - 1) * 3);
+        result.add(result.get(result.size() - 1) * 9);
+
+        return result;
+    }
+
+    public static List&lt;Long&gt; genList2(int n) {
+        if (n &lt; 1) {
+            return new ArrayList&lt;&gt;();
+        }
+
+        if (n == 1) {
+            List&lt;Long&gt; result = new ArrayList&lt;&gt;();
+            result.add(8L);
+            result.add(2L);
+            return result;
+        }
+
+        List&lt;Long&gt; prev = genList2(n - 1);
+        List&lt;Long&gt; result = new ArrayList&lt;&gt;();
+
+        result.add(pow(9, n) - 1);
+        result.add(result.get(result.size()- 1) / 4L);
+        result.add(prev.get(1) * 3);
+        for (int i = 1; i &lt; prev.size(); i++) {
+            result.add(prev.get(i));
+        }
+
+        return result;
+    }
+
+    public static void main(String[] args) {
+        Scanner in = new Scanner(System.in);
+        int n = in.nextInt();
+        List&lt;Long&gt; list1 = genList1(n);
+        List&lt;Long&gt; list2 = genList2(n);
+
+        long ans = 0;
+        for (int i = 0; i &lt; n * 2; i++) {
+            ans += list1.get(i) * list2.get(i);
+        }
+
+        System.out.println(ans);
+
+    }
+}
+</code></pre>
+
+
+        
+        <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  "HTML-CSS": {
+    preferredFont: "TeX",
+    availableFonts: ["STIX","TeX"],
+    linebreaks: { automatic:true },
+    EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+  },
+  tex2jax: {
+    inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+    processEscapes: true,
+    ignoreClass: "tex2jax_ignore|dno",
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  TeX: {
+    noUndefined: {
+      attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" }
+    },
+    Macros: { href: "{}" }
+  },
+  messageStyle: "none"
+});
+</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Queue(function() {
+  var all = MathJax.Hub.getAllJax(), i;
+  for(i=0; i < all.length; i += 1) {
+    all[i].SourceElement().parentNode.className += ' has-jax';
+  }
+});
+</script>
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

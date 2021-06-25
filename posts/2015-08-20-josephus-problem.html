@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>约瑟夫环问题 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2015-08-20-josephus-problem" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>约瑟夫环问题</h1>
+  
+
+      </header>
+      <div>
+      2015-08-20
+      
+        / 
+        
+          <span><a href="/tags/ACM-ICPC/">#ACM-ICPC</a></span>
+        
+          <span><a href="/tags/Easy/">#Easy</a></span>
+        
+          <span><a href="/tags/Algorithm/">#Algorithm</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+
+        </div>
+
+        <p>这算是一个非常简单的模拟题。</p>
+<p>在大家学习数据结构的课程中，都会有这个问题。</p>
+<p>在计算机上先输入两个正整数N和K，其中N为将要输入的正整数的个数，K为步长。请编写一个程序，首先用循环链接表储存这N个正整数。然后，首先删除第一个正整数，接着删除循环链表从当前删除节点开始步长走K个的正整数，依次类推，直至表空为止。如下所示，N=10,K=3,输入的10个正整数为1，2，3，4，5，6，7，8，9，10。则被删除的次序为：1，4，7，10，5，9，6，3，8，2。</p>
+<p>直接上代码吧。</p>
+<pre><code class="C">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+
+#define MAXN 10000
+
+struct Node
+{
+    struct Node* next;
+    int value;
+};
+
+struct Node link[MAXN];
+int n,k;
+struct Node *pre, *cur;
+
+void make_link ()
+{
+    int i;
+    for (i = 0; i &lt; n-1; i++)
+    {
+        link[i].next = &amp;link[i+1];
+        scanf (&quot;%d&quot;, &amp;link[i].value);
+        //cin &gt;&gt; link[i].value;
+    }
+    link[n-1].next = &amp;link[0];
+    scanf(&quot;%d&quot;, &amp;link[n-1].value);
+    // cin &gt;&gt; link[n-1].value;
+    cur = &amp;link[0];
+    pre = &amp;link[n-1];
+}
+
+/*cur指针移动cnt步*/
+void move_cur_index (int cnt)
+{
+    int i;
+    for (i = 0; i &lt; cnt-1; i++)
+    {
+        pre = cur;
+        cur = (*cur).next;
+    }
+}
+
+/*删除当前指向的节点*/
+void del_cur_node ()
+{
+    printf(&quot;%d &quot;, (*cur).value);
+    // cout &lt;&lt; (*cur).value &lt;&lt; &quot; &quot;;
+    (*pre).next = (*cur).next;
+    cur = (*cur).next;
+}
+
+int main ()
+{
+    int i;
+    scanf(&quot;%d%d&quot;, &amp;n, &amp;k);
+    //cin &gt;&gt; n &gt;&gt; k;
+    make_link();
+    for (i = 0; i &lt; n; i++)
+    {
+        del_cur_node();
+        move_cur_index(k);
+    }
+    return 0;
+}
+</code></pre>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

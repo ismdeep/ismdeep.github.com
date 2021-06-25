@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>Java 多线程编程 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2020-10-15-java-thread-for-beginners" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>Java 多线程编程</h1>
+  
+
+      </header>
+      <div>
+      2020-10-15
+      
+        / 
+        
+          <span><a href="/tags/Java/">#Java</a></span>
+        
+          <span><a href="/tags/Thread/">#Thread</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#0x01-实现多线程类的两种方式"><span class="toc-text">0x01 实现多线程类的两种方式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#继承-Thread-类"><span class="toc-text">继承 Thread 类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实现-Runnable-接口"><span class="toc-text">实现 Runnable 接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#创建并启动线程"><span class="toc-text">创建并启动线程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x02-设置并获取线程名称"><span class="toc-text">0x02 设置并获取线程名称</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x03-线程调度"><span class="toc-text">0x03 线程调度</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x04-线程控制"><span class="toc-text">0x04 线程控制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x05-线程生命周期"><span class="toc-text">0x05 线程生命周期</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x06-线程同步"><span class="toc-text">0x06 线程同步</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x07-线程安全的类"><span class="toc-text">0x07 线程安全的类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x08-Lock-锁"><span class="toc-text">0x08 Lock 锁</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x09-生产者消费者模式"><span class="toc-text">0x09 生产者消费者模式</span></a></li></ol>
+  </div>
+
+
+        </div>
+
+        <p>进程与线程的区别就不过多去说了吧，进程和线程都是由操作系统进行管理与调度的，不同的是，进程与进程之间数据并不共享，各自拥有自己独立的数据存储空间。然而同一个进程下面的线程之间是可以共享进程的内存空间的。本来将从 Java 中最简单的多线程程序一点一点来讲解 Java 中多线程编程的一些方法。</p>
+<h2 id="0x01-实现多线程类的两种方式"><a href="#0x01-实现多线程类的两种方式" class="headerlink" title="0x01 实现多线程类的两种方式"></a>0x01 实现多线程类的两种方式</h2><h3 id="继承-Thread-类"><a href="#继承-Thread-类" class="headerlink" title="继承 Thread 类"></a>继承 Thread 类</h3><pre><code class="java">public class MyThread extends Thread {
+    @Override
+    public void run() {
+        for (int i = 0; i &lt; 100; i++) {
+            System.out.println(i);
+        }
+    }
+}
+</code></pre>
+<h3 id="实现-Runnable-接口"><a href="#实现-Runnable-接口" class="headerlink" title="实现 Runnable 接口"></a>实现 Runnable 接口</h3><pre><code class="java">public class MyThread implements Runnable {
+    @Override
+    public void run() {
+        for (int i = 0; i &lt; 100; i++) {
+            System.out.println(i);
+        }
+    }
+}
+</code></pre>
+<p>相比继承 Thread 类，实现 RUnnable 接口的好处</p>
+<ul>
+<li>避免了 Java 单继承的局限性</li>
+<li>适合多个相同程序的代码去处理同一个资源的情况，把线程和程序的代码、数据有效分离，较好体现了面向对象的设计思想</li>
+</ul>
+<h3 id="创建并启动线程"><a href="#创建并启动线程" class="headerlink" title="创建并启动线程"></a>创建并启动线程</h3><ul>
+<li><p>创建类的对象方式</p>
+<pre><code class="java">  MyThread thread1 = new MyThread();
+  thread1.start();
+</code></pre>
+</li>
+</ul>
+<ul>
+<li><p>创建 Thread 类的对象方式</p>
+<pre><code class="java">  Thread thread1 = new Thread(new MyThread());
+  thread1.start();
+</code></pre>
+</li>
+</ul>
+<p><strong>注意⚠️：</strong> 线程在启动应该调用其 <code>start()</code> 方法，而不是 <code>run()</code> 方法，如果调用的是 <code>run()</code> 方法，则程序执行是阻塞式的。只有在调用 <code>start()</code> 方法后，才是通过线程的方式进行执行。</p>
+<h2 id="0x02-设置并获取线程名称"><a href="#0x02-设置并获取线程名称" class="headerlink" title="0x02 设置并获取线程名称"></a>0x02 设置并获取线程名称</h2><p>Thread 类提供了两个方法类设置和获取线程的名称：</p>
+<ul>
+<li><code>void setName(String name)</code> 设置线程的名称</li>
+<li><code>String getName()</code> 获取线程名称</li>
+</ul>
+<p><strong>注：</strong> 通过 <code>Thread.getCurrentThread()</code> 可以获取当前正在执行的线程对象的引用。</p>
+<h2 id="0x03-线程调度"><a href="#0x03-线程调度" class="headerlink" title="0x03 线程调度"></a>0x03 线程调度</h2><p>线程调度的两种模型：</p>
+<ul>
+<li><strong>分时调度模型：</strong> 所有线程轮流获得 CPU 的使用权，平均分配每个线程占用 CPU 的时间片。</li>
+<li><strong>抢占式调度模型：</strong>优先让优先级高的线程使用 CPU，如果线程的优先级相同，那么会随机选择一个，优先级高的线程获取的 CPU 时间片相对多一些。</li>
+</ul>
+<p>Java 中使用的是抢占式调度模型。</p>
+<p>Thread 类提供了用来<strong>设置线程优先级</strong>和<strong>获取线程优先级</strong>的两个方法：</p>
+<ul>
+<li><code>public final int getPriority()</code> 获取线程优先级</li>
+<li><code>public final void setPriority(int newPriority)</code> 设置线程优先级</li>
+</ul>
+<p>Java 中线程优先级三个常量即可说明：</p>
+<pre><code>public static final int MIN_PRIORITY = 1;
+public static final int NORM_PRIORITY = 5;
+public static final int MAX_PRIORITY = 10;
+</code></pre><p><strong>注意：</strong> 线程优先级高仅仅表示线程获取的 CPU 时间片的机率高。</p>
+<h2 id="0x04-线程控制"><a href="#0x04-线程控制" class="headerlink" title="0x04 线程控制"></a>0x04 线程控制</h2><ul>
+<li><code>static void sleep(long millis)</code> 使当前正在执行的线程暂停执行指定的毫秒数</li>
+<li><code>void join()</code> 等待这个线程死亡</li>
+<li><code>void setDaemon(boolean on)</code> 将此线程标记为守护线程，当运行的线程都是守护线程时，Java 虚拟机将退出。</li>
+</ul>
+<h2 id="0x05-线程生命周期"><a href="#0x05-线程生命周期" class="headerlink" title="0x05 线程生命周期"></a>0x05 线程生命周期</h2><p><img src="https://upload.ismdeep.com/images/2020/10/16/086d58e5f1cc596d52b9ecf1e5a92b38-f3bdba.jpeg" alt="DA350B60-DCFE-45A5-A563-DE8C196D794A_1_105"></p>
+<h2 id="0x06-线程同步"><a href="#0x06-线程同步" class="headerlink" title="0x06 线程同步"></a>0x06 线程同步</h2><p>这里来写一个模拟售票员卖票的过程。我们会有一个票务中心（TicketCenter），以及多个售票员（TicketSeller），那么多个售票员售票就是多线程同时运行的过程，当然，每个售票员售票都是从票务中心拿的票。</p>
+<p>首先，我们来实现一个简单的。</p>
+<p><code>TicketCenter.java</code></p>
+<pre><code class="java">import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * 票务中心
+ */
+public class TicketCenter {
+    private final List&lt;String&gt; tickets;
+    private int nextIndex;
+
+    public TicketCenter() {
+        tickets = new ArrayList&lt;&gt;();
+        nextIndex = 0;
+    }
+
+    public void pushTicket(String ticket) {
+        tickets.add(ticket);
+    }
+
+    public String getNextAvailable() {
+        if (nextIndex &gt;= tickets.size()) {
+            return null;
+        }
+        return tickets.get(nextIndex++);
+    }
+}
+</code></pre>
+<p><code>TicketSeller.java</code></p>
+<pre><code class="java">/**
+ * 售票员
+ */
+public class TicketSeller implements Runnable {
+
+    private final String sellerName;
+    private TicketCenter ticketCenter;
+
+    public void setTicketCenter(TicketCenter ticketCenter) {
+        this.ticketCenter = ticketCenter;
+    }
+
+    public TicketSeller(String sellerName, TicketCenter ticketCenter) {
+        this.sellerName = sellerName;
+        setTicketCenter(ticketCenter);
+    }
+
+    @Override
+    public void run() {
+        while (true) {
+            String ticket = ticketCenter.getNextAvailable();
+            if (ticket == null) {
+                break;
+            }
+            System.out.println(sellerName + &quot; -&gt; &quot; + ticket);
+        }
+    }
+}
+</code></pre>
+<p><code>Main.java</code></p>
+<pre><code class="java">import java.util.UUID;
+
+public class Main {
+    public static void main(String[] args) throws InterruptedException {
+        int ticketCnt = 10000;
+        TicketCenter ticketCenter = new TicketCenter();
+        for (int i = 0; i &lt; ticketCnt; i++) {
+            ticketCenter.pushTicket(UUID.randomUUID().toString());
+        }
+
+        Thread seller1 = new Thread(new TicketSeller(&quot;刘备&quot;, ticketCenter));
+        Thread seller2 = new Thread(new TicketSeller(&quot;关羽&quot;, ticketCenter));
+        Thread seller3 = new Thread(new TicketSeller(&quot;张飞&quot;, ticketCenter));
+        Thread seller4 = new Thread(new TicketSeller(&quot;赵云&quot;, ticketCenter));
+
+        seller1.start();
+        seller2.start();
+        seller3.start();
+        seller4.start();
+    }
+}
+</code></pre>
+<p>这份代码，运行结果中就有可能会出现下图所示的重复取票问题。刘备卖了一张 <code>d9d3b45a-c131-4fa5-b9a4-7305d14677e4</code> 的票，赵云也卖了一张 <code>d9d3b45a-c131-4fa5-b9a4-7305d14677e4</code> 的票。</p>
+<p><img src="https://upload.ismdeep.com/images/2020/10/18/420158db7559edf612368177864a05ed-d5fdd0.png" alt="image-20201018111115089"></p>
+<p>造成以上问题的原因就是在取票的时候，没有进行加锁操作。</p>
+<p>那我们接下来对取票的操作进行加锁操作。则能够保证不出现重复卖票的情况。既然多个售票员取票都是通过 <code>getNextAvailable()</code> 函数进行取票，那我们可以对此函数进行 <code>synchronized</code> 修饰，则可以达到加锁的目的：</p>
+<pre><code class="java">synchronized public String getNextAvailable() {
+    if (nextIndex &gt;= tickets.size()) {
+        return null;
+    }
+    return tickets.get(nextIndex++);
+}
+</code></pre>
+<p>当然，还可以通过 <code>synchronized</code> 同步代码块，如：</p>
+<pre><code class="java">synchronized (obj) {
+}
+</code></pre>
+<p>当然，这里的 <code>obj</code> 需要各个线程使用的是同一个对象实体。</p>
+<p>通过上面的例子我们知道，线程同步有两种方式：</p>
+<ul>
+<li>同步代码块</li>
+<li>同步方法（同步方法的锁对象是 <code>this</code>）</li>
+</ul>
+<p>总结：无论是同步代码块还是同步方法，都需要明确使用的锁对象是啥，不然加锁是无效的。</p>
+<p>注：如果是静态方法设置 <code>synchronized</code> 同步方法，则其锁对象是 <code>ClassName.class</code> 的静态文件对象。</p>
+<h2 id="0x07-线程安全的类"><a href="#0x07-线程安全的类" class="headerlink" title="0x07 线程安全的类"></a>0x07 线程安全的类</h2><ul>
+<li><code>StringBuffer</code> 当不需要线程安全的环境时，则建议使用 <code>StringBuilder</code> ，速度更快。</li>
+<li><code>Vector</code> 当不需要线程安全的环境时，则建议使用 <code>ArrayList</code> ，速度更快。</li>
+<li><code>HashTable</code> 当不需要线程安全的环境时候，则建议使用 <code>HashMap</code>，速度更快。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>用途</th>
+<th>同步类</th>
+<th>非同步类（速度更快）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>字符串构造器</td>
+<td><code>StringBuffer</code></td>
+<td><code>StringBuilder</code></td>
+</tr>
+<tr>
+<td>列表</td>
+<td><code>Vector</code></td>
+<td><code>ArrayList</code></td>
+</tr>
+<tr>
+<td>键值存储</td>
+<td><code>HashTable</code></td>
+<td><code>HashMap</code></td>
+</tr>
+</tbody>
+</table>
+<p>通过 <code>Collections.synchronizedList()</code> 方法，可以将一个线程不安全的列表对象，转化成一个线程安全的列表对象。</p>
+<pre><code class="java">List&lt;String&gt; list = Collections.synchronizedList(new ArrayList&lt;String&gt;());
+</code></pre>
+<h2 id="0x08-Lock-锁"><a href="#0x08-Lock-锁" class="headerlink" title="0x08 Lock 锁"></a>0x08 Lock 锁</h2><p><code>Lock</code> 实现提供比使用 <code>synchronized</code> 方法和语句可以获得更广泛的锁定操作</p>
+<p>Lock 中提供了获得锁和释放锁的方法</p>
+<ul>
+<li><code>void lock()</code> 获得锁</li>
+<li><code>void unlock()</code> 释放锁</li>
+</ul>
+<p><code>Lock</code> 是接口不能直接实例化，这里采用它的实现类 <code>ReentrantLock</code> 来实例化</p>
+<p><code>ReentrantLock</code> 的构造方法</p>
+<ul>
+<li><code>ReentrantLock</code> 创建一个 <code>ReentrantLock</code> 的实例</li>
+</ul>
+<p>我们将 <code>TicketCenter.java</code> 改成如下即可：</p>
+<pre><code class="java">import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+/**
+ * 票务中心
+ */
+public class TicketCenter {
+    private final List&lt;String&gt; tickets;
+    private int nextIndex;
+    private final Lock lock = new ReentrantLock();
+
+    public TicketCenter() {
+        tickets = new ArrayList&lt;&gt;();
+        nextIndex = 0;
+    }
+
+    public void pushTicket(String ticket) {
+        tickets.add(ticket);
+    }
+
+    public String getNextAvailable() {
+        if (nextIndex &gt;= tickets.size()) {
+            return null;
+        }
+        lock.lock();
+        String ticket = tickets.get(nextIndex++);
+        lock.unlock();
+        return ticket;
+    }
+}
+</code></pre>
+<p>注意：以上所使用锁进行 <code>lock()</code> 操作，有一点不够严谨，那就是，如果 <code>String ticket = tickets.get(nextIndex++);</code> 出现异常的时候，则可能导致无法执行 <code>lock.unlock()</code> 操作，也就是无法释放锁，就会出现死锁的现象。那么我们可以这样写</p>
+<pre><code>try {
+    lock.lock();
+    String ticket = tickets.get(nextIndex++);
+} finally {
+    lock.unlock();
+}
+</code></pre><h2 id="0x09-生产者消费者模式"><a href="#0x09-生产者消费者模式" class="headerlink" title="0x09 生产者消费者模式"></a>0x09 生产者消费者模式</h2><p>生产者消费者模式是一个十分经典的多线程协作模式，弄懂生产者消费者问题能够让我们对多线程编程的理解更加深刻。所谓生产者消费者问题，实际上主要是包含两类线程：</p>
+<ul>
+<li>一类是生产者线程用于生产数据</li>
+<li>一类是消费者线程用于消费数据</li>
+</ul>
+<p>为了解耦生产者和消费者的关系，通常会采用共享的数据区域，就像是一个仓库</p>
+<ul>
+<li>生产者生产数据之后直接放置在共享数据区中，并不需要关心消费者的行为。</li>
+<li>消费者只需要从共享数据区中获取数据，并不需要关心生产者的行为。</li>
+</ul>
+<p><img src="https://upload.ismdeep.com/images/2020/10/18/2e0d3bfa8aae8e734c6bc2277d58e9da-133102.jpeg" alt="DFAD33F1-0D26-427D-A165-C12E3C3CF245_4_5005_c"></p>
+<p>为了体现生产和消费过程中的等待和唤醒，Java 就提供了几个方法供我们使用，这几个方法在 Object 类中。</p>
+<p>Object 类的等待和唤醒方法：</p>
+<table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>void wait()</code></td>
+<td>导致当前线程等待，直到另一个线程调用该对象的 <code>notify()</code> 方法或 <code>notifyAll()</code> 方法</td>
+</tr>
+<tr>
+<td><code>void notify()</code></td>
+<td>唤醒正在等待对象监视器的单个线程</td>
+</tr>
+<tr>
+<td><code>void notifyAll()</code></td>
+<td>唤醒正在等待对象监视器的所有线程</td>
+</tr>
+</tbody>
+</table>
+<p><strong>生产者消费者案例</strong></p>
+<p>生产者消费者案例中包含的类：</p>
+<ul>
+<li>奶箱类（<code>Box</code>）：定义一个成员变量，表示第 <code>x</code> 瓶奶，提供存储牛奶和获取牛奶的操作。</li>
+<li>生产者类（<code>Producer</code>）：实现 <code>Runnable</code> 接口，重写 <code>run()</code> 方法，调用存储牛奶的操作。</li>
+<li>消费者类（<code>Consumer</code>）：实现 <code>Runnable</code> 接口，重写 <code>run()</code> 方法，调用获取牛奶的操作。</li>
+<li>测试类（<code>BoxDemo</code>）：里面有 <code>main()</code> 方法，<code>main()</code> 方法中的步骤如下：<ol>
+<li>创建奶箱对象，这是共享数据区域</li>
+<li>创建生产者对象，把奶箱对象作为构造方法参数传递，因为在这个类中要调用存储牛奶的操作。</li>
+<li>创建消费者对象，把奶箱对象作为构造方法参数传递，因为在这个类中要调用获取牛奶的操作。</li>
+<li>创建两个线程对象，分别把生产者对象和消费者对象作为构造方法参数传递。</li>
+<li>启动线程</li>
+</ol>
+</li>
+</ul>
+<p><code>Box.java</code></p>
+<pre><code class="java">public class Box {
+    public static final boolean BOX_EMPTY = false;
+    public static final boolean BOX_FULL = true;
+
+    // 定义一个成员变量，表示第x瓶奶
+    private int milk;
+
+    // 定义一个成员变量，表示奶箱的状态
+    private boolean state = BOX_EMPTY;
+
+    // 提供存储奶箱和获取奶箱的操作
+    public synchronized void put(int milk) {
+        // 如果有牛奶，等待消费
+        if (state == BOX_FULL) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        // 如果没有牛奶，就生产牛奶
+        this.milk = milk;
+        System.out.printf(&quot;送奶工将第%d瓶牛奶放入奶箱。\n&quot;, milk);
+
+        // 生产完毕后，修改奶箱状态
+        state = BOX_FULL;
+
+        // 唤醒其他等待线程
+        notifyAll();
+    }
+
+    public synchronized void get() {
+        // 如果没有牛奶，等待生产
+        if (state == BOX_EMPTY) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        // 如果有牛奶，就消费牛奶
+        System.out.printf(&quot;用户拿到第%d瓶牛奶。\n&quot;, this.milk);
+
+        // 消费完毕后，修改奶箱状态
+        state = BOX_EMPTY;
+
+        // 唤醒其他等待线程
+        notifyAll();
+    }
+}
+</code></pre>
+<p><code>Producer.java</code></p>
+<pre><code class="java">public class Producer implements Runnable {
+
+    private final Box box;
+
+    public Producer(Box box) {
+        this.box = box;
+    }
+
+    @Override
+    public void run() {
+        for (int i = 1; i &lt;= 5; i++) {
+            this.box.put(i);
+        }
+    }
+}
+</code></pre>
+<p><code>Consumer.java</code></p>
+<pre><code class="java">public class Consumer implements Runnable {
+
+    private final Box box;
+
+    public Consumer(Box box) {
+        this.box = box;
+    }
+
+    @Override
+    public void run() {
+        while (true) {
+            this.box.get();
+        }
+    }
+}
+</code></pre>
+<p><code>BoxDemo.java</code></p>
+<pre><code class="java">public class BoxDemo {
+    public static void main(String[] args) {
+        // 1. 创建奶箱对象，这是共享数据区域
+        Box box = new Box();
+
+        // 2. 创建生产者对象，把奶箱对象作为构造方法参数传递，因为在这个类中要调用存储牛奶的操作。
+        Producer p = new Producer(box);
+
+        // 3. 创建消费者对象，把奶箱对象作为构造方法参数传递，因为在这个类中要调用获取牛奶的操作。
+        Consumer c = new Consumer(box);
+
+        // 4. 创建两个线程对象，分别把生产者对象和消费者对象作为构造方法参数传递。
+        Thread thread1 = new Thread(p);
+        Thread thread2 = new Thread(c);
+
+        // 5. 启动线程
+        thread1.start();
+        thread2.start();
+    }
+}
+</code></pre>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

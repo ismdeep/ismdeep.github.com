@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>Docker常用命令 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2019-06-10-docker-commands" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>Docker常用命令</h1>
+  
+
+      </header>
+      <div>
+      2019-06-10
+      
+        / 
+        
+          <span><a href="/tags/Ubuntu/">#Ubuntu</a></span>
+        
+          <span><a href="/tags/Linux/">#Linux</a></span>
+        
+          <span><a href="/tags/Docker/">#Docker</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#0x01-获取镜像"><span class="toc-text">0x01 获取镜像</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0x02-查看镜像"><span class="toc-text">0x02 查看镜像</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0x03-创建并启动容器"><span class="toc-text">0x03 创建并启动容器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0x04-查看容器"><span class="toc-text">0x04 查看容器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0x05-删除镜像"><span class="toc-text">0x05 删除镜像</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0x06-启动、停止、重启容器"><span class="toc-text">0x06 启动、停止、重启容器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0x07-删除容器"><span class="toc-text">0x07 删除容器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0x08-查看容器信息"><span class="toc-text">0x08 查看容器信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0x09-查看容器进程"><span class="toc-text">0x09 查看容器进程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0x0a-查看容器日志"><span class="toc-text">0x0a 查看容器日志</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0x0b-容器内执行命令"><span class="toc-text">0x0b 容器内执行命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0x0c-容器的导入与导出"><span class="toc-text">0x0c 容器的导入与导出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0x0d-使用Dockerfile创建镜像"><span class="toc-text">0x0d 使用Dockerfile创建镜像</span></a></li></ol>
+  </div>
+
+
+        </div>
+
+        <p>Docker是容器的一种，容器是一种轻量级的虚拟技术。与容器不同，虚拟机是一种重量级的虚拟技术。Docker具有：</p>
+<a id="more"></a>
+<ul>
+<li><p>跨平台的可移植性</p>
+</li>
+<li><p>面向应用</p>
+</li>
+<li><p>版本控制</p>
+</li>
+<li><p>组件复用</p>
+</li>
+<li><p>共享性</p>
+</li>
+<li><p>工具生态系统</p>
+</li>
+</ul>
+<p>Docker作为一款容器，并且比传统的容器具有更多的改进和优点。以下是Docker的几种典型应用场景：</p>
+<ul>
+<li>加速本地开发。通过Docker能够快速搭建好开发和运行环境，并且该环境可以直接传递给测试和产品部署。</li>
+<li>自动打包和部署应用。</li>
+<li>创建轻量、私有的PaaS环境。</li>
+<li>自动化测试和持续集成/部署。</li>
+<li>部署并扩展Web应用、数据库和后端服务器。</li>
+<li>创建安全沙盒。</li>
+<li>轻量级的桌面虚拟化。</li>
+</ul>
+<p>以下介绍几个Docker中常用的命令。</p>
+<h3 id="0x01-获取镜像"><a href="#0x01-获取镜像" class="headerlink" title="0x01 获取镜像"></a>0x01 获取镜像</h3><pre><code>&gt; docker pull ubuntu
+Using default tag: latest
+latest: Pulling from library/ubuntu
+6abc03819f3e: Pulling fs layer
+05731e63f211: Pulling fs layer
+0bd67c50d6be: Download complete
+</code></pre><h3 id="0x02-查看镜像"><a href="#0x02-查看镜像" class="headerlink" title="0x02 查看镜像"></a>0x02 查看镜像</h3><pre><code>&gt; docker images
+REPOSITORY             TAG                 IMAGE ID            CREATED             SIZE
+alpine                 latest              055936d39205        4 weeks ago         5.53MB
+busybox                latest              64f5d945efcc        4 weeks ago         1.2MB
+python                 2.7                 3c01ed1c16af        4 weeks ago         914MB
+python                 3.7                 a4cc999cf2aa        4 weeks ago         929MB
+redis                  latest              a4fe14ff1981        4 weeks ago         95MB
+nginx                  latest              53f3fd8007f7        4 weeks ago         109MB
+mongo                  latest              d98005b752b4        4 weeks ago         411MB
+mysql                  latest              d72169616e20        6 weeks ago         443MB
+</code></pre><h3 id="0x03-创建并启动容器"><a href="#0x03-创建并启动容器" class="headerlink" title="0x03 创建并启动容器"></a>0x03 创建并启动容器</h3><pre><code>&gt; docker run --name mysql-server -v /data/tmp/mysql-data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=53f3fd8007f7 -p 3392:3306 -d mysql
+c22162c0ae39284591a4a0b1e4e724fb05c2455abd96f2862a12a3adbe293c8c
+</code></pre><p>以MySQL为例，对上述几个参数进行解释：</p>
+<ul>
+<li><code>--name mysql-server</code> 创建一个名称为 <code>mysql-server</code> 的容器。</li>
+<li><code>-v /data/tmp/mysql-data:/var/lib/mysql</code> 对容器中的文件目录进行映射，将宿主机中的 <code>/data/tmp/mysql-data</code> 目录同容器中的 <code>/var/lib/mysql</code> 进行映射。</li>
+<li><code>-e MYSQL_ROOT_PASSWORD=53f3fd8007f7</code> 传入参数</li>
+<li><code>-p 3392:3306</code> 将宿主机的 <code>3392</code> 端口同容器中的 <code>3306</code> 进行映射。</li>
+<li><code>-d</code> 容器后台运行</li>
+<li><code>mysql</code> 运行容器的镜像，如果后面没有指明版本号则为 <code>latest</code>. 如果需要指明版本号可以通过 <code>:</code> 进行指明，如：<code>mysql:5.7</code></li>
+</ul>
+<h3 id="0x04-查看容器"><a href="#0x04-查看容器" class="headerlink" title="0x04 查看容器"></a>0x04 查看容器</h3><pre><code>&gt; docker ps
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                               NAMES
+c22162c0ae39        mysql               &quot;docker-entrypoint.s…&quot;   23 minutes ago      Up 23 minutes       33060/tcp, 0.0.0.0:3392-&gt;3306/tcp   mysql-server
+</code></pre><p><code>docker ps</code> 命令只查看正在运行的容器。</p>
+<pre><code>&gt; docker ps -a
+CONTAINER ID        IMAGE                  COMMAND                  CREATED             STATUS                      PORTS                               NAMES
+c22162c0ae39        mysql                  &quot;docker-entrypoint.s…&quot;   24 minutes ago      Up 24 minutes               33060/tcp, 0.0.0.0:3392-&gt;3306/tcp   mysql-server
+0908250ff8d7        osminogin/tor-simple   &quot;/usr/bin/tor&quot;           2 weeks ago         Exited (0) 11 hours ago                                         tor
+53149e4d6a72        mongo                  &quot;docker-entrypoint.s…&quot;   2 weeks ago         Exited (0) 2 weeks ago                                          mongo-db
+ada3bd8fc57b        ssr                    &quot;python local.py -c …&quot;   3 weeks ago         Exited (137) 11 hours ago                                       ssr
+b506117c93e6        python:3.7             &quot;bash&quot;                   3 weeks ago         Exited (0) 2 weeks ago                                          python3
+cb2722de812e        redis                  &quot;docker-entrypoint.s…&quot;   3 weeks ago         Exited (0) 2 weeks ago                                          redis-server
+</code></pre><p><code>docker ps -a</code> 命令则可查看所有容器。</p>
+<h3 id="0x05-删除镜像"><a href="#0x05-删除镜像" class="headerlink" title="0x05 删除镜像"></a>0x05 删除镜像</h3><pre><code>&gt; docker rmi alpine
+Untagged: alpine:latest
+Untagged: alpine@sha256:769fddc7cc2f0a1c35abb2f91432e8beecf83916c421420e6a6da9f8975464b6
+</code></pre><h3 id="0x06-启动、停止、重启容器"><a href="#0x06-启动、停止、重启容器" class="headerlink" title="0x06 启动、停止、重启容器"></a>0x06 启动、停止、重启容器</h3><ul>
+<li><p>启动容器</p>
+<pre><code>  &gt; docker start mysql-server
+  mysql-server
+</code></pre></li>
+<li><p>停止容器</p>
+<pre><code>  &gt; docker stop mysql-server
+  mysql-server
+</code></pre></li>
+<li><p>重启容器</p>
+<pre><code>  &gt; docker restart mysql-server
+  mysql-server
+</code></pre></li>
+</ul>
+<h3 id="0x07-删除容器"><a href="#0x07-删除容器" class="headerlink" title="0x07 删除容器"></a>0x07 删除容器</h3><pre><code>&gt; docker rm mysql-server
+mysql-server
+</code></pre><h3 id="0x08-查看容器信息"><a href="#0x08-查看容器信息" class="headerlink" title="0x08 查看容器信息"></a>0x08 查看容器信息</h3><pre><code>&gt; docker inspect redis-server
+[
+    {
+        &quot;Id&quot;: &quot;cb2722de812e5491da0aad0d442940e344ac4e9712274fc0eae4bd8c2ff1e0d6&quot;,
+        &quot;Created&quot;: &quot;2019-05-14T13:32:48.1947863Z&quot;,
+        &quot;Path&quot;: &quot;docker-entrypoint.sh&quot;,
+        &quot;Args&quot;: [
+            &quot;redis-server&quot;
+        ],
+        ...
+        ...
+        ...
+        ,
+        &quot;Image&quot;: &quot;sha256:a4fe14ff19812e816e1b21f7daa5fa25ab9bff4365252fe38d8eef4bdf1150ee&quot;,
+        ...
+        ...
+        ...
+            &quot;IPAddress&quot;: &quot;172.17.0.2&quot;,
+            ...
+            &quot;Networks&quot;: {
+                ...
+                    &quot;IPAddress&quot;: &quot;172.17.0.2&quot;,
+                    ....
+                    &quot;MacAddress&quot;: &quot;02:42:ac:11:00:02&quot;,
+                    &quot;DriverOpts&quot;: null
+                }
+            }
+        }
+    }
+]
+</code></pre><p><code>docker inspect</code> 用于查看容器的配置信息，包含容器名、环境变量、运行命令、主机配置、网络配置和数据卷配置等。</p>
+<h3 id="0x09-查看容器进程"><a href="#0x09-查看容器进程" class="headerlink" title="0x09 查看容器进程"></a>0x09 查看容器进程</h3><pre><code>&gt; docker top redis-server
+PID                 USER                TIME                COMMAND
+3498                999                 0:00                redis-server *:6379
+</code></pre><h3 id="0x0a-查看容器日志"><a href="#0x0a-查看容器日志" class="headerlink" title="0x0a 查看容器日志"></a>0x0a 查看容器日志</h3><pre><code>&gt; docker logs -f --tail=5 redis-server
+1:M 10 Jun 2019 13:53:25.985 # WARNING: The TCP backlog setting of 511 cannot be enforced because /proc/sys/net/core/somaxconn is set to the lower value of 128.
+1:M 10 Jun 2019 13:53:25.985 # Server initialized
+1:M 10 Jun 2019 13:53:25.986 # WARNING you have Transparent Huge Pages (THP) support enabled in your kernel. This will create latency and memory usage issues with Redis. To fix this issue run the command &#39;echo never &gt; /sys/kernel/mm/transparent_hugepage/enabled&#39; as root, and add it to your /etc/rc.local in order to retain the setting after a reboot. Redis must be restarted after THP is disabled.
+1:M 10 Jun 2019 13:53:25.986 * DB loaded from disk: 0.001 seconds
+1:M 10 Jun 2019 13:53:25.987 * Ready to accept connections
+</code></pre><p><code>-f</code> 使用此标志，之后的日志也会不断更新出来。</p>
+<p><code>--tail=5</code> 首先输出日志的最后5行。</p>
+<h3 id="0x0b-容器内执行命令"><a href="#0x0b-容器内执行命令" class="headerlink" title="0x0b 容器内执行命令"></a>0x0b 容器内执行命令</h3><pre><code>&gt; docker exec -it redis-server echo hello
+hello
+</code></pre><p>通过这种方式可以进入容器内的命令行。</p>
+<pre><code>&gt; docker exec -it redis-server bash
+root@cb2722de812e:/data#
+</code></pre><h3 id="0x0c-容器的导入与导出"><a href="#0x0c-容器的导入与导出" class="headerlink" title="0x0c 容器的导入与导出"></a>0x0c 容器的导入与导出</h3><ul>
+<li><p>导出容器</p>
+<pre><code>  &gt; docker export redis-server &gt; redis-server.tar
+</code></pre></li>
+<li><p>导入容器</p>
+<pre><code>  &gt; docker import redis-server.tar redis-server
+  sha256:67b3ac0c90bbd9d5fd901331142abc544bef5f0f1ea345787353dda9a42bc4cc
+</code></pre></li>
+</ul>
+<h3 id="0x0d-使用Dockerfile创建镜像"><a href="#0x0d-使用Dockerfile创建镜像" class="headerlink" title="0x0d 使用Dockerfile创建镜像"></a>0x0d 使用Dockerfile创建镜像</h3><pre><code>&gt; docker build -t naive-honix .
+Sending build context to Docker daemon     64kB
+Step 1/10 : FROM python:3.7
+ ---&gt; a4cc999cf2aa
+Step 2/10 : MAINTAINER ismdeep@protonmail.com
+ ---&gt; Using cache
+ ---&gt; eb65fc3ae7a2
+Step 3/10 : RUN mkdir /root/.pip
+ ---&gt; Using cache
+ ---&gt; 9e25a8b6fa4f
+Step 4/10 : COPY ./pip.conf /root/.pip
+ ---&gt; Using cache
+ ---&gt; 5aa11374cc97
+Step 5/10 : COPY ./honix /opt/honix
+ ---&gt; Using cache
+ ---&gt; 3b3addd353d1
+Step 6/10 : COPY ./docker-entrypoint.sh /
+ ---&gt; Using cache
+ ---&gt; 21dda863be59
+Step 7/10 : RUN chmod +x /docker-entrypoint.sh
+ ---&gt; Using cache
+ ---&gt; af83ea0eadee
+Step 8/10 : RUN pip install ismdeep-utils
+ ---&gt; Using cache
+ ---&gt; 25fe683853d1
+Step 9/10 : EXPOSE 80
+ ---&gt; Using cache
+ ---&gt; 4dc7970daa32
+Step 10/10 : ENTRYPOINT [&quot;/docker-entrypoint.sh&quot;]
+ ---&gt; Using cache
+ ---&gt; 9a6fea0eaeaa
+Successfully built 9a6fea0eaeaa
+Successfully tagged naive-honix:latest
+</code></pre>
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

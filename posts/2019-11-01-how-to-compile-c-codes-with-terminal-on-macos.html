@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>如何通过命令行编译并运行程序之macOS版本 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2019-11-01-how-to-compile-c-codes-with-terminal-on-macos" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>如何通过命令行编译并运行程序之macOS版本</h1>
+  
+
+      </header>
+      <div>
+      2019-11-01
+      
+        / 
+        
+          <span><a href="/tags/C/">#C</a></span>
+        
+          <span><a href="/tags/macOS/">#macOS</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#0x00-安装-gcc-编译器"><span class="toc-text">0x00 安装 gcc 编译器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x01-命令行的基本使用"><span class="toc-text">0x01 命令行的基本使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x02-编写第一个程序"><span class="toc-text">0x02 编写第一个程序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x03-gcc-g-c-编译器命令详解。"><span class="toc-text">0x03 gcc/g++/c++ 编译器命令详解。</span></a></li></ol>
+  </div>
+
+
+        </div>
+
+        <p>引言：前文部分可先查看另一篇文章 <a href="/posts/2019-10-28-how-to-compile-c-codes-with-cmd-on-windows.html" target="_blank">如何通过命令行编译并运行程序之Windows版本</a></p>
+<a id="more"></a>
+<h2 id="0x00-安装-gcc-编译器"><a href="#0x00-安装-gcc-编译器" class="headerlink" title="0x00 安装 gcc 编译器"></a>0x00 安装 gcc 编译器</h2><p>通过键盘组合键 <code>command + 空格</code> 可以打开 Spotlight 进行搜索，输入 Terminal 可以打开macOS下的终端。打开之后输入 <code>gcc --version</code> 可以查看是否安装了 gcc 编译器，如果没有安装的话，系统会自动弹出下载安装 Command Line Tools 对话框。</p>
+<p>在安装之后输入 <code>gcc --version</code> 可以查看安装的 gcc 信息。</p>
+<pre><code class="text">&gt; gcc --version
+Configured with: --prefix=/Library/Developer/CommandLineTools/usr --with-gxx-include-dir=/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/4.2.1
+Apple clang version 11.0.0 (clang-1100.0.33.8)
+Target: x86_64-apple-darwin19.0.0
+Thread model: posix
+InstalledDir: /Library/Developer/CommandLineTools/usr/bin
+</code></pre>
+<h2 id="0x01-命令行的基本使用"><a href="#0x01-命令行的基本使用" class="headerlink" title="0x01 命令行的基本使用"></a>0x01 命令行的基本使用</h2><ol>
+<li><p><code>ls</code> 查看文件及文件夹列表</p>
+<ul>
+<li><code>ls</code> 默认方式查看当前目录下的文件及文件夹列表</li>
+<li><code>ls -a</code> 查看当前目录下所有文件及文件夹列表（包括隐藏文件）</li>
+<li><code>ls -l</code> 列表形式查看当前目录下的文件及文件夹列表</li>
+<li><code>ls -la</code> 列表形式查看当前目录下所有文件及文件夹列表（包括隐藏文件）</li>
+<li><code>ls -Slh</code> 列表形式按文件从大到小排列查看当前目录下文件及文件夹列表</li>
+<li><code>ls ~/Desktop</code> 在 <code>ls</code> 命令后面加上目录名称可查看此目录下的文件及文件夹内容。当然 <code>ls</code> 后面依旧可以使用上路控制开关，如 <code>-a</code> , <code>-la</code> 等。</li>
+</ul>
+</li>
+<li><p><code>cd</code> 切换目录</p>
+<p> 目录的使用有两种使用方法，一种是<strong>相对路径</strong>，一种是<strong>绝对路径</strong>。</p>
+<p> <strong>相对路径</strong>是与当前目录直接相关，如当前目录为 <code>/Users/ismdeep/Desktop</code> 那么 <code>/Users/ismdeep/Documents</code> 就相对为 <code>../Documents</code> （<strong>注</strong>： <code>..</code> 表示上一级目录，<code>.</code> 表示当前目录。）</p>
+<p> 又例如：当前目录为 <code>/Users/ismdeep/Desktop</code> 那么 <code>/Users/ismdeep/Desktop/tmp</code> 就相对为 <code>./tmp</code> 或 <code>tmp</code></p>
+<p> <strong>绝对路径</strong>则与当前目录无关。直接从根目录开始按层级往下写则为绝对路径。例如：<code>/Users/ismdeep/Desktop</code></p>
+<ul>
+<li><code>cd ../Documents</code> 相对路径切换目录方式。切换至上级目录下的 <code>Documents</code> 子目录。</li>
+<li><code>cd tmp</code> 相对路径切换目录方式。切换至当前目录下的 <code>tmp</code> 子目录</li>
+<li><code>cd /Users/ismdeep/Documents</code> 绝对路径切换目录方式。切换至 <code>/Users/ismdeep/Documents</code></li>
+</ul>
+</li>
+<li><p><code>mkdir</code> 创建目录</p>
+<p> <code>mkdir tmp</code> 在当前目录下创建名为 <code>tmp</code> 的子目录。</p>
+</li>
+<li><p><code>clear</code> 清空屏幕内容</p>
+</li>
+<li><p><code>gcc</code> 编译程序</p>
+</li>
+</ol>
+<h2 id="0x02-编写第一个程序"><a href="#0x02-编写第一个程序" class="headerlink" title="0x02 编写第一个程序"></a>0x02 编写第一个程序</h2><ol>
+<li>打开 Terminal 或者 iTerm2 等终端程序。（笔者非常推荐使用 iTerm2 终端程序，读者可自行通过网上教程进行安装配置 iTerm2 + zsh + oh-my-zsh 环境。《<a href="https://www.jianshu.com/p/9c3439cc3bdb" target="_blank">iTerm2 + Oh My Zsh 打造舒适终端体验</a>》）</li>
+<li><code>cd ~/Desktop</code> 切换工作目录至桌面。（当然你也可以切换到其他目录）</li>
+<li><code>mkdir codes</code> 新建一个名为 <code>codes</code> 的空白目录。</li>
+<li><code>cd codes</code> 切换进这个 <code>codes</code> 目录。</li>
+<li><code>touch main.c</code> 新建名为 <code>main.c</code> 的文件。</li>
+<li>通过代码编辑器打开 <code>codes</code> 目录下的 <code>main.c</code> 文件。（代码编辑器有非常多，比如：vim, sublime text 3, vscode等。）</li>
+<li><code>gcc main.c -o main</code> 通过 <code>gcc</code> 将 <code>main.c</code> 编译成可执行程序 <code>main</code> .</li>
+<li><code>./main</code> 执行可执行程序 <code>main</code></li>
+</ol>
+<h2 id="0x03-gcc-g-c-编译器命令详解。"><a href="#0x03-gcc-g-c-编译器命令详解。" class="headerlink" title="0x03 gcc/g++/c++ 编译器命令详解。"></a>0x03 <code>gcc/g++/c++</code> 编译器命令详解。</h2><p><code>gcc</code> 用来编译 C 源程序，<code>g++</code> 和 <code>c++</code> 用来编译 C++ 源程序。有些系统上  <code>g++</code> 和 <code>c++</code> 其实是同一个。而这三个命令使用方式均是一样的。下面只介绍 <code>gcc</code> 的，另外两个依此类推。</p>
+<ol>
+<li><code>gcc main.c</code> 这是最简单的编译方式，编译 <code>main.c</code> 这个源程序，编译成功之后会在当前目录下生成一个名为 <code>a.out</code> 的可执行程序。</li>
+<li><code>gcc main.c -o main</code> 在最简单的编译方式基础上增加了 <code>-o main</code> 表示编译成功后生成名为 <code>main</code> 的可执行程序。</li>
+<li><code>gcc -g main.c -o main</code> 编译时生成 debug 有关的程序信息。</li>
+<li><code>gcc main.c -I./include -o main</code> 编译时将 <code>./include</code> 文件夹加入头文件搜索目录。如 <code>./include</code> 目录下有 <code>util.h</code> 文件，则源代码中可以直接写 <code>#include &lt;util.h&gt;</code></li>
+<li><code>gcc main.c -DONLINE_JUDGE -o main</code> 编译时加入 <code>ONLINE_JUDGE</code> 宏定义。目前几乎所有的在线测评系统都会使用 <code>-DONLINE_JUDGE</code> 编译时宏定义。</li>
+<li><code>gcc -Wall main.c -o main</code> 编译时输出所有的错误和警告。</li>
+<li><code>gcc -std=c99 main.c -o main</code> 编译时指定使用的语言标准。可以有 <code>-std=c++11</code>, <code>-std=c89</code>, <code>-std=c99</code>, <code>-std=c11</code></li>
+</ol>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

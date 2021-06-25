@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>Java 网络编程 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2020-10-20-java-network-for-beginners" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>Java 网络编程</h1>
+  
+
+      </header>
+      <div>
+      2020-10-20
+      
+        / 
+        
+          <span><a href="/tags/Java/">#Java</a></span>
+        
+          <span><a href="/tags/Network/">#Network</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#0x01-网络编程概述"><span class="toc-text">0x01 网络编程概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x02-网络编程三要素"><span class="toc-text">0x02 网络编程三要素</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x03-通过-InetAddress-类获取本机-IP-地址。"><span class="toc-text">0x03 通过 InetAddress 类获取本机 IP 地址。</span></a></li></ol>
+  </div>
+
+
+        </div>
+
+        <p>网络编程是指编程运行在多个设备（计算机）上的程序，这些设备通过网络连接起来。</p>
+<h2 id="0x01-网络编程概述"><a href="#0x01-网络编程概述" class="headerlink" title="0x01 网络编程概述"></a>0x01 网络编程概述</h2><p><strong>网络编程：</strong>在网络通信协议下，实现网络互连的不同计算机上运行的程序间可以进行数据交换。</p>
+<h2 id="0x02-网络编程三要素"><a href="#0x02-网络编程三要素" class="headerlink" title="0x02 网络编程三要素"></a>0x02 网络编程三要素</h2><ul>
+<li>IP 地址：要想让网络中的计算机能够互相通信，必须为每台计算机指定一个标识号，通过这个标识号来制定要接收数据的计算机和识别发送的计算机，而 IP 地址就是这个标识号，也就是设备的标识。</li>
+<li>端口：网络的通信，本质上是两个应用程序的通信。每台计算机都有很多的应用程序，那么在网络通信时，如何区分这些应用程序呢？如果说 IP 地址可以唯一标识网络中的设备，那么端口号就可以唯一标识设备中的应用程序了 。也就是应用程序的标识。</li>
+<li>通过计算机网络可以使多台计算机实现连接，位于同一个网络中的计算机在进行连接和通信时需要遵守一定的规则，这就好比在道路中行驶的汽车一定要遵守交通规则一样。在计算机网络中，这些连接和通信的规则被称为网络通信协议，它对数据的传输格式、传输速率、传输步骤做了统一的规定，通信双方必须同时遵守才能完成数据交换。常见的协议有 UDP 协议和 TCP 协议。</li>
+</ul>
+<h2 id="0x03-通过-InetAddress-类获取本机-IP-地址。"><a href="#0x03-通过-InetAddress-类获取本机-IP-地址。" class="headerlink" title="0x03 通过 InetAddress 类获取本机 IP 地址。"></a>0x03 通过 <code>InetAddress</code> 类获取本机 IP 地址。</h2><pre><code class="java">import java.net.InetAddress;
+import java.net.UnknownHostException;
+
+public class Main {
+    public static void main(String[] args) throws UnknownHostException {
+        InetAddress address = InetAddress.getLocalHost();
+        System.out.println(&quot;主机名：&quot; + address.getHostName());
+        System.out.println(&quot;IP地址：&quot; + address.getHostAddress());
+    }
+}
+</code></pre>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>Windows 命令行到底有多糟糕？ | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2019-02-23-how-bad-windows-command-line-is" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>Windows 命令行到底有多糟糕？</h1>
+  
+
+      </header>
+      <div>
+      2019-02-23
+      
+        / 
+        
+          <span><a href="/tags/Hacker/">#Hacker</a></span>
+        
+          <span><a href="/tags/Windows/">#Windows</a></span>
+        
+          <span><a href="/tags/bash/">#bash</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+
+        </div>
+
+        <p>Kevin Gallo 刚刚宣布在 Windows 上支持 bash.</p>
+<p>如果你从来就没有在Windows上通过批处理语言进行交互的话似乎并没有什么大的问题。当然，批处理并不会比 Bash 差很多，对吗？</p>
+<p>Bash：一种既不是设计也不是进化的语言。对问题的充分解决方案已经变得难以达到数量级。虽然它是有用的，但是危险无处不在。bash：为了方便起见，我们有多想放弃这门语言？</p>
+<p>当然，可能 Bash 更加糟糕。但是，真的有那么糟糕吗？Bash 有一个价值：这够好了。很难想象它会这么繁荣。</p>
+<p>但是事实是什么呢？Batch 是真的糟糕。以及他们的信仰是多糟糕呢？比如：</p>
+<ul>
+<li>批处理脚本执行的时间复杂度至少是O(n*(n-1)/2) (即：O($n^2$))，其中 n 是文件的行数（包括注释）。原因是批处理引擎会读取整个文件，然后执行一行，然后再一次读取这个文件，然后执行下一行，往复如此。</li>
+<li>习惯性地使用 GOTO 去跳过相当大的注释块，这样你就不需要去“执行”它们。</li>
+<li>像 for 这样循环语句的词法块是不会分开来解释的。他们被组合在一起然后一次性全部解释。也就是说在 for 循环中加上本来没什么关系的 <code>::</code> 注释或是 <code>if</code> 语句，结尾 <code>)</code> 会丢失，然后批处理就不知道要做什么了。它会像你可能忘记加上 <code>)</code> 去结束 <code>for</code> 循环。</li>
+<li>永远不要注释代码。如果你做了，迟早会出问题的。例如：在一些 Windows 系统中，<code>REM</code>形式注释，如 <code>REM Ensure &gt; true</code> ， 实际上会通过管道把注释输出到 <code>true</code> 文件。由于注释是没有输出的，效果就是生成了一个文件名为 <code>true</code> 的空文件。</li>
+<li>如果你在 <code>for</code> 代码块中添加两个 <code>::</code> 注释，你可能会得到 <code>The system cannot find the drive specified</code> 这样的错误，并且有可能你的脚本会出现错误代码123. 这样的情况是因为 <code>::</code> 这样的注释格式根本并不被视为注释。而且在标签格式中，<code>::</code> 必须在行首，而且不可以有前导空格符。并且连续两个标签也会出问题，因为批处理将其视为同一行。</li>
+</ul>
+<p>这样的例子数不胜数。</p>
+<p>几年前我还在学校的时候，我觉得PowerShell可能是一个有趣的现代化的shell吧。然后并不是，PowerShell只不过是一个治疗小儿麻痹症的东西而已。毕竟 Jeffrey Snover 是Windows 生态系统中的 Jonas Salk.</p>
+<p>批处理像是一个出现在地球上的外星设备。起初你觉得这是一个礼物，但后来你会发现这是一个用来毁灭世界的机器。唯一的解决办法就是彻底摆脱它。</p>
+<p>就像《死灵之书》或是其他撒旦书中一样，Batch 一开始看起来并不那么糟糕，但是当媒介（这里指计算机）读取它之时，你会发现地狱之门已经打开。你会被电脑的屏幕吸引过去，然后深思自己10分钟之前犯了些什么恐怖的错误。于是你会抓狂，只想知道这个地方为什么会有警告或是错误。</p>
+<p>Bash 就像是一个看起来美好而甜蜜的邻居，但也许他们没有你想拥有的生活。他们有一些相当严重的性格缺陷，显然会犯错误，但最终他们是一个很好的人，他们努力确保依赖他们的人做得很好。</p>
+<p>批量是看起来像那个邻居的人，但后来证明是一个连环杀手。</p>
+<p>所以，这是 Windows 环境的现实。做题你选择 批处理 或是 PowerShell，今天你可以选择 批处理，PowerShell 或是 Bash. （反正，你懂的。）</p>
+<p>当你做出选择时，值得参观堕落者的坟墓。</p>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

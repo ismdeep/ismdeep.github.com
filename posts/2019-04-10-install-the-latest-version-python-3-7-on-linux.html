@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>Linux 下安装最新版本的 Python 3.7 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2019-04-10-install-the-latest-version-python-3-7-on-linux" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>Linux 下安装最新版本的 Python 3.7</h1>
+  
+
+      </header>
+      <div>
+      2019-04-10
+      
+        / 
+        
+          <span><a href="/tags/Python/">#Python</a></span>
+        
+          <span><a href="/tags/Linux/">#Linux</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#0x00-准备工作"><span class="toc-text">0x00 准备工作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0x01-下载-Python-源码包"><span class="toc-text">0x01 下载 Python 源码包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0x02-安装"><span class="toc-text">0x02 安装</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#CentOS-Ubuntu"><span class="toc-text">CentOS/Ubuntu</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#macOS"><span class="toc-text">macOS</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0x03-后记"><span class="toc-text">0x03 后记</span></a></li></ol>
+  </div>
+
+
+        </div>
+
+        <p>本教程将教你如何在 Linux 环境下通过 Python 官方发布的源码安装包进行安装 Python 3.7 环境。本教程编写时（2018-04-10） Python 官网发布的 Python 3 最新版本为 3.7.3，本教程是在 CentOS 系统中测试安装的。其他 Linux 发行版应该也适用。</p>
+<h3 id="0x00-准备工作"><a href="#0x00-准备工作" class="headerlink" title="0x00 准备工作"></a>0x00 准备工作</h3><p>首先需要通过安装一些依赖。</p>
+<ol>
+<li>CentOS 环境下</li>
+</ol>
+<pre><code class="bash">sudo yum -y install epel-release
+sudo yum -y install axel
+sudo yum -y install gcc openssl-devel bzip2-devel libffi-devel
+</code></pre>
+<ol start="2">
+<li>Ubuntu 环境下</li>
+</ol>
+<pre><code class="bash">sudo apt-get install -y axel make gcc \
+    g++ openssl bzip2 libffi-dev zlib1g-dev \
+    libssl-dev libsqlite3-dev
+
+sudo apt install build-essential zlib1g-dev \
+    libncurses5-dev libgdbm-dev libnss3-dev \
+    libssl-dev libreadline-dev libffi-dev curl
+</code></pre>
+<ol start="3">
+<li>FreeBSD 环境下</li>
+</ol>
+<p>虽然从严格意义上来说，FreeBSD 不应该算在 Linux，但这里顺便把 FreeBSD 下的也顺便说一下吧。</p>
+<pre><code class="bash">pkg install -y vim axel gcc openssl bzip2 libffi
+</code></pre>
+<h3 id="0x01-下载-Python-源码包"><a href="#0x01-下载-Python-源码包" class="headerlink" title="0x01 下载 Python 源码包"></a>0x01 下载 Python 源码包</h3><p>本教程提供两种源码包的下载方式。（原因你懂的）</p>
+<ol>
+<li>从官方下载<br>访问 <a href="https://www.python.org/downloads/" target="_blank" rel="noopener">https://www.python.org/downloads/</a> 找到最新版的 Python 版本，本教程用的是 Python 3.7.3，点击相应的链接（本教程为 <a href="https://www.python.org/downloads/release/python-373/）。" target="_blank" rel="noopener">https://www.python.org/downloads/release/python-373/）。</a></li>
+</ol>
+<p><img src="https://upload.ismdeep.com/images/2020/08/07/c8ca6b9500aec89151fd0adf88ee5c21-0ef35c.png" alt="XZ compressed source tarball"></p>
+<p>继续往下翻，在 Files 中找到 XZ compressed source tarball，在链接上右键获取链接。</p>
+<pre><code>https://www.python.org/ftp/python/3.7.3/Python-3.7.3.tar.xz
+</code></pre><p>获得地址之后就可以通过 curl 进行下载了。并且为了防止出现其他文件名的干扰，也为了方便安装后清理无用的文件，本人比较习惯创建一个新的临时目录来进行接下来的操作。</p>
+<pre><code>[root@CentOS ~]# pwd
+/root
+[root@CentOS ~]# ls
+anaconda-ks.cfg
+mkdir tmp
+[root@CentOS ~]# cd tmp
+[root@CentOS tmp]# pwd
+/root/tmp
+[root@CentOS tmp]# curl https://www.python.org/ftp/python/3.7.3/Python-3.7.3.tar.xz -o Python-3.7.3.tar.xz
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+ 37 16.3M   37 6343k    0     0  37509      0  0:07:36  0:02:53  0:04:43     0
+</code></pre><p>很明显，这里下载速度真的是辣眼睛，如果有足够的时间就慢慢等吧。</p>
+<ol start="2">
+<li>从笔者上传的地址下载。</li>
+</ol>
+<p>访问网址： <a href="https://download.ismdeep.com/python/" target="_blank" rel="noopener">https://download.ismdeep.com/python/</a> 找到最新的 Python 3.7 版本.</p>
+<p><img src="https://upload.ismdeep.com/images/2020/08/07/af56ddba4199ce1494858e2371975384-222e29.png" alt="python download folder on download.ismdeep.com"></p>
+<pre><code class="bash">https://download.ismdeep.com/python/Python-3.7.3.tar.xz
+</code></pre>
+<pre><code class="bash">mkdir tmp
+cd tmp
+axel -n 20 https://download.ismdeep.com/python/Python-3.7.3.tar.xz
+</code></pre>
+<h3 id="0x02-安装"><a href="#0x02-安装" class="headerlink" title="0x02 安装"></a>0x02 安装</h3><h4 id="CentOS-Ubuntu"><a href="#CentOS-Ubuntu" class="headerlink" title="CentOS/Ubuntu"></a>CentOS/Ubuntu</h4><p>接上面下载目录继续使用下面命令进行安装 Python.</p>
+<pre><code class="bash">xz -d Python-3.7.3.tar.xz
+tar -xvf Python-3.7.3.tar
+cd Python-3.7.3
+./configure --prefix=/usr/local/python-3.7.3 --enable-optimizations --enable-loadable-sqlite-extensions
+sudo make -j8 build_all
+sudo make -j8 altinstall
+</code></pre>
+<h4 id="macOS"><a href="#macOS" class="headerlink" title="macOS"></a>macOS</h4><p>通过 brew 安装 xz ，sqlite3 以及 gdbm<br>Install xz and sqlite3 through brew</p>
+<pre><code class="bash">brew install xz
+brew install sqlite3
+brew install gdbm
+</code></pre>
+<p>编译 openssl 1.0.2</p>
+<pre><code class="bash">./Configure darwin64-x86_64-cc --prefix=/Users/ismdeep/Build/openssl-1.0.2u-binary
+make
+make install
+</code></pre>
+<p>编译 Python 3.7.3</p>
+<pre><code class="bash">./configure --prefix=/Users/ismdeep/Apps/python-3.7.3 \
+    --with-openssl=&quot;/Users/ismdeep/Build/openssl-1.0.2u-binary&quot; \
+    --enable-optimizations \
+    --enable-loadable-sqlite-extensions
+make -j8 build_all
+make -j8 altinstall
+</code></pre>
+<p>至此，我们的 Python 3.7 就已经安装完毕了。</p>
+<p>看到网上很多教程，在最后都会去 /usr/bin 目录下做软链接，个人不太喜欢弄这个，并不想去影响系统已有的环境。那么我们该怎么使用我们的 python 呢。我们可以通过绝对路径去调用 python 和 pip.</p>
+<p>比如：</p>
+<pre><code class="bash">/usr/local/python-3.7.3/bin/pip3.7 install requests
+</code></pre>
+<pre><code class="bash">/usr/local/python-3.7.3/bin/python3.7 main.py
+</code></pre>
+<h3 id="0x03-后记"><a href="#0x03-后记" class="headerlink" title="0x03 后记"></a>0x03 后记</h3><p>很明显，我们在国内环境下使用 pip 安装包，速度是很慢的，慢到有时候根本就不动了。嗨呀，没办法，我们只能配置国内镜像源来安装包了。</p>
+<p>在用户目录下的 <code>.pip/pip.conf</code> 文件中加入以下代码，比如用户目录是 <code>/root</code>，则为 <code>/root/.pip/pip.conf</code> 如果 <code>.pip</code> 目录不存在，则需要自己手动创建，这里就不再赘述了：</p>
+<pre><code class="text">[global]
+index-url = https://mirrors.huaweicloud.com/repository/pypi/simple
+trusted-host = mirrors.huaweicloud.com
+timeout = 120
+</code></pre>
+<p>各个系统的 pip 配置文件不定相同：</p>
+<p>Windows: <code>C:\Users\xxxx\pip\pip.ini</code> (xxxx 表示用户名)</p>
+<p>Linux: <code>~/.pip/pip.conf</code></p>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

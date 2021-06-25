@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>重置 Downie 4 试用有效期 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2020-11-20-reset-downie-4-trial" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>重置 Downie 4 试用有效期</h1>
+  
+
+      </header>
+      <div>
+      2020-11-20
+      
+        / 
+        
+          <span><a href="/tags/Hacker/">#Hacker</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+
+        </div>
+
+        <p>Downie 4 是 macOS 上一款优秀的下载工具，不仅能够方便下载 YouTube 视频，还能够高效地下载 HTTP/HTTPS 链接资源。当然其实还支持非常多的视频网站下载视频。软件提供 14 天试用时间，试用期之内用户能够使用几乎所有正版购买的功能，这还是非常良心的，那么其实试用版对普通用户来说已经非常够用了。那么这个软件试用期 14 天过了之后，自然就需要用户考虑购买使用了。</p>
+<p>本文所述重置 Downie 4 试用有效期的方法同样适用其他具有试用有效期的软件。</p>
+<p>那么，试用有效期的原理就是：</p>
+<ol>
+<li>读取试用有效期文件</li>
+<li><strong>IF</strong> 文件不存在 <strong>Do</strong></li>
+<li>​    创建文件并写入当前时间</li>
+<li><strong>END</strong> <strong>IF</strong></li>
+<li></li>
+<li><strong>IF</strong> 文件存在 <strong>AND</strong> 超出试用期 <strong>Do</strong></li>
+<li>​    提示购买</li>
+<li>​    <strong>EXIT</strong></li>
+<li><strong>END</strong> <strong>IF</strong></li>
+<li></li>
+<li>显示剩余试用期时长</li>
+</ol>
+<p>针对这样的有效试用期判断方式的破解方式就很简单：找到试用有效期文件，将其删除即可。</p>
+<p>至于怎么找呢，有很多方法，这里主要就是靠经验了。先找到软件存放数据的目录，macOS 下一般都在 <code>~/Library</code> 里面，然后可以通过目录查找的方式找软件的名称，当然还可以配合一些 App 数据清理工具查看 App 存放数据的目录或者是名称。这样能够大大降低搜索的范围。</p>
+<p>至于 Downie 4 嘛，就用以下命令即可：</p>
+<pre><code>rm -rfv &quot;/Users/ismdeep/Library/Containers/com.charliemonroe.Downie-4/Data/Library/Application Support/Downie 4&quot;
+</code></pre><p>当然，笔者是在 <code>~/.zshrc</code> 中设置了 alias 的</p>
+<pre><code>alias reset-downie-trial=&#39;rm -rfv &quot;/Users/ismdeep/Library/Containers/com.charliemonroe.Downie-4/Data/Library/Application Support/Downie 4&quot;&#39;
+</code></pre><p>这样以后需要删除试用时间的话就执行 <code>reset-downie-trial</code> 即可。</p>
+<p>好吧，扯了这么多，其实最后才是最重要的部分，就如之前看到一篇文章下的评论一样：一条***命令就行了，非要写这么长。这个嘛，我还是更想让各位明白个所以然啦。</p>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

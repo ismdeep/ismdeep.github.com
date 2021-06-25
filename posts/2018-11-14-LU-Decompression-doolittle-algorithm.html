@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>LU分解之doolittle算法 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2018-11-14-LU-Decompression-doolittle-algorithm" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>LU分解之doolittle算法</h1>
+  
+
+      </header>
+      <div>
+      2018-11-14
+      
+        / 
+        
+          <span><a href="/tags/Algorithm/">#Algorithm</a></span>
+        
+          <span><a href="/tags/Hacker/">#Hacker</a></span>
+        
+          <span><a href="/tags/Common-Lisp/">#Common Lisp</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+
+        </div>
+
+        <p>&nbsp;</p>
+<a id="more"></a>
+<pre><code class="lisp">;; author: ismdeep
+;; blog: https://ismdeep.com
+;; blog entry: https://ismdeep.com/238
+;; doolittle algorithm to decompose a square matrix
+
+(defun mmul (A B)
+  (let* ((m (car (array-dimensions A)))
+         (n (cadr (array-dimensions A)))
+         (l (cadr (array-dimensions B)))
+         (C (make-array `(,m ,l) :initial-element 0)))
+    (loop for i from 0 to (- m 1) do
+              (loop for k from 0 to (- l 1) do
+                    (setf (aref C i k)
+                          (loop for j from 0 to (- n 1)
+                                sum (* (aref A i j)
+                                       (aref B j k))))))
+    C))
+
+;; Using doolittle algorithm to decomposes a square matrix A for LU = A and LDV = A
+(defun doolittle-lu (A)
+  (let* ((n (car (array-dimensions A))) (tmp 0)
+         (L (make-array `(,n ,n) :initial-element 0))
+         (U (make-array `(,n ,n) :initial-element 0))
+         (D (make-array `(,n ,n) :initial-element 0))
+         (V (make-array `(,n ,n) :initial-element 0))
+         (lu-mmul 0)
+         (ldv-mmul 0))
+
+    (loop for j from 0 to (- n 1) do (setf (aref U 0 j) (aref A 0 j)))
+    (loop for i from 0 to (- n 1) do (setf (aref L i i) 1))
+    (loop for i from 1 to (- n 1) do 
+      ; generate L
+      (loop for j from 0 to (- i 1) do
+        (setf tmp (aref A i j))
+        (loop for k from 0 to (- j 1) do (setf tmp (- tmp (* (aref L i k) (aref U k j)))))
+        (setf (aref L i j) (/ tmp (aref U j j)))
+        )
+      ; generate U
+      (loop for j from i to (- n 1) do
+        (setf tmp (aref A i j ))
+        (loop for k from 0 to (- i 1) do (setf tmp (- tmp (* (aref L i k) (aref U k j)))))
+        (setf (aref U i j) tmp)
+        )
+      )
+
+    ; output A
+    (format t &quot;---------- A ------------------~%&quot;)
+    (loop for i from 0 to (- n 1) do
+      (loop for j from 0 to (- n 1) do 
+        (format t &quot;~4A &quot; (aref A i j)))
+      (format t &quot;~%&quot;))    
+
+    ; output L
+    (format t &quot;~%~%---------- L ------------------~%&quot;)
+    (loop for i from 0 to (- n 1) do
+      (loop for j from 0 to (- n 1) do 
+        (format t &quot;~4A &quot; (aref L i j)))
+      (format t &quot;~%&quot;))
+
+    ; output U
+    (format t &quot;~%~%---------- U ------------------~%&quot;)
+    (loop for i from 0 to (- n 1) do
+      (loop for j from 0 to (- n 1) do 
+        (format t &quot;~4A &quot; (aref U i j)))
+      (format t &quot;~%&quot;))
+
+    ; output L * U
+    (setf lu-mmul (mmul L U))
+    (format t &quot;~%~%---------- L * U --------------~%&quot;)
+    (loop for i from 0 to (- n 1) do
+      (loop for j from 0 to (- n 1) do 
+        (format t &quot;~4A &quot; (aref lu-mmul i j)))
+      (format t &quot;~%&quot;))
+
+    ; generate D
+    (loop for i from 0 to (- n 1) do
+      (setf (aref D i i) (aref U i i)))
+
+    ; generate V
+    (loop for i from 0 to (- n 1) do
+      (loop for j from i to (- n 1) do
+        (setf (aref V i j) (/ (aref U i j) (aref U i i)))))
+
+    ; output D
+    (format t &quot;~%~%---------- D ------------------~%&quot;)
+    (loop for i from 0 to (- n 1) do
+      (loop for j from 0 to (- n 1) do 
+        (format t &quot;~4A &quot; (aref D i j)))
+      (format t &quot;~%&quot;))
+
+    ; output V
+    (format t &quot;~%~%---------- V ------------------~%&quot;)
+    (loop for i from 0 to (- n 1) do
+      (loop for j from 0 to (- n 1) do 
+        (format t &quot;~4A &quot; (aref V i j)))
+      (format t &quot;~%&quot;))
+
+
+    ; output L * D * V
+    (setf ldv-mmul (mmul (mmul L D) V))
+    (format t &quot;~%~%---------- L * D * V ----------~%&quot;)
+    (loop for i from 0 to (- n 1) do
+      (loop for j from 0 to (- n 1) do 
+        (format t &quot;~4A &quot; (aref ldv-mmul i j)))
+      (format t &quot;~%&quot;))
+
+
+  ;; Return L and U
+  (values L U)))
+
+
+(let ((g 0))
+  (setf g (make-array &#39;(4 4) :initial-contents &#39;((2 1 -5 1) (1 -3 0 -6) (0 2 -1 2) (1 4 -7 6)))) 
+  (doolittle-lu g))
+</code></pre>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

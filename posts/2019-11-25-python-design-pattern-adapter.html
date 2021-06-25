@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>Python 设计模式之适配器模式 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2019-11-25-python-design-pattern-adapter" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>Python 设计模式之适配器模式</h1>
+  
+
+      </header>
+      <div>
+      2019-11-25
+      
+        / 
+        
+          <span><a href="/tags/Java/">#Java</a></span>
+        
+          <span><a href="/tags/Python/">#Python</a></span>
+        
+          <span><a href="/tags/Design-Pattern/">#Design Pattern</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+
+        </div>
+
+        <p><strong>意图：</strong> 将一个类的接口转换成客户希望的另一个接口。适配器模式使得原本由于接口不兼容而不能一起工作的那些类可以一起工作。</p>
+<p><strong>适用性：</strong> 1. 你想使用一个类已经存在的类，而它的接口不符合你的需求。 2. 你想创建一个可以复用的类，该类可以与其他不相关的类或不可预见的类（即那些接口可能不一定兼容的类）协同工作。</p>
+<p>现实中有很多适配器设计模式的例子，比如国内的电脑拿到欧洲那边是不能直接使用的，因为电脑的电源插口是不一样的，欧洲那边电源提供的电压是110V，这个时候就需要一个转接器就将110V电压转换成220V电压，这个时候就可以使用国内购买的电脑了。这个转接器用的就是适配器模式</p>
+<pre><code class="c"># coding:utf-8
+
+
+def printInfo(info):
+    print(info)
+
+
+# 球员类
+class Player():
+    name = &#39;&#39;
+
+    def __init__(self, name):
+        self.name = name
+
+    def Attack(self):
+        pass
+
+    def Defense(self):
+        pass
+
+
+# 前锋
+class Forwards(Player):
+    def __init__(self, name):
+        Player.__init__(self, name)
+
+    def Attack(self):
+        printInfo(&quot;前锋%s 进攻&quot; % self.name)
+
+    def Defense(self):
+        printInfo(&quot;前锋%s 防守&quot; % self.name)
+
+
+# 中锋
+class Center(Player):
+    def __init__(self, name):
+        Player.__init__(self, name)
+
+    def Attack(self):
+        printInfo(&quot;中锋%s 进攻&quot; % self.name)
+
+    def Defense(self):
+        printInfo(&quot;中锋%s 防守&quot; % self.name)
+
+
+# 后卫
+class Guards(Player):
+    def __init__(self, name):
+        Player.__init__(self, name)
+
+    def Attack(self):
+        printInfo(&quot;后卫%s 进攻&quot; % self.name)
+
+    def Defense(self):
+        printInfo(&quot;后卫%s 防守&quot; % self.name)
+
+
+# 外籍中锋（待适配类）
+# 中锋
+class ForeignCenter(Player):
+    name = &#39;&#39;
+
+    def __init__(self, name):
+        Player.__init__(self, name)
+
+    def ForeignAcctack(self):
+        printInfo(&quot;外籍中锋%s 进攻&quot; % self.name)
+
+    def ForeignDefense(self):
+        printInfo(&quot;外籍中锋%s 防守&quot; % self.name)
+
+
+# 翻译（适配类）
+class Translator(Player):
+    foreign_center = None
+
+    def __init__(self, name):
+        self.foreign_center = ForeignCenter(name)
+
+    def Attack(self):
+        self.foreign_center.ForeignAcctack()
+
+    def Defense(self):
+        self.foreign_center.ForeignDefense()
+
+
+def clientUI():
+    b = Forwards(&quot;巴蒂尔&quot;)
+    ym = Guards(&quot;姚明&quot;)
+    m = Translator(&quot;麦克格雷迪&quot;)
+
+    b.Attack()
+    m.Defense()
+    ym.Attack()
+    ym.Defense()
+
+
+clientUI()
+</code></pre>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

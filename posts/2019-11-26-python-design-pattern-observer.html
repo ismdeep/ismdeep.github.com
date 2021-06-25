@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>Python 设计模式之观察者模式 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2019-11-26-python-design-pattern-observer" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>Python 设计模式之观察者模式</h1>
+  
+
+      </header>
+      <div>
+      2019-11-26
+      
+        / 
+        
+          <span><a href="/tags/Java/">#Java</a></span>
+        
+          <span><a href="/tags/Python/">#Python</a></span>
+        
+          <span><a href="/tags/Design-Pattern/">#Design Pattern</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+
+        </div>
+
+        <p><strong>意图：</strong> 定义对象间的一种一对多的依赖关系，当一个对象的状态发生改变时，所有依赖于它的对象都得到通知并被自动更新。</p>
+<p><strong>适用性：</strong> 当一个抽象模型有两个方面，其中一个方面依赖于另一方面。将这二者封装在独立的对象中以使它们可以各自独立地改变和复用。当对一个对象的改变需要同时改变其他对象，而不知道具体有多少对象有待改变。当一个对象必须通知其他对象，而它又不能假定其他对象是谁。换言之，你不希望这些对象是紧密耦合的。</p>
+<p><img src="https://upload.ismdeep.com/images/2020/08/07/959d1aeabc2ad60c4ccbf4600fd146f0-b928b6.jpg" alt="photo_2019-11-26_16-48-52"></p>
+<pre><code class="python"># -*- coding: utf-8 -*-
+
+#
+# 观察者（Observer）模式又名发布-订阅（Publish/Subscribe）模式
+# 当我们希望一个对象的状态发生变化，那么依赖与它的所有对象都能相应变化(获得通知),那么就可以用到Observer模式， 其中的这些依赖对象就是观察者的对象，那个要发生变化的对象就是所谓’观察者’
+
+
+# 经过乱搞版的测试，为什么要使用property，因为类 属性的值是动态的，不是固定的,每个对象有不同的msg,所有只有使用动态赋值
+
+
+class ObserverBase(object):
+    &#39;&#39;&#39;观察者基类&#39;&#39;&#39;
+
+    def __init__(self):
+        self._observerd_list = []
+
+    def attach(self, observe_subject):
+        &#39;&#39;&#39;
+        添加要观察的对象
+        :param observe_subject:
+        :return:
+        &#39;&#39;&#39;
+        if observe_subject not in self._observerd_list:
+            self._observerd_list.append(observe_subject)
+            print(&quot;[%s]已经将[%s]加入观察队列...&quot; % (self.name, observe_subject))
+
+    def detach(self, observe_subject):
+        &#39;&#39;&#39;
+        解除观察关系
+        :param observe_subject:
+        :return:
+        &#39;&#39;&#39;
+        try:
+            self._observerd_list.remove(observe_subject)
+            print(&quot;不再观察[%s]&quot; % observe_subject)
+        except ValueError:
+            pass
+
+    def notify(self):
+        &#39;&#39;&#39;
+        通知所有被观察者
+        :return:
+        &#39;&#39;&#39;
+        for objserver in self._observerd_list:
+            # 把自己传进去
+            objserver.update(self)
+
+
+class Observer(ObserverBase):
+    &#39;&#39;&#39;观察者类&#39;&#39;&#39;
+
+    def __init__(self, name):
+        super(Observer, self).__init__()
+        self.name = name
+        self._msg = &#39;&#39;
+
+    @property
+    def msg(self):
+        &#39;&#39;&#39;
+        当前状况
+        :return:
+        &#39;&#39;&#39;
+        return self._msg
+
+    @msg.setter
+    def msg(self, content):
+        self._msg = content
+        self.notify()
+
+
+class GCDViewer(object):
+    &#39;&#39;&#39;
+    共军被观察者
+    &#39;&#39;&#39;
+
+    # observer_subject就是观察者对象
+    def update(self, observer_subject):
+        print(&quot;共军:收到[%s]消息[%s] &quot; % (observer_subject.name, observer_subject.msg))
+
+
+class GMDViewer(object):
+    &#39;&#39;&#39;
+    国军被观察者
+    &#39;&#39;&#39;
+
+    def update(self, observer_subject):
+        print(&quot;国军:收到[%s]消息[%s] &quot; % (observer_subject.name, observer_subject.msg))
+
+
+if __name__ == &#39;__main__&#39;:
+    observer1 = Observer(&quot;共军放哨者&quot;)
+    observer2 = Observer(&quot;国军放哨者&quot;)
+
+    gongjun1 = GCDViewer()
+    guojun1 = GMDViewer()
+
+    observer1.attach(gongjun1)
+    observer1.attach(guojun1)
+
+    observer2.attach(guojun1)
+
+    observer1.msg = &quot;\033[32;1m敌人来了...\033[0m&quot;
+
+    observer2.msg = &quot;\033[31;1m前方发现敌人,请紧急撤离,不要告诉共军\033[0m&quot;
+</code></pre>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>用 Markdown 来进行 LaTeX 写作 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2021-01-11-write-your-latex-document-with-markdown" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>用 Markdown 来进行 LaTeX 写作</h1>
+  
+
+      </header>
+      <div>
+      2021-01-11
+      
+        / 
+        
+          <span><a href="/tags/LaTeX/">#LaTeX</a></span>
+        
+          <span><a href="/tags/Markdown/">#Markdown</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-什么是-Markdown-？"><span class="toc-text">1. 什么是 Markdown ？</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-什么是-LaTeX-？"><span class="toc-text">2. 什么是 $\LaTeX$ ？</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-文件组织方式"><span class="toc-text">3. 文件组织方式</span></a></li></ol>
+  </div>
+
+
+        </div>
+
+        <p>一直以来 Markdown 和 LaTeX 都在吸引着我，各自有着各自的优缺点。Markdown 很简单，但是在论文排版、书籍排版等方面不够专业，只能用做简单的博客方面。LaTeX 有非常强大的排版系统，但是书写起来不够优雅，目前还没有见到有什么所见即所得的 LaTeX 编辑器。于是本文主要讲述目前笔者摸索出来的一套将 Markdown 与 LaTeX 结合起来进行文章混合写作的方法。</p>
+<h1 id="1-什么是-Markdown-？"><a href="#1-什么是-Markdown-？" class="headerlink" title="1. 什么是 Markdown ？"></a>1. 什么是 Markdown ？</h1><p>Markdown 是一种轻量级的标记语言，允许人们使用简单易读的纯文本格式编写文档。编写出来的文档能够很轻松的转换成 HTML、Word、epub 等文档。得益于其简单易读的语法格式，Markdown 成为了程序员们编写文档的主要工具。不仅如此，越来越多的人开始使用 Markdown 来进行写作。Markdown 是一种文档标记语言，而针对 Markdown 的文档编辑器也非常多。主流使用的有：Typora、MWeb、MarkdownPad、Mou等。除了这些 Markdown 的文档编辑器，甚至有很多笔记软件也内置了 Markdown 语法支持，比如我们熟悉的印象笔记、有道云笔记、为知笔记、Notion等等。</p>
+<h1 id="2-什么是-LaTeX-？"><a href="#2-什么是-LaTeX-？" class="headerlink" title="2. 什么是 $\LaTeX$ ？"></a>2. 什么是 $\LaTeX$ ？</h1><p>$\LaTeX$ 是一种基于 $\TeX$ 的排版系统。利用这种格式系统进行处理，即使使用者没有排版和程序设计的知识也可以充分发挥由 $\TeX$ 所提供的强大功能，使用者不需要一一亲自去设计或校对就能在几天甚至是几小时内生成很多具有书籍品质的印刷品。$\LaTeX$ 在生成复杂的表格和数学公式方面尤为突出。因此它非常适用于生成高质量的科技和数学、物理文档。</p>
+<h1 id="3-文件组织方式"><a href="#3-文件组织方式" class="headerlink" title="3. 文件组织方式"></a>3. 文件组织方式</h1><p>Markdown 文件不宜过大，所以写的文件按章存放：<code>chapter01.md</code>, <code>chapter02.md</code> 等等。</p>
+<p>如 <code>chapter01.md</code> ：</p>
+<pre><code class="markdown"># 简介
+
+路径规划 \cite{Zafar2018} 在很多领域都具有广泛的应用，在高新科技领域的应用有：机器人的自主无碰撞行为；无人机的避障突防飞行等。
+</code></pre>
+<p>通过 <code>pandoc -r markdown-auto_identifiers -w latex chapter01.md -o chapter01.tex</code> 可以生成对应的 <code>.tex</code> 文件。有了 <code>.tex</code> 文件，则可以在主文件中进行引用了。</p>
+<p><code>main.tex</code> 如下：</p>
+<pre><code class="tex">\documentclass[UTF8]{ctexart}
+
+\usepackage{url}
+\usepackage{hyperref}
+
+\title{路径规划算法研究}
+
+\author{L. Jiang}
+
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\input{chapter01}
+
+\bibliographystyle{IEEEtran}
+\bibliography{IEEEabrv,my}
+
+\end{document}
+</code></pre>
+<p>而参考文献只需要新建一个 <code>my.bib</code> 文件，然后将文献管理器（如：Mendeley，EndNote等）导出的 BibTeX 格式的内容复制进去即可。而本人在使用 Mendeley 作为文献管理器时，最后直接将整个 Mendeley 所有文献全部导出或者将某个分类目录下的全部导出到 <code>my.bib</code> 文件即可，非常地银杏。</p>
+<p><img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/f0d7d378-231b-4d5f-a3a2-50b80f3b973d/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=AKIAT73L2G45O3KS52Y5%2F20210111%2Fus-west-2%2Fs3%2Faws4_request&amp;X-Amz-Date=20210111T062612Z&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=6acd0d3964858640df336f40743541177da0b69b9bdf8481f7079ca41085ef3b&amp;X-Amz-SignedHeaders=host&amp;response-content-disposition=filename%20%3D%22Untitled.png%22" alt></p>
+
+
+        
+        <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  "HTML-CSS": {
+    preferredFont: "TeX",
+    availableFonts: ["STIX","TeX"],
+    linebreaks: { automatic:true },
+    EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+  },
+  tex2jax: {
+    inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+    processEscapes: true,
+    ignoreClass: "tex2jax_ignore|dno",
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  TeX: {
+    noUndefined: {
+      attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" }
+    },
+    Macros: { href: "{}" }
+  },
+  messageStyle: "none"
+});
+</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Queue(function() {
+  var all = MathJax.Hub.getAllJax(), i;
+  for(i=0; i < all.length; i += 1) {
+    all[i].SourceElement().parentNode.className += ' has-jax';
+  }
+});
+</script>
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

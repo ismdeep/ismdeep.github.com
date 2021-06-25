@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>C程序设计语言000000000基础入门 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2020-09-21-c-language-for-beginners" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>C程序设计语言000000000基础入门</h1>
+  
+
+      </header>
+      <div>
+      2020-09-21
+      
+        / 
+        
+          <span><a href="/tags/Hacker/">#Hacker</a></span>
+        
+          <span><a href="/tags/C/">#C</a></span>
+        
+          <span><a href="/tags/Development/">#Development</a></span>
+        
+          <span><a href="/tags/Study/">#Study</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#0x00-写在前面的话"><span class="toc-text">0x00 写在前面的话</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x01-基础知识"><span class="toc-text">0x01 基础知识</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#什么是程序设计？"><span class="toc-text">什么是程序设计？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#什么是-C-语言？"><span class="toc-text">什么是 C 语言？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x02-C-语言程序设计环境安装"><span class="toc-text">0x02 C 语言程序设计环境安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x03-数据类型"><span class="toc-text">0x03 数据类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x04-控制流"><span class="toc-text">0x04 控制流</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x05-数组"><span class="toc-text">0x05 数组</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x06-函数"><span class="toc-text">0x06 函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x07-指针"><span class="toc-text">0x07 指针</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0xFF-C语言编程练习题"><span class="toc-text">0xFF C语言编程练习题</span></a></li></ol>
+  </div>
+
+
+        </div>
+
+        <p>这是一篇C语言程序设计入门的教程，我寄希望于通过这篇简单的入门教程让你理解C语言以及程序设计基础。或许有人会嘲笑我，人家最短的C语言入门也得21天，你怎么就能够通过一篇文章，讲透C语言呢？emmm，话说我这里想要讲的是C语言的基本用法。有些功能会很简单，而不去过多的牵扯太多语法上的细节。</p>
+<h2 id="0x00-写在前面的话"><a href="#0x00-写在前面的话" class="headerlink" title="0x00 写在前面的话"></a>0x00 写在前面的话</h2><p>这篇文章可以算是学习 C 语言的一个引子，不太明白的地方可以发送邮件至笔者邮箱，笔者将通过邮件方式进行回复，或者更新博客文章以更加详细的完善本文。<strong>本文尽量做到语言简洁明了，通俗易懂。</strong>正因为如此，一些概念上的描述应该会与教科书不同。</p>
+<h2 id="0x01-基础知识"><a href="#0x01-基础知识" class="headerlink" title="0x01 基础知识"></a>0x01 基础知识</h2><h3 id="什么是程序设计？"><a href="#什么是程序设计？" class="headerlink" title="什么是程序设计？"></a>什么是程序设计？</h3><p>让我们先从<strong>程序设计</strong>开始说起吧。说起程序设计，一个最简单，也是大家应该都听说过的例子就是：“如何将大象放进冰箱。” 这个例子就是一个程序设计的问题。那么以下我们给出部分网友给出的方法：</p>
+<pre><code>1. 打开冰箱门
+2. 将大象放进冰箱
+3. 关上冰箱门
+</code></pre><p>从上面这个例子，我们能够看出：<strong>程序</strong>就是将一系列<strong>具体明确</strong>的动作按照<strong>规定好的顺序</strong>依次执行。这里我们给出了程序的两个特点：1. 动作具体明确；2. 动作执行具有一定的顺序。</p>
+<p><strong>解释一下：</strong></p>
+<ol>
+<li><strong>动作具体明确：</strong>网络上经常开玩笑说程序员都是钢铁直男。确实，不得不说，程序员在有些时候遇到问题就是这个样子的，因为程序员每天的日常工作都是跟计算机打交道，程序员需要将<strong>需求</strong>（需要完成的任务、实现的功能）转化成计算机可以执行的程序代码，而由于计算机只能够执行一些非常简单且动作明确的指令。（比如：计算1+2的结果等等。）日常工作导致了我们程序员在思考问题的时候容易具有这样的特点。当然，大部分程序员在工作以外，也还是会比较懂情调的，不会显得那么木讷。</li>
+<li><strong>规定好的顺序</strong>：什么叫规定好的顺序呢？就像上面的例子中，只有先打开冰箱门这个动作完成了之后，才能将大象放进冰箱，当执行完将大象放进冰箱这个动作后，最后才能去关上冰箱门。这样的例子现实生活中到处都是。（比如：在某宝上购物，你首先需要打开某宝APP，然后找到想要购买的商品，接着下单，付款，在付款之后卖家收到商品购买通知，卖家才会发货。）</li>
+</ol>
+<p>以上两点，是笔者对于学习程序设计的人们一个最基本的思维要求。也就是要求大家在设计程序的时候要想清楚：程序里哪些动作是具体明确的，哪些动作先执行，哪些动作后执行。</p>
+<p>那么，讲了这么多我们还是没有讲到程序设计到底是个啥。这里我们要说的是计算机编程中的程序设计，<strong>程序设计</strong>是指通过计算机编程语言设计一个让计算机按照<strong>规定好的顺序</strong>执行<strong>动作具体明确</strong>的指令以帮助我们解决问题。</p>
+<h3 id="什么是-C-语言？"><a href="#什么是-C-语言？" class="headerlink" title="什么是 C 语言？"></a>什么是 C 语言？</h3><p>那么，什么是<strong>C语言</strong>呢？C语言就是一种计算机语言。因为计算机只能够执行由01组成的二进制机器指令，而直接用01直接编写计算机能够执行的机器代码，对人类来说是一件非常困难的事情，于是人们设计了各种各样的程序设计语言帮助人们编写计算机程序，然后将人们根据该语言<strong>规定好的语法规则</strong>写出来的程序代码转化成计算机可以直接执行的机器代码。而C语言则是这些设计出来帮助大家编写程序的计算机程序设计语言中的一种。</p>
+<p>每种语言都会有自己<strong>规定好的语法规则</strong>，这也就意味着，如果你不按照规定好的语法规则去编写代码的话，那么该语言的<strong>编译器</strong>或者<strong>解释器</strong>则不能够将代码转化为机器能够执行的机器代码，即：编译失败！！！所以，学习程序设计语言，一定要记住该语言的语法规则。</p>
+<h2 id="0x02-C-语言程序设计环境安装"><a href="#0x02-C-语言程序设计环境安装" class="headerlink" title="0x02 C 语言程序设计环境安装"></a>0x02 C 语言程序设计环境安装</h2><p>环境安装部分，大家可以执行网上寻找解决方案。</p>
+<p>Windows 上笔者推荐 “MinGW + Sublime Text 3 + 命令行” 的方式。</p>
+<p>macOS 和 Linux 上环境则简单一些，应该都是可以直接使用 gcc 编译器的。</p>
+<h2 id="0x03-数据类型"><a href="#0x03-数据类型" class="headerlink" title="0x03 数据类型"></a>0x03 数据类型</h2><p>计算机处理数据都是01的二进制数据，但是我们在进行程序设计的时候，遇到的各种问题，我们会需要特定的数据类型来表示我们的数据。比如：在计数的时候我们需要用到整数；在处理金额数值的时候我们需要用到小数；在处理文本内容的时候我们需要用到字符串；等等。</p>
+<p>接下来我们对数据类型进行分类：</p>
+<p>整型：<code>int</code></p>
+<p>浮点类型：<code>float</code>, <code>double</code></p>
+<p>字符类型：<code>char</code></p>
+<p>空类型：<code>void</code></p>
+<p>以上是我们最常见的数据类型。</p>
+<p>类型是用来对变量进行描述的。比如：我们要创建一个变量用来存放计数器的数值信息，则我们可以通过 <code>int count;</code> 来<strong>声明</strong>这个<strong>变量</strong>。（变量就是存放在内存中的一个名称标记，不然怎么才能知道内存应该保存在哪里、从哪里取这个数值呢？变量之所以称之为变量，是因为其值是可以改变的，我们可以通过程序指令对其存储的值进行修改。与变量相对还有叫<strong>常量</strong>，其值是不可以改变的，常量的作用是用来便于表示代码中一些特定的数值的。）</p>
+<p>常量的作用。比如粉红色对应的RGB的值是<code>255,192,203</code>，其对应十六进制值就是<code>#FFC0CB</code>，在程序中出现这样的数值，我们称之为<strong>魔法数字</strong>。那么如果程序员直接在程序中给一个变量赋值为粉红色的值的话，代码 <code>color_val = 0xFFC0CB;</code> 则显得不方便阅读。于是我们可以通过宏定义去定义常量并在需要使用的地方去使用：</p>
+<pre><code class="c">#define COLOR_PINK 0xFFC0CB
+
+...
+
+color_val = COLOR_PINK;
+</code></pre>
+<p>对了，这里有一点要明白的：变量只有在<strong>声明</strong>了之后才可以使用。如：</p>
+<pre><code class="c">int count;
+count = 0;
+count = count + 1;
+printf(&quot;%d\n&quot;, count);
+</code></pre>
+<p>以上四行代码依次为：</p>
+<ol>
+<li>声明 <code>int</code> 类型的变量 <code>count</code> ; </li>
+<li>对 <code>count</code> 类型赋值为 <code>0</code> ; </li>
+<li>将 <code>count</code> 的值增加<code>1</code>;</li>
+<li>输出 <code>count</code> 的值。</li>
+</ol>
+<h2 id="0x04-控制流"><a href="#0x04-控制流" class="headerlink" title="0x04 控制流"></a>0x04 控制流</h2><p>程序设计的控制流即控制程序执行的顺序。三大控制流：<strong>顺序结构</strong>、<strong>选择结构</strong>、<strong>循环结构</strong>。这部分知识点的难点在于理解循环结构。</p>
+<p><strong>顺序结构</strong>：程序按照代码排列的顺序从上到下依次执行。比如：</p>
+<pre><code class="c">x = 4;
+y = x * x;
+</code></pre>
+<p>以上例子先执行 <code>x = 4</code>; 然后执行 <code>y = x * x;</code> </p>
+<p>这部分非常容易理解，对吧。</p>
+<p><strong>选择结构</strong>：通过判断来决定程序接下来执行哪部分代码块。比如：</p>
+<pre><code class="c">if (表达式)
+{
+    语句块1;
+}
+</code></pre>
+<p>解释：程序执行到 <code>if</code> 这个部分时，先执行表达式进行判断，如果判断成立则执行里面的”语句块1”，然后从 <code>}</code> 后继续执行；否则直接从 <code>}</code> 后面继续执行。</p>
+<p><strong>循环结构：</strong> 通过循环结构来让程序不断执行某一部分代码，直到达到某种条件并跳出此结构。循环结构控制有：<code>while</code>, <code>do~while</code>, <code>for</code> 三种。</p>
+<p>以上我们说的顺序结构和选择结构，其对应的每一条语句都只能够执行一次，然后程序就继续往后面的执行了。我们一起来思考一个问题，假如我们要计算 <code>1+2+3+4+5</code> 这样的问题，当然这里不考虑等差数列公式哈：）。那么我们在没有循环的情况下，代码应该是下面这样的：</p>
+<pre><code class="c">int sum;
+sum = 0;
+sum += 1;
+sum += 2;
+sum += 3;
+sum += 4;
+sum += 5;
+</code></pre>
+<p>这还是少的，那如果是 <code>1+2+3+...+20000</code> 呢？你还能愉快的写代码吗？我看不能！而且，当我最后这个是个变量呢？因为我想让这个程序更加通用，让这个程序允许用户输入一个数字，然后计算从 1 开始加一直加到这个数字的和。</p>
+<p>那么这里我们就可以通过 <code>while</code> 语句来解决以上问题：</p>
+<pre><code class="c">int sum, i;
+sum = 0;
+i = 1;
+while (i &lt;= 5)
+{
+    sum += i;
+    i++;
+}
+</code></pre>
+<p>解释一下以上的 <code>while</code> 结构，当程序执行到 <code>while</code> 时，程序接下来对 <code>i &lt;= 5</code> 部分进行判断，如果成立则执行 <code>{}</code> 里面的，在执行完 <code>{}</code> 里面的跳回 <code>while</code> 这个地方；否则，直接从 <code>}</code> 后面开始执行。好，我们来执行一下程序看看：</p>
+<pre><code>1: sum = 0;
+2: i = 1;
+
+3: i &lt;= 5? 成立
+4: sum += i; (sum值为1)
+5: i++; (i值为2)
+
+6: i &lt;= 5? 成立
+7: sum += i; (sum值为3)
+8: i++; (i值为3)
+
+9: i &lt;= 5? 成立
+10: sum += i; (sum值为6)
+11: i++; (i值为4)
+
+12: i &lt;= 5? 成立
+13: sum += i; (sum值为10)
+14: i++; (i值为5)
+
+15: i &lt;= 5? 成立
+16: sum += i; (sum值为15)
+17: i++; (i值为6)
+
+18: i &lt;= 5? 不成立
+19: 执行 } 后面的代码
+</code></pre><p>跟着以上步骤执行一下，我觉得差不多应该明白循环结构 <code>while</code> 是怎么执行的了。</p>
+<p>那么 <code>do~while</code> 结构呢？由于我们并不常用到它，所以这里就不再过多去浪费篇幅去说了。</p>
+<p>接下来我们重点讲一讲 <code>for</code> 结构。其实 <code>for</code> 跟 <code>while</code> 是一样的。<code>for</code> 算是对 <code>while</code> 结构的改进。我们下面的代码，再来对比地看一下上面 <code>while</code> 写的代码。我们发现，其实就是将 <code>i = 1</code> 和 <code>i++</code> 这两个语句放到 <code>for</code> 整个大括号里面去了。而这两个程序执行的过程是完全一样的。笔者把<code>for</code> 结构理解成三个部分  <code>for (初始;条件;自增)</code> 。这也是控制一个循环结构的三个要素，进入循环之前，我们需要设置一些变量的初始值；然后控制条件，再满足条件的情况下让循环里面的 <code>{}</code> 代码块部分执行，然后不断通过 “自增” 去改变变量的值，直至变量在条件判断的时候不成立，使得程序跳出循环结构。</p>
+<pre><code class="c">int sum, i;
+sum = 0;
+for (i = 1; i &lt;= 5; i++)
+{
+    sum += i;
+}
+</code></pre>
+<p><strong>注：</strong>学习循环结构的时候，一定要注意循环变量开始值和终止值，也就是从哪个值开始，到那个值结束。</p>
+<h2 id="0x05-数组"><a href="#0x05-数组" class="headerlink" title="0x05 数组"></a>0x05 数组</h2><p>现实生活中就有很多关于数组的例子，比如：名单，购物列表，成绩单，等等。将一些具有同样属性类型的元素按照一定的顺序放在一起，就构成了一个列表，也就是数组了。对于数组的声明，我们需要三个要素：<strong>数组存储数据元素的类型</strong>、<strong>数组名称</strong>、<strong>数组大小</strong>。声明数组的格式为：</p>
+<pre><code class="c">类型 名称[大小];
+</code></pre>
+<p>比如一个班级一次数学考试的成绩（假设成绩都是整数），班级有50位学生，那么用于存储学生成绩的数组则可以如下声明：</p>
+<pre><code class="c">int math_score[50];
+</code></pre>
+<p>那么对于数组中元素应该如何引用呢？看下文中的例子就明白了：</p>
+<pre><code>math_score[0] = 100; // 对 math_score 这个数组中，下标为 0 的元素，赋值为 100
+val = math_score[1]; // 将 math_score 这个数组中，下标为 1 的元素的值取出来，赋值给 val 这个变量
+</code></pre><p>这里有一点需要交待一下的，也是数组中非常重要的一点，那就是：<strong>数组的引用下标是从 $0$ 开始的</strong>。也就是说数组第一个元素，应该是下标为 $0$ 的元素，即 <code>math_score[0]</code> ，那么对于上面声明的这个数组来说，可用的下标元素就有：</p>
+<p><code>math_score[0]</code>, <code>math_score[1]</code>, <code>math_score[2]</code>, … , <code>math_score[48]</code>, <code>math_score[49]</code></p>
+<p>这个部分关于数组下标的内容是比较<strong>重要</strong>的，需要花时间去理解的，这跟我们日常计数有点不一样。</p>
+<p>下面我们来写一个例子：从键盘上输入 10 个整数到一个数组中，并计算这些数字的总和。</p>
+<pre><code class="c">#include &lt;stdio.h&gt;
+
+int main() {
+    int a[10];
+    int sum = 0;
+
+    /* 1. 输入 10 个整数，请注意循环中 i 的初始值以及终止值 */
+    for (int i = 0; i &lt; 10; i++) {
+        scanf(&quot;%d&quot;, &amp;a[i]);
+    }
+
+    /* 2. 通过循环将每个元素的值累加到 sum 上 */
+    for (int i = 0; i &lt; 10; i++) {
+        sum += a[i];
+    }
+
+    /* 3. 输出累加结果 */
+    printf(&quot;%d\n&quot;, sum);
+
+    return 0;
+}
+</code></pre>
+<p>从上面的例子中，我们可以看到，有了循环操作，数组才变得更加灵活。</p>
+<h2 id="0x06-函数"><a href="#0x06-函数" class="headerlink" title="0x06 函数"></a>0x06 函数</h2><p>函数，是一个数学的概念。比如：$f(x) = x^2$ 就是一个函数。这是一个抽象的概念，是一个统一概括的概念。当然，我们都知道这是一个计算平方值的函数，当我们说到这个函数的时候，我们并没有说这是计算某个值的平方值。这时我们就是一个统一概括的概念，表示这个函数具有计算某一类数值平方值的功能。当我们计算 $10$ 的平方的时候，也就是 $f(10)$ 时，这时就是我们去调用这个函数进行计算的一个过程了。</p>
+<p>在 C 语言中，函数会非常的常见，我们可以通过函数，将各种各样的操作抽象出来，然后去描述我们所要解决的那些问题。比如计算平方值。在定义一个函数的时候，我们需要知道这个函数所拥有的几个属性：<strong>函数参数</strong>，<strong>函数返回值是什么类型的</strong>，<strong>函数的名称</strong>。</p>
+<p>我们可以从下面这个例子来看一下函数定义是什么样子的。</p>
+<pre><code class="c">int f(int x) {
+    return x * x;
+}
+</code></pre>
+<p>其实，函数本质上就是一个代码片段，这个代码片段是从哪里开始的呢？答案是：从函数参数开始的，当我们调用这个函数的时候，就会从函数参数部分开始执行，将我们调用函数所使用的参数，将值给函数代码片段的 <code>x</code> . 然后开始执行……</p>
+<p>所以，函数就是一个代码片段，当你调用这个函数的时候，这部分代码才会开始执行，最后将执行的结果返回给你。当你调用 <code>f(10)</code> 这部分最终会返回 $100$ 给你，当你调用 <code>f(8)</code> 则会返回 $64$ 给你。</p>
+<p>那我们接下来看下一个例子：计算一组整数的和</p>
+<pre><code class="c">int calc_arr_sum(int a[], int n) {
+    int sum = 0;
+    for (int i = 0; i &lt; n; i++) {
+        sum += a[i];
+    }
+    return sum;
+}
+</code></pre>
+<p>对于这样一个函数，需要两个参数，数组 <code>a</code> 的名称 和 数组大小值。<strong>因为函数传输过来的是数组 <code>a</code> 的首地址，而这个地址中并不包含这个数组有多大的信息，所以需要另一个参数值来传输数组大小的信息。</strong></p>
+<p>那么我们在数组这一节最后的例子就可以用以下完整代码来编写了：</p>
+<pre><code class="c">#include &lt;stdio.h&gt;
+
+int calc_arr_sum(int a[], int n) {
+    int sum = 0;
+    for (int i = 0; i &lt; n; i++) {
+        sum += a[i];
+    }
+    return sum;
+}
+
+int main() {
+    int a[10];
+    int sum = 0;
+
+    /* 1. 输入 10 个整数，请注意循环中 i 的初始值以及终止值 */
+    for (int i = 0; i &lt; 10; i++) {
+        scanf(&quot;%d&quot;, &amp;a[i]);
+    }
+
+    /* 2. 调用计算数组元素和的函数进行计算 */
+    sum = calc_arr_sum(a, 10);
+
+    /* 3. 输出累加结果 */
+    printf(&quot;%d\n&quot;, sum);
+
+    return 0;
+}
+</code></pre>
+<p><strong>注意：</strong>这里 <code>main()</code> 函数和 <code>calc_arr_sum()</code> 两个函数中的 <code>a</code> 并不是同一个，在 <code>calc_arr_sum()</code> 函数中的 <code>a</code> 是一个抽象的概念，并不是具体的哪一个数组，我们在编写这个函数的时候也是假设其为任意数组而已，很多教材上称之为<strong>形式参数</strong>。而在 <code>main()</code> 函数中的 <code>a</code> 则是通过具体的声明的，这里面存储着从键盘输入的 10 个数值，很多教材上称之为<strong>实际参数</strong>。这部分内容需要着重去理解，理解函数参数中的变量名称的意义。</p>
+<h2 id="0x07-指针"><a href="#0x07-指针" class="headerlink" title="0x07 指针"></a>0x07 指针</h2><p>这部分内容是很多初学者最为头大的部分了。</p>
+<h2 id="0xFF-C语言编程练习题"><a href="#0xFF-C语言编程练习题" class="headerlink" title="0xFF C语言编程练习题"></a>0xFF C语言编程练习题</h2><p>敬请期待……</p>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

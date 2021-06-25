@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>基于 Selenium 和 Python 的网络爬虫 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2020-02-23-web-scraping-using-selenium-and-python" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>基于 Selenium 和 Python 的网络爬虫</h1>
+  
+
+      </header>
+      <div>
+      2020-02-23
+      
+        / 
+        
+          <span><a href="/tags/Python/">#Python</a></span>
+        
+          <span><a href="/tags/Development/">#Development</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#安装"><span class="toc-text">安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#快速开始"><span class="toc-text">快速开始</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#定位元素"><span class="toc-text">定位元素</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#find-element"><span class="toc-text">find_element</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#WebElement"><span class="toc-text">WebElement</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#完整示例"><span class="toc-text">完整示例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#截屏"><span class="toc-text">截屏</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#等待元素出现"><span class="toc-text">等待元素出现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#执行-Javascript"><span class="toc-text">执行 Javascript</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li></ol>
+  </div>
+
+
+        </div>
+
+        <p>&nbsp;</p>
+<a id="more"></a>
+<p>转载自 <a href="https://www.scrapingbee.com/blog/selenium-python/" target="_blank" rel="noopener">https://www.scrapingbee.com/blog/selenium-python/</a> By Kevin Sahin 27 January 2020</p>
+<p>翻译 <a href="https://ismdeep.com">ismdeep</a></p>
+<p><img src="https://upload.ismdeep.com/images/2020/08/07/6f180f9dcf6fee8f9e5a5384cd7c9688-d60481.jpg" alt="header_selenium_python_huded21d234109b3c4b11fa08146297559_67295_1200x0_resize_q75_box"></p>
+<p>在<a href="https://www.scrapingbee.com/blog/web-scraping-with-scrapy/" target="_blank" rel="noopener">上一教程</a>中，我们了解了如何利用 Scrapy 框架解决许多常见的网络爬虫问题。今天我们将通过教程来逐步学习 Selenium （ 使用 Python ❤️ ）。</p>
+<p>Selenium 是指用于浏览器自动化的许多不同的开源项目。它支持所有主流编程语言，包括我们最喜欢的语言：Python .</p>
+<p>Selenium API 使用 WebDriver 协议来控制浏览器（ 例如 Chrome ，Firefox 或 Safari . ）。而该浏览器可以运行在本地或者是远程。</p>
+<p>这个项目最初（ 大概是 20 年前 ）主要是用于跨浏览器的端到端测试（ 验收测试 ）。</p>
+<p>现在它仍然用于测试，还可以用作通用的浏览器自动化平台，当然还可以用于网络爬虫。</p>
+<p>当你必须在网站上执行下列操作时，Selenium 就特别有用：</p>
+<ul>
+<li>点击按钮</li>
+<li>填写表单</li>
+<li>页面滚动</li>
+<li>截屏</li>
+</ul>
+<p>Selenium 对于执行 Javascript 代码也非常有用。假设你要爬取一个单页程序，而找不到直接调用底层 API 的简便方法，那么 Selenium 可能正好能满足你的需要。</p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>我们将用 Chrome 来作为演示，因为请确保你的电脑上已经安装 Chrome：</p>
+<ul>
+<li><a href="https://www.google.com/chrome/" target="_blank" rel="noopener">Chrome 下载页面</a></li>
+<li><a href="https://sites.google.com/a/chromium.org/chromedriver/downloads" target="_blank" rel="noopener">Chrome 驱动下载</a></li>
+<li><code>selenium</code> 包</li>
+</ul>
+<p>如往常一样，为了安装 Selenium 包，建议你使用虚拟环境，例如通过 virtualenv 创建一个虚拟环境：</p>
+<pre><code class="bash">pip install selenium
+</code></pre>
+<h2 id="快速开始"><a href="#快速开始" class="headerlink" title="快速开始"></a>快速开始</h2><p>下载完 Chrome 和 Chrome驱动，并且安装了 Selenium 包之后，就可以启动浏览器了：</p>
+<pre><code class="python">from selenium import webdriver
+
+DRIVER_PATH = &#39;/path/to/chromedriver&#39;
+driver = webdriver.Chrome(executable_path=DRIVER_PATH)
+driver.get(&#39;https://google.com&#39;)
+</code></pre>
+<p>以上代码会以完全模式打开 Chrome 浏览器（ 跟平常用的 Chrome 浏览器一样，只是目前你的浏览器是由 Python 代码来控制的 ）。你应该看到一条消息，显示现在浏览器由自动化软件控制的。</p>
+<p>如果想要让 Chrome 浏览器运行于服务器上的无头模式（ 没有任何图形用户界面 ），例如：</p>
+<pre><code class="python">from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+
+options = Options()
+options.headless = True
+options.add_argument(&quot;--window-size=1920,1200&quot;)
+
+driver = webdriver.Chrome(options=options, executable_path=DRIVER_PATH)
+driver.get(&quot;https://www.nintendo.com/&quot;)
+print(driver.page_source)
+driver.quit()
+</code></pre>
+<p><code>driver.page_source</code> 会返回完整的页面的 HTML 代码。</p>
+<p>这里还有另外两个有趣的 webdriver 属性：</p>
+<ul>
+<li><code>driver.title</code> 获取页面标题</li>
+<li><code>driver.current_url</code> 获取当前 URL（ 当网站有重定向并且你需要知道最终 URL 时，此功能就很有用了。 ）</li>
+</ul>
+<h2 id="定位元素"><a href="#定位元素" class="headerlink" title="定位元素"></a>定位元素</h2><p>在网站上查找数据是 Selenium 的主要用例之一。无论是用于测试套件（确保页面上存在或不存在特定元素）还是网页爬取（提取数据并将其保存以进行进一步分析）。</p>
+<p>Selenium API 中提供了许多方法来选择页面上的元素。你可以使用：</p>
+<ul>
+<li>标签名</li>
+<li>class</li>
+<li>id</li>
+<li>XPath</li>
+<li>CSS 选择器</li>
+</ul>
+<p>我们最近发布了一篇<a href="https://www.scrapingbee.com/blog/practical-xpath-for-web-scraping/" target="_blank" rel="noopener">解释 XPath 的文章</a>，如果你不熟悉 Xpath ，建议去看看。</p>
+<p>通常，查找元素最简单的方法就是打开你的 Chrome 开发工具并检查所需的元素。一个很酷的快捷方式就是用鼠标放在你想要突显的元素上然后按住 <strong>Ctrl + Shift + C</strong> （ macOS 则按住 <strong>cmd + shift + c</strong> ）即可，这样就不必每次都右键再点击检查(inspect)。</p>
+<p><img src="https://upload.ismdeep.com/images/2020/08/07/155137d02df01f508cce5f304d702792-827e0f.png" alt="screenshot_dom_hud6287075ec09d704ecf4a54fd6ad5f23_232087_1500x0_resize_box_2"></p>
+<h3 id="find-element"><a href="#find-element" class="headerlink" title="find_element"></a><code>find_element</code></h3><p>在 Selenium 中有很多中定位元素的方法。假设我们要在下面 HTML 中找到 h1 标签：</p>
+<pre><code class="html">&lt;html&gt;
+    &lt;head&gt;
+        ... some stuff
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;h1 class=&quot;someclass&quot; id=&quot;greatID&quot;&gt;Super title&lt;/h1&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<pre><code class="python">h1 = driver.find_element_by_name(&#39;h1&#39;)
+h1 = driver.find_element_by_class_name(&#39;someclass&#39;)
+h1 = driver.find_element_by_xpath(&#39;//h1&#39;)
+h1 = driver.find_element_by_id(&#39;greatID&#39;)
+</code></pre>
+<p>所有这些方法都是 <code>find_element_*()</code> 以返回元素列表。</p>
+<p>例如，要获取页面上的所有 <code>a</code> 锚点：</p>
+<pre><code class="python">all_links = driver.find_elements_by_tag_name(&#39;a&#39;)
+</code></pre>
+<p>一些元素并不容易通过 id 或者 class 去获取到，这个时候你就需要 XPath 表达式来处理了。你可能还会有多个具有相同 class 的元素需要获取（ id 应该是唯一的 ）。</p>
+<p>XPath 是我最喜欢用来在网页上查找元素的方式。无论是根据在页面 DOM 上的绝对位置还是相对于另一个元素的相对位置，用 XPath 来提取页面上的任何元素都是非常强大的。</p>
+<h2 id="WebElement"><a href="#WebElement" class="headerlink" title="WebElement"></a><code>WebElement</code></h2><p><code>WebElement</code> 是一个用于表示 HTML 元素的 Selenium 对象。</p>
+<p>你可以对这些元素执行许多操作，下面是最常用的几个：</p>
+<ul>
+<li><code>element.text</code> 可以获取到元素的文本</li>
+<li><code>element.click()</code> 执行对这个元素的点击</li>
+<li><code>element.get_attribute(&#39;class&#39;)</code> 获取属性</li>
+<li><code>element.send_keys(&#39;mypassword&#39;)</code> 发送文本到输入框</li>
+</ul>
+<p>还有其他一些有趣的方法，例如 <code>is_displayed()</code>, 如果元素对用户是可见的，则返回 <code>True</code> .</p>
+<p>这可以很巧妙的避免蜜罐（ 例如填写隐藏的输入框 ）。</p>
+<h2 id="完整示例"><a href="#完整示例" class="headerlink" title="完整示例"></a>完整示例</h2><p>这是一个使用我们刚刚提及的有关 Selenium API 不同方法的完整示例。</p>
+<p>我们将要登陆 <a href="https://news.ycombinator.com/login" target="_blank" rel="noopener">Hacker News</a>：</p>
+<p><img src="https://upload.ismdeep.com/images/2020/08/07/7dc25bb5cc6eb3a0fd61059fb7569896-90a2c1.png" alt="screenshot_hn_login"></p>
+<p>在我们的示例中，对 Hacker News 进行身份验证这件事情本身并没有真正的用处，但是可以想象我们可以创建一个自动发布指向你最新博客文章链接的机器人。</p>
+<p>为了进行身份认证，我们需要进行以下操作：</p>
+<ul>
+<li>通过 <code>driver.get()</code> 打开登录页面</li>
+<li>通过 <code>driver.find_element_by_*</code> 选中用户名输入框，然后通过 <code>element.send_keys()</code> 往输入框中填入文本</li>
+<li>同样的操作应用在密码输入框上</li>
+<li>通过 <code>element.click()</code> 点击登录按钮</li>
+</ul>
+<p>是不是很简单？我们来看看代码：</p>
+<pre><code class="python">driver.get(&quot;https://news.ycombinator.com/login&quot;)
+
+login = driver.find_element_by_xpath(&quot;//input&quot;).send_keys(USERNAME)
+password = driver.find_element_by_xpath(&quot;//input[@type=&#39;password&#39;]&quot;).send_keys(PASSWORD)
+submit = driver.find_element_by_xpath(&quot;//input[@value=&#39;login&#39;]&quot;).click()
+</code></pre>
+<p>简单吧？现在，其实这里有一件很重要的事情我们没有做，那就是我们如何知道是否已经登录了？</p>
+<p>有一下几个方法：</p>
+<ul>
+<li>检查错误信息（ 比如 “Wrong password” ）</li>
+<li>检查页面上只有登录后才显示的元素</li>
+</ul>
+<p>我们将检查 logout 按钮，也就是 id 为 <code>logout</code> 的页面元素。简单！</p>
+<p>我们并不能仅仅检查元素是否为 <code>None</code> ，因为所有的 <code>find_element_by_*</code> 函数在 DOM 中找不到元素的时候都是抛出异常。因此，我们必须使用 try/except 并捕获 <code>NoSuchElementException</code> 异常：</p>
+<pre><code class="python"># dont forget from selenium.common.exceptions import NoSuchElementException  
+try:
+    logout_button = driver.find_element_by_id(&quot;logout&quot;)
+    print(&#39;Successfully logged in&#39;)
+except NoSuchElementException:
+    print(&#39;Incorrect login/password&#39;)
+</code></pre>
+<h3 id="截屏"><a href="#截屏" class="headerlink" title="截屏"></a>截屏</h3><p>通过以下代码我们就可以轻松地使用截图功能：</p>
+<pre><code class="python">driver.save_screenshot(&#39;screenshot.png&#39;)
+</code></pre>
+<p><img src="https://upload.ismdeep.com/images/2020/08/07/0c32f61303071982f64feb5f133cf9dd-fb531c.png" alt="screenshot_hucad4c981400a32fa0cf914b0c7692a3a_855594_1500x0_resize_box_2"></p>
+<p>注意：使用 Selenium 截屏时，很多时候都可能会出错。首先，你必须确保窗口大小已经正确设置了。然后，你需要确保前端 Javascript 代码所进行的每一个异步 HTTP 调用均已完成，并且页面已经完全渲染显示出来。</p>
+<p>在我们刚刚的 Hacker News 这个例子中，我们不必担心这些问题，因为这个页面非常简单。</p>
+<h3 id="等待元素出现"><a href="#等待元素出现" class="headerlink" title="等待元素出现"></a>等待元素出现</h3><p>处理大量使用 Javascript 呈现内容的网站可能很棘手。如今，越来越多的网站将 Angular ，React ，Vue.js 等框架用作前端。这些前端框架处理起来很复杂，因为它们会触发许多 AJAX 调用。</p>
+<p>如果我们不得不担心对 API 的异步 HTTP 调用（或许有很多），则有两种方法可以解决此问题：</p>
+<ul>
+<li>截屏前使用 <code>time.sleep(ARBITRARY_TIME)</code></li>
+<li>使用 <code>WebDriverWait</code> 对象</li>
+</ul>
+<p>如果使用 <code>time.sleep()</code> 则可能会使用任意值。问题在于等待的时间太长还是不够。此外，网站在本地 Wi-Fi 环境下可能加载很慢，但是在云服务器上速度则会提高 10 倍。使用 <code>WebDriverWait</code> 方法，你将等待加载元素或者数据的确切时间。</p>
+<pre><code class="python">try:
+    element = WebDriverWait(driver, 5).until(
+        EC.presence_of_element_located((By.ID, &quot;mySuperId&quot;))
+    )
+finally:
+    driver.quit()
+</code></pre>
+<p>这将等待 5 秒钟，以加载 id 为 “mySuperId” 的元素。还有许多其他有趣的条件可以使用，例如：</p>
+<ul>
+<li><code>element_to_be_clickable</code></li>
+<li><code>text_to_be_present_in_element</code></li>
+<li><code>element_to_be_clickable</code><br>你可以在 <a href="https://selenium-python.readthedocs.io/waits.html" target="_blank" rel="noopener">Selenium 文档</a> 中找到有关此信息更多的信息。</li>
+</ul>
+<h3 id="执行-Javascript"><a href="#执行-Javascript" class="headerlink" title="执行 Javascript"></a>执行 Javascript</h3><p>有时，你可能需要在页面上执行一些 Javascript. 例如，假设你要截取一些信息的屏幕快照，但首先需要稍微滚动一下才能看到它，那么通过 Selenium 来处理就会变得轻松一点：</p>
+<pre><code class="python">javaScript = &quot;window.scrollBy(0,1000);&quot;
+driver.execute_script(javaScript)
+</code></pre>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>希望您喜欢这篇博客！现在你应该对 Selenium API 在 Python 中时如何工作的有了一个更好的理解。如果你想了解更多有关使用 Python 爬取网页不同的方法的信息，请随时查看我们的 <a href="https://www.scrapingbee.com/blog/web-scraping-101-with-python/" target="_blank" rel="noopener">python 网页爬虫指南</a>。</p>
+<p>对于从一些大量使用 Javascript 的网站获取数据来说，Selenium 通常是所必需的。问题是大规模运行大量 Selenium / 无头模式 Chrome 浏览器实例是很困难的。这也正是我们使用我们网页爬虫API <a href="https://www.scrapingbee.com/" target="_blank" rel="noopener">ScrapingBee</a> 的原因之一。</p>
+<p>Selenium 确实是是网络上几乎所有内容自动化的一个很出色的工具。</p>
+<p>如果你需要执行一些重复的任务，例如填写表单，检查网站上需要登录后才有的一些信息而并没有提供 API 接口。那么使用 Selenium 自动化应该是一个不错的方法。不过不要忘记这个：</p>
+<p><img src="https://upload.ismdeep.com/images/2020/08/07/afffbf6566a6e67ea6427d28d76d7eea-d4d18a.png" alt="automation_xkcd"></p>
+<hr>
+<p>喵喵怪的小枪枪、biu~~</p>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

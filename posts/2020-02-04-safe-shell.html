@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>编写安全 Shell 脚本 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2020-02-04-safe-shell" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>编写安全 Shell 脚本</h1>
+  
+
+      </header>
+      <div>
+      2020-02-04
+      
+        / 
+        
+          <span><a href="/tags/Linux/">#Linux</a></span>
+        
+          <span><a href="/tags/Repost/">#Repost</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#尽量不用-shell-脚本"><span class="toc-text">尽量不用 shell 脚本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Shell-配置"><span class="toc-text">Shell 配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#set-e"><span class="toc-text">set -e</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#set-u"><span class="toc-text">set -u</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#set-f"><span class="toc-text">set -f</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#set-o-pipefail"><span class="toc-text">set -o pipefail</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用引号"><span class="toc-text">使用引号</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Passing-filenames-or-other-positional-arguments-to-commands"><span class="toc-text">Passing filenames or other positional arguments to commands</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#临时文件"><span class="toc-text">临时文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Use-ShellCheck-to-check-for-bugs"><span class="toc-text">Use ShellCheck to check for bugs</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#其他资源"><span class="toc-text">其他资源</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li></ol>
+  </div>
+
+
+        </div>
+
+        <p>编写 shell 脚本给犯错留出了许多空间，以导致你的脚本会被特定的输入终止或者在碰到不受信任的输入时触发一些公开的安全漏洞。以下是一些让你编写更加安全的 shell 脚本的一些技巧。</p>
+<h2 id="尽量不用-shell-脚本"><a href="#尽量不用-shell-脚本" class="headerlink" title="尽量不用 shell 脚本"></a>尽量不用 shell 脚本</h2><p>最简单的方法就是不使用 shell 脚本。许多高级语言都更容易编写代码，并且也可以避免一些 shell 中有的问题。例如，当你用试图读取一个未初始化的变量（虽然往里面写入并不会）或者是一些函数调用出错的时候，Python 都会自动返回报错信息并结束程序。</p>
+<p>One of shell’s chief advantages is that it’s easy to call out to the huge variety of command-line utilities available. Much of that functionality will be available through libraries in Python or other languages. For the handful of things that aren’t, you can still call external programs. In Python, the <a href="https://docs.python.org/2/library/subprocess.html" target="_blank" rel="noopener">subprocess</a> module is very useful for this. You should try to avoid passing <code>shell=True</code> to <code>subprocess</code> (or using <code>os.system</code> or similar functions at all), since that will run a shell, exposing you to many of the same issues as plain shell has. It also has two big advantages over shell — it’s a lot easier to avoid <a href="https://www.gnu.org/software/bash/manual/html_node/Word-Splitting.html" target="_blank" rel="noopener">word-splitting</a> or similar issues, and since calls to subprocess will tend to be relatively uncommon, it’s easy to scrutinize them especially hard. When using <code>subprocess</code> or similar tools, you should still be aware of the suggestions in “Passing filenames or other positional arguments to commands” below.</p>
+<h2 id="Shell-配置"><a href="#Shell-配置" class="headerlink" title="Shell 配置"></a>Shell 配置</h2><p>POSIX sh and especially bash have a number of settings that can help write safe shell scripts.</p>
+<p>I recommend the following in bash scripts:</p>
+<pre><code>set -euf -o pipefail
+</code></pre><p>In dash, <code>set -o</code> doesn’t exist, so use only <code>set -euf</code>.</p>
+<p>What do those do?</p>
+<h3 id="set-e"><a href="#set-e" class="headerlink" title="set -e"></a><a href="https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html" target="_blank" rel="noopener"><code>set -e</code></a></h3><p>If a command fails, <code>set -e</code> will make the whole script exit, instead of just resuming on the next line. If you have commands that can fail without it being an issue, you can append <code>|| true</code> or <code>|| :</code> to suppress this behavior — for example <code>set -e</code> followed by <code>false || :</code> will not cause your script to terminate.</p>
+<h3 id="set-u"><a href="#set-u" class="headerlink" title="set -u"></a><a href="https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html" target="_blank" rel="noopener"><code>set -u</code></a></h3><p>Treat unset variables as an error, and immediately exit.</p>
+<h3 id="set-f"><a href="#set-f" class="headerlink" title="set -f"></a><a href="https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html" target="_blank" rel="noopener"><code>set -f</code></a></h3><p>Disable filename expansion (globbing) upon seeing <code>*</code>, <code>?</code>, etc..</p>
+<p>If your script depends on globbing, you obviously shouldn’t set this. Instead, you may find <a href="https://www.gnu.org/software/bash/manual/html_node/The-Shopt-Builtin.html" target="_blank" rel="noopener"><code>shopt -s failglob</code></a> useful, which causes globs that don’t get expanded to cause errors, rather than getting passed to the command with the <code>*</code> intact.</p>
+<h3 id="set-o-pipefail"><a href="#set-o-pipefail" class="headerlink" title="set -o pipefail"></a><a href="https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html" target="_blank" rel="noopener"><code>set -o pipefail</code></a></h3><p><code>set -o pipefail</code> causes a pipeline (for example, <code>curl -s https://sipb.mit.edu/ | grep foo</code>) to produce a failure return code if any command errors. Normally, pipelines only return a failure if the last command errors. In combination with <code>set -e</code>, this will make your script exit if any command in a pipeline errors.</p>
+<h2 id="使用引号"><a href="#使用引号" class="headerlink" title="使用引号"></a>使用引号</h2><p>Whenever you pass a variable to a command, you should probably quote it. Otherwise, the shell will perform <a href="https://www.gnu.org/software/bash/manual/html_node/Word-Splitting.html" target="_blank" rel="noopener">word-splitting</a> and <a href="https://www.gnu.org/software/bash/manual/html_node/Filename-Expansion.html" target="_blank" rel="noopener">globbing</a>, which is likely not what you want.</p>
+<p>For example, consider the following:</p>
+<pre><code>alex@kronborg tmp [15:23] $ dir=&quot;foo bar&quot;
+alex@kronborg tmp [15:23] $ ls $dir
+ls: cannot access foo: No such file or directory
+ls: cannot access bar: No such file or directory
+alex@kronborg tmp [15:23] $ cd &quot;$dir&quot;
+alex@kronborg foo bar [15:25] $ file=*.txt
+alex@kronborg foo bar [15:26] $ echo $file
+bar.txt foo.txt
+alex@kronborg foo bar [15:26] $ echo &quot;$file&quot;
+*.txt
+</code></pre><p>Depending on what you are doing in your script, it is likely that the word-splitting and globbing shown above are not what you expected to have happen. By using <code>&quot;$foo&quot;</code> to access the contents of the <code>foo</code> variable instead of just <code>$foo</code>, this problem does not arise.</p>
+<p>When writing a wrapper script, you may wish pass along all the arguments your script received. Do that with:</p>
+<pre><code>wrapped-command &quot;$@&quot;
+</code></pre><p>See <a href="https://www.gnu.org/software/bash/manual/html_node/Special-Parameters.html" target="_blank" rel="noopener">“Special Parameters” in the bash manual</a> for details on the distinction between <code>$*</code>, <code>$@</code>, and <code>&quot;$@&quot;</code> — the first and second are rarely what you want in a safe shell script.</p>
+<h2 id="Passing-filenames-or-other-positional-arguments-to-commands"><a href="#Passing-filenames-or-other-positional-arguments-to-commands" class="headerlink" title="Passing filenames or other positional arguments to commands"></a>Passing filenames or other positional arguments to commands</h2><p>If you get filenames from the user or from shell globbing, or any other kind of positional arguments, you should be aware that those could start with a “-“. Even if you quote correctly, this may still act differently from what you intended. For example, consider a script that allows somebody to run commands as <code>nobody</code> (exposed over <code>remctl</code>, perhaps), consisting of just <code>sudo -u nobody &quot;$@&quot;</code>. The quoting is fine, but if a user passes <code>-u root reboot</code>, <code>sudo</code> will catch the second <code>-u</code> and run it as <code>root</code>.</p>
+<p>Fixing this depends on what command you’re running.</p>
+<p>For many commands, however, <code>--</code> is accepted to indicate that any options are done, and future arguments should be parsed as positional parameters — even if they look like options. In the <code>sudo</code> example above, <code>sudo -u nobody -- &quot;$@&quot;</code> would avoid this attack (though obviously specifying in the <code>sudo</code> configuration that commands can only be run as <code>nobody</code> is also a good idea).</p>
+<p>Another approach is to prefix each filename with <code>./</code>, if the filenames are expected to be in the current directory.</p>
+<h2 id="临时文件"><a href="#临时文件" class="headerlink" title="临时文件"></a>临时文件</h2><p>TODO: mumble <code>mktemp</code>?</p>
+<h2 id="Use-ShellCheck-to-check-for-bugs"><a href="#Use-ShellCheck-to-check-for-bugs" class="headerlink" title="Use ShellCheck to check for bugs"></a>Use <a href="https://www.shellcheck.net/" target="_blank" rel="noopener">ShellCheck</a> to check for bugs</h2><p>The <a href="https://www.shellcheck.net/" target="_blank" rel="noopener">ShellCheck</a> linter automatically catches a number of the above mistakes and more. Run it regularly, ideally with integration into your editor and your test suite, and address all of its diagnostics. Even warnings that might sound unimportant could be obscuring important bugs.</p>
+<h2 id="其他资源"><a href="#其他资源" class="headerlink" title="其他资源"></a>其他资源</h2><p>Google 有一份 <a href="https://google.github.io/styleguide/shell.xml" target="_blank" rel="noopener">Shell 风格指南</a>。很明显，这份指南主要关注于 Google 代码风格，但是也有一些部分跟安全有关。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>如果可能的话，尽量用<em>像 Python 这样的高级语言</em>去写而不是去写 “安全” 的 shell 脚本。如果非要用 shell 的话，有一些 shell 的<em>选项配置</em>可以降低出 bug 的风险并且记得<em>使用引号</em>。</p>
+<hr>
+<p>转载自 <a href="https://sipb.mit.edu/doc/safe-shell/" target="_blank" rel="noopener">https://sipb.mit.edu/doc/safe-shell/</a></p>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

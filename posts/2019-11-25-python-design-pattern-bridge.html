@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>Python 设计模式之桥接模式 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2019-11-25-python-design-pattern-bridge" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>Python 设计模式之桥接模式</h1>
+  
+
+      </header>
+      <div>
+      2019-11-25
+      
+        / 
+        
+          <span><a href="/tags/Java/">#Java</a></span>
+        
+          <span><a href="/tags/Python/">#Python</a></span>
+        
+          <span><a href="/tags/Design-Pattern/">#Design Pattern</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+
+        </div>
+
+        <p><strong>意图：</strong> 将抽象部分与实现部分分离，使它们都可以独立的变化。</p>
+<p><strong>适用性：</strong> 在以下的情况下应当使用桥接模式</p>
+<a id="more"></a>
+<ol>
+<li>如果一个系统需要在构件的抽象化角色和具体化角色之间增加更多的灵活性，避免在层次之间建立静态的联系。</li>
+<li>设计要求实现化角色的任何改变不应当影响客户端，或者说实现化角色的改变对客户端是完全透明的。</li>
+<li>一个构件有多于一个点抽象化角色和实现化角色，系统需要它们之间进行动态耦合。</li>
+<li>虽然在系统中使用继承是没有问题的，但是由于抽象化角色和具体化角色需要独立变化，设计要求需要独立管理这两者。</li>
+</ol>
+<p>总结：桥接模式是一个非常有用的模式，也非常复杂，它很好的符合了开放-封闭原则和优先使用对象，而不是继承这两个面向对象原则。</p>
+<p>生活中的一个例子：就拿汽车在路上行驶来说，既有小汽车又有公共汽车。它们都不但能在市区的公路上行驶，也能在高速公路上行驶。这你会发现，对于交通工具（汽车）有不同的类型，然而它们行驶的环境（路）也在变化，在软件系统中就要适应两个方面的变化。怎样实现才能应对这种变化呢？</p>
+<p>在软件系统中，某些类型由于自身的逻辑，它具有两个或多个维度的变化。那么如何应对这种“多维度的变化”？如何利用面向对象的技术来使得该类型能够轻松的沿着多个方向进行变化，而又不引入额外的复杂度？这就要使用桥接模式。</p>
+<p>效果及实现要点：</p>
+<ol>
+<li>桥接模式使用“对象间的组合关系”解耦了抽象和实现之间固有的绑定关系，使得抽象和实现可以沿着各自的维度来变化。</li>
+<li>所谓抽象和实现沿着各自维度的变化，即“子类化”它们，得到各个子类之后，便可以任意它们，从而获得不同路上的不同汽车。</li>
+<li>桥接模式有时候类似于多继承方案，但是多继承方案往往违背了类的单一职责原则（即一个类只有一个变化的原因），复用性比较差。桥接模式是比多继承方案更好的觉得方法。</li>
+<li>桥接模式的应用一般在“两个非常强的变化维度”，有时候即使有两个变化的维度，但是某个方向的变化维度并不强烈——换言之两个变化不会导致纵横交错的结果，并不一定要使用桥接模式。</li>
+</ol>
+<p><img src="https://upload.ismdeep.com/images/2020/08/07/3ab3a51c042dec23c9a804d1b2df9ad0-4613fb.png" alt="bridge"></p>
+<pre><code class="python">class AbstractRoad(object):
+    &quot;&quot;&quot;公路基类&quot;&quot;&quot;
+    car = None
+
+
+class AbstractCar(object):
+    &quot;&quot;&quot;车辆基类&quot;&quot;&quot;
+
+    def run(self):
+        pass
+
+
+class Street(AbstractRoad):
+    &quot;&quot;&quot;市区街道&quot;&quot;&quot;
+
+    def run(self):
+        self.car.run()
+        print(&quot;在市区街道上行驶&quot;)
+
+
+class SpeedWay(AbstractRoad):
+    &quot;&quot;&quot;高速公路&quot;&quot;&quot;
+
+    def run(self):
+        self.car.run()
+        print(&quot;在告诉公路上行驶&quot;)
+
+
+class Car(AbstractCar):
+    &quot;&quot;&quot;小汽车&quot;&quot;&quot;
+    def run(self):
+        print(&quot;小汽车在&quot;)
+
+
+class Bus(AbstractCar):
+    &quot;&quot;&quot;公共汽车&quot;&quot;&quot;
+    def run(self):
+        print(&quot;公共汽车在&quot;)
+
+
+if __name__ == &#39;__main__&#39;:
+    &#39;&#39;&#39;小汽车在高速公路上行驶&#39;&#39;&#39;
+    road1 = SpeedWay()
+    road1.car = Car()
+    road1.run()
+</code></pre>
+<p>桥接模式来做多维度变化，结合上面的例子，增加一个维度“人”，不同的人开着不同的汽车在不同的路上行驶（三个维度）。</p>
+<pre><code class="python">class AbstractPerson(object):
+    &quot;&quot;&quot;人基类&quot;&quot;&quot;
+    road = None
+
+    def drive(self):
+        pass
+
+
+class AbstractRoad(object):
+    &quot;&quot;&quot;公路基类&quot;&quot;&quot;
+    car = None
+
+
+class AbstractCar(object):
+    &quot;&quot;&quot;车辆基类&quot;&quot;&quot;
+
+    def run(self):
+        pass
+
+
+class Man(AbstractPerson):
+    def drive(self):
+        print(&quot;男人开着&quot;)
+        self.road.run()
+
+
+class Woman(AbstractPerson):
+    def drive(self):
+        print(&quot;女人开着&quot;)
+        self.road.run()
+
+
+class Street(AbstractRoad):
+    &quot;&quot;&quot;市区街道&quot;&quot;&quot;
+
+    def run(self):
+        self.car.run()
+        print(&quot;在市区街道上行驶&quot;)
+
+
+class SpeedWay(AbstractRoad):
+    &quot;&quot;&quot;高速公路&quot;&quot;&quot;
+
+    def run(self):
+        self.car.run()
+        print(&quot;在告诉公路上行驶&quot;)
+
+
+class Car(AbstractCar):
+    &quot;&quot;&quot;小汽车&quot;&quot;&quot;
+
+    def run(self):
+        print(&quot;小汽车在&quot;)
+
+
+class Bus(AbstractCar):
+    &quot;&quot;&quot;公共汽车&quot;&quot;&quot;
+
+    def run(self):
+        print(&quot;公共汽车在&quot;)
+
+
+if __name__ == &#39;__main__&#39;:
+    &#39;&#39;&#39;小汽车在高速公路上行驶&#39;&#39;&#39;
+    p = Man()
+    p.road = SpeedWay()
+    p.road.car = Car()
+    p.drive()
+</code></pre>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

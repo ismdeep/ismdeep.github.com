@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>使用 Python 构建漂亮的命令行程序 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2020-11-19-building-beautiful-command-line-interfaces-with-python" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>使用 Python 构建漂亮的命令行程序</h1>
+  
+
+      </header>
+      <div>
+      2020-11-19
+      
+        / 
+        
+          <span><a href="/tags/Python/">#Python</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-为什么选择-Python-？"><span class="toc-text">1. 为什么选择 Python ？</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-Python-命令行界面的基础知识"><span class="toc-text">2. Python 命令行界面的基础知识</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-Argparse"><span class="toc-text">3. Argparse</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-Click"><span class="toc-text">4. Click</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-Docopt"><span class="toc-text">5. Docopt</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-PyInquirer"><span class="toc-text">6. PyInquirer</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-PyFiglet"><span class="toc-text">7. PyFiglet</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#8-Clint"><span class="toc-text">8. Clint</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#9-其他-Python-CLI-工具"><span class="toc-text">9. 其他 Python CLI 工具</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#10-EmailCLI"><span class="toc-text">10. EmailCLI</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#10-1-安装"><span class="toc-text">10.1 安装</span></a></li></ol></li></ol>
+  </div>
+
+
+        </div>
+
+        <p>在开始构建命令行应用程序之前，让我们来看一下什么是<strong>命令行</strong>。</p>
+<p>自计算机程序创建以来，命令行程序就无处不在了，很多程序都是由命令构建的。命令行程序是一种通过命令行或者是 shell 进行操作的软件。</p>
+<p>命令行界面（Command Line Interface，CLI）是一种可通过终端、shell 或控制台上键入命令来控制（而非使用鼠标）的用户界面。控制台是一种显示模式，其整个屏幕仅显示文本，没有图像和 GUI 控件。</p>
+<p>根据维基百科：</p>
+<blockquote>
+<p>CLI 是 1960 年代中期与计算机终端上的大多数计算机系统进行交互的主要方式，并且在整个 1970 年代和 1980 年代继续在 OpenVMS 、 Unix 系统和包括 MS-DOS ，CP/M 和 Apple DOS 在内的个人计算机系统上使用。 该界面通常使用命令行 shell 实现，该命令行 shell 是一个接受命令作为文本输入并将命令转换为对应的操作系统功能。</p>
+</blockquote>
+<h1 id="1-为什么选择-Python-？"><a href="#1-为什么选择-Python-？" class="headerlink" title="1. 为什么选择 Python ？"></a>1. 为什么选择 Python ？</h1><p><img src="https://upload.ismdeep.com/images/2020/11/19/6bd5661b7670ac6dbf9d67677d3da7b0-a4764d.jpeg" alt="https://upload.ismdeep.com/images/2020/11/19/6bd5661b7670ac6dbf9d67677d3da7b0-a4764d.jpeg"></p>
+<p>Python 经常因为其灵活性和与其他语言很好的结合使用的特性而被视作<em>胶水语言。</em>大部分 Python 代码都是用于脚本和命令行界面。</p>
+<p>构建这些命令行界面和工具将变得非常强大，因为它们能够让你将想到的任何事情自动化执行成为可能。</p>
+<p>我们处于一个漂亮且交互式界面的时代，所以 UI  (User Interactive，用户交互) 和 UX (User Experience ，用户体验) 至关重要。我们需要将这些内容添加到命令行中，以让人们能够实现它们。而这些已被 Heroku 等流行公司正式使用。</p>
+<p>大量的 Python 库和模块可以帮助构建命令行应用程序，包括从参数解析和选项标记到完整的 CLI 框架。这些工具可以执行彩色输出，进度条，发送邮件等操作。</p>
+<p>使用这些模块，你可以创建像 Heroku 以及 Node 中 Vue-init 和 NPM-init 这些漂亮的交互式命令行界面程序了。</p>
+<p><img src="https://upload.ismdeep.com/images/2020/11/19/28b12eb6a3964bdcb5fb33a6e65d6490-54f1c0.png" alt="https://upload.ismdeep.com/images/2020/11/19/28b12eb6a3964bdcb5fb33a6e65d6490-54f1c0.png"></p>
+<p>为了方便构建漂亮的 <code>vue init</code> 命令行程序，我建议使用 Python-inquirer ，这是 Inquirer.js 在 Python 的移植版本。</p>
+<p>不幸的是，由于使用了 blessings 模块（一个引入了只有类 UNIX 系统才可以使用的 <code>_curses</code> 和 <code>fcntl</code> 模块的包），Python-inquirer 无法在 Windows 上运行。然而，有一些出色的开发人员能够将 <code>_curses</code> 移植到  Windows 上，但无法移植 <code>fcntl</code>. Windows 中的 <code>fctnl</code> 可替代品是 <code>win32api</code>.</p>
+<p>但是，经过了在 Google 上大量的搜索之后，我碰到了一个 Python 模块，我对其进行全面修复，并将其称为 <a href="https://github.com/CITGuru/PyInquirer" target="_blank" rel="noopener">PyInquirer</a> ，它是 python-inquirer 的替代品。而它有一个很大的好处就是：它可以在包括 Windows 在内的所有操作系统平台上使用。<strong>赞！</strong></p>
+<p><img src="https://upload.ismdeep.com/images/2020/11/19/930528e6684ff1da00bf4ce8e447dd53-92bcb5.jpg" alt="https://upload.ismdeep.com/images/2020/11/19/930528e6684ff1da00bf4ce8e447dd53-92bcb5.jpg"></p>
+<h1 id="2-Python-命令行界面的基础知识"><a href="#2-Python-命令行界面的基础知识" class="headerlink" title="2. Python 命令行界面的基础知识"></a>2. Python 命令行界面的基础知识</h1><p>现在让我们来看看命令行界面，并在 Python 中创建一个。</p>
+<p>命令行界面（CLI）通常以可执行文件的名称开头。你只需要在控制台中输入名称，这就是访问脚本的的主要入口点，例如 <code>pip</code>.</p>
+<p>你需要根据脚本的开发方式将<strong>参数</strong>传递给脚本，它们可以是：</p>
+<ol>
+<li>参数<strong>:</strong> 这是传递给脚本的必需参数。如果不提供，程序就会出错。例如在：<code>pip install django</code> 这个命令中，<code>django</code> 就是命令的参数。</li>
+<li>选项<strong>:</strong> 顾名思义，它是一个可选参数，通常是带有名称和值组成的对，例如：<code>pip install django --cache-dir ./my-cache-dir</code> 中 <code>-cache-dir</code> 是一个选项参数的名称，<code>./my-cache-dir</code> 则是值，这组成了一对，意义表示缓存目录指定为 <code>./my-cache-dir</code> 这个目录。</li>
+<li>标志<strong>:</strong> 这是一个特殊的选项参数，它是用来告诉脚本启用或禁用某些行为，最常见的一种可能就是 <code>-help</code> 了。</li>
+</ol>
+<p>使用 Heroku Toolbelt 等复杂的命令行程序，其实是将访问的所有命令全部归入到主入口点了。它们通常被视为<strong>命令</strong>或者<strong>子命令</strong>。</p>
+<p>现在，让我们看以下如何使用不同的 Python 包构建智能且美观的命令行程序。</p>
+<h1 id="3-Argparse"><a href="#3-Argparse" class="headerlink" title="3. Argparse"></a>3. <strong>Argparse</strong></h1><p><strong>Argparse</strong> 是 Python 中用于构建命令行程序自带的模块。它提供了构建简单的命令行程序的所需的所有功能。</p>
+<pre><code class="python">import argparseparser = argparse.ArgumentParser(description=&#39;Add some integers.&#39;)
+parser.add_argument(&#39;integers&#39;, metavar=&#39;N&#39;, type=int, nargs=&#39;+&#39;,
+                    help=&#39;interger list&#39;)parser.add_argument(&#39;--sum&#39;, action=&#39;store_const&#39;,
+                    const=sum, default=max,
+                    help=&#39;sum the integers (default: find the max)&#39;)args = parser.parse_args()print(args.sum(args.integers))
+
+</code></pre>
+<p>这是一个简单的加法操作。<code>argparse.ArgumentParser</code> 让你能够添加程序描述到其中，而 <code>parser.add_argument</code> 让你添加一个命令。<code>parser.parse_args()</code> 则会返回一组参数，它们通常以 名称-值 对的形式出现。</p>
+<p>例如：你可以通过 <code>args.integers</code> 访问 <code>integers</code> 的参数值。在上述脚本中，<code>-sum</code> 是一个可选参数， <code>N</code> 是位置参数。</p>
+<h1 id="4-Click"><a href="#4-Click" class="headerlink" title="4. Click"></a>4. Click</h1><p>与 Argparse 相比，使用 <a href="https://github.com/pallets/click" target="_blank" rel="noopener">Click</a> 能够更简单的创建命令行程序。argparse 能做的，Click 同样能做。但是使用了稍微不一样的方法。它使用了 <em>decorators</em> 的概念，这使命令成为可以使用装饰器包装的函数。</p>
+<pre><code class="python"># cli.py
+import click
+
+@click.command()
+def main():
+    click.echo(&quot;This is a CLI built with Click ✨&quot;)
+
+if __name__ == &quot;__main__&quot;:
+    main()
+
+</code></pre>
+<p>你可以按下面的方式添加参数和选项：</p>
+<pre><code class="python"># cli.py
+import click
+
+@click.command()
+@click.argument(&#39;name&#39;)
+@click.option(&#39;--greeting&#39;, &#39;-g&#39;)
+def main(name, greeting):
+    click.echo(&quot;{}, {}&quot;.format(greeting, name))
+
+if __name__ == &quot;__main__&quot;:
+    main()
+
+</code></pre>
+<p>运行上述脚本，则应有：</p>
+<pre><code>$ python cli.py --greeting &lt;greeting&gt; Oyetoke
+Hey, Oyetoke
+
+</code></pre><p>将以上所有的整合在一起，我能够构建一个简单的命令行（CLI）程序来查询 Google Books 中的图书。</p>
+<pre><code class="python">import click
+import requests
+
+__author__ = &quot;Oyetoke Toby&quot;
+
+@click.group()
+def main():
+    &quot;&quot;&quot;
+    Simple CLI for querying books on Google Books by Oyetoke Toby
+    &quot;&quot;&quot;
+    pass
+
+@main.command()
+@click.argument(&#39;query&#39;)
+def search(query):
+    &quot;&quot;&quot;This search and return results corresponding to the given query from Google Books&quot;&quot;&quot;
+    url_format = &#39;&lt;https://www.googleapis.com/books/v1/volumes&gt;&#39;
+    query = &quot;+&quot;.join(query.split())
+
+    query_params = {
+        &#39;q&#39;: query
+    }
+
+    response = requests.get(url_format, params=query_params)
+
+    click.echo(response.json()[&#39;items&#39;]) 
+
+@main.command()
+@click.argument(&#39;id&#39;)
+def get(id):
+    &quot;&quot;&quot;This return a particular book from the given id on Google Books&quot;&quot;&quot;
+    url_format = &#39;&lt;https://www.googleapis.com/books/v1/volumes/{}&gt;&#39;
+    click.echo(id)
+
+    response = requests.get(url_format.format(id))
+
+    click.echo(response.json())
+
+if __name__ == &quot;__main__&quot;:
+    main()
+
+</code></pre>
+<p>更多有关信息，您可以从<a href="http://click.pocoo.org/" target="_blank" rel="noopener">官方文档</a>上深入了解 Click.</p>
+<h1 id="5-Docopt"><a href="#5-Docopt" class="headerlink" title="5. Docopt"></a>5. Docopt</h1><p><a href="http://docopt.org/" target="_blank" rel="noopener">Docopt</a> 是一个轻量级的 Python 软件包，可以通过解析 POSIC-样式 或 Markdown 使用说明轻松地创建命令行界面。Docopt 使用多年来用于格式化帮助信息和手册页来描述命令行界面的约定。 <code>*docopt**</code> 中的界面描述就是这样的帮助信息，但是形式化。</p>
+<p>Docopt 非常关心文件顶部格式化所需的文档字符串方式。在工具名称的下一行开始，文档第一部分顶部必需是 “Usage”，并且应列出你期望命令被调用的方式。</p>
+<p>文档的第二部分开始必需是 “Options” ，这应该提供有关在 “Usage” 中标识的选项和参数的更多信息。文档字符串的内容将程序帮助文档的内容。</p>
+<pre><code class="python">&quot;&quot;&quot;HELLO CLI
+Usage:
+    hello.py
+    hello.py &lt;name&gt;
+    hello.py -h|--help
+    hello.py -v|--version
+Options:
+    &lt;name&gt;  Optional name argument.
+    -h --help  Show this screen.
+    -v --version  Show version.
+&quot;&quot;&quot;
+
+from docopt import docopt
+
+def say_hello(name):
+    return(&quot;Hello {}!&quot;.format(name))
+
+if __name__ == &#39;__main__&#39;:
+    arguments = docopt(__doc__, version=&#39;DEMO 1.0&#39;)
+    if arguments[&#39;&lt;name&gt;&#39;]:
+        print(say_hello(arguments[&#39;&lt;name&gt;&#39;]))
+    else:
+        print(arguments)
+
+</code></pre>
+<h1 id="6-PyInquirer"><a href="#6-PyInquirer" class="headerlink" title="6. PyInquirer"></a>6. PyInquirer</h1><p><a href="https://github.com/CITGuru/PyInquirer" target="_blank" rel="noopener">PyInquirer</a> 是一个用于交互式命令行用户界面的模块。我们在上面看到的程序包并没有实现我们想要的 “漂亮界面” 的目标。因此，让我们来看以下如何使用 PyInquirer.</p>
+<p>像 Inquirer.js 一样，PyInquirer 分为两个简单的步骤：</p>
+<ol>
+<li>您定义<strong>问题列表</strong>并将其传递给<strong>命令行</strong>。</li>
+<li>命令行返回<strong>答案列表</strong>。</li>
+</ol>
+<pre><code class="python">from __future__ import print_function, unicode_literals
+from PyInquirer import prompt
+from pprint import pprint
+questions = [
+    {
+        &#39;type&#39;: &#39;input&#39;,
+        &#39;name&#39;: &#39;first_name&#39;,
+        &#39;message&#39;: &#39;What\&#39;s your first name&#39;,
+     }
+]
+answers = prompt(questions)
+pprint(answers)
+
+</code></pre>
+<p>一个互动的例子</p>
+<pre><code class="python">from __future__ import print_function, unicode_literals
+
+from PyInquirer import style_from_dict, Token, prompt, Separator
+from pprint import pprint
+
+style = style_from_dict({
+    Token.Separator: &#39;#cc5454&#39;,
+    Token.QuestionMark: &#39;#673ab7 bold&#39;,
+    Token.Selected: &#39;#cc5454&#39;,  # default
+    Token.Pointer: &#39;#673ab7 bold&#39;,
+    Token.Instruction: &#39;&#39;,  # default
+    Token.Answer: &#39;#f44336 bold&#39;,
+    Token.Question: &#39;&#39;,
+})
+
+questions = [
+    {
+        &#39;type&#39;: &#39;checkbox&#39;,
+        &#39;message&#39;: &#39;Select toppings&#39;,
+        &#39;name&#39;: &#39;toppings&#39;,
+        &#39;choices&#39;: [
+            Separator(&#39;= The Meats =&#39;),
+            {
+                &#39;name&#39;: &#39;Ham&#39;
+            },
+            {
+                &#39;name&#39;: &#39;Ground Meat&#39;
+            },
+            {
+                &#39;name&#39;: &#39;Bacon&#39;
+            },
+            Separator(&#39;= The Cheeses =&#39;),
+            {
+                &#39;name&#39;: &#39;Mozzarella&#39;,
+                &#39;checked&#39;: True
+            },
+            {
+                &#39;name&#39;: &#39;Cheddar&#39;
+            },
+            {
+                &#39;name&#39;: &#39;Parmesan&#39;
+            },
+            Separator(&#39;= The usual =&#39;),
+            {
+                &#39;name&#39;: &#39;Mushroom&#39;
+            },
+            {
+                &#39;name&#39;: &#39;Tomato&#39;
+            },
+            {
+                &#39;name&#39;: &#39;Pepperoni&#39;
+            },
+            Separator(&#39;= The extras =&#39;),
+            {
+                &#39;name&#39;: &#39;Pineapple&#39;
+            },
+            {
+                &#39;name&#39;: &#39;Olives&#39;,
+                &#39;disabled&#39;: &#39;out of stock&#39;
+            },
+            {
+                &#39;name&#39;: &#39;Extra cheese&#39;
+            }
+        ],
+        &#39;validate&#39;: lambda answer: &#39;You must choose at least one topping.&#39; \\
+            if len(answer) == 0 else True
+    }
+]
+
+answers = prompt(questions, style=style)
+pprint(answers)
+
+</code></pre>
+<p>结果：</p>
+<p><img src="https://upload.ismdeep.com/images/2020/11/19/3dda204e0e32445743d5e8b0aa11d7a6-21b129.png" alt="https://upload.ismdeep.com/images/2020/11/19/3dda204e0e32445743d5e8b0aa11d7a6-21b129.png"></p>
+<p>让我们来看看脚本的部分内容：</p>
+<pre><code class="python">style = style_from_dict({
+Token.Separator: &#39;#cc5454&#39;,
+Token.QuestionMark: &#39;#673ab7 bold&#39;,
+Token.Selected: &#39;#cc5454&#39;,  # default
+Token.Pointer: &#39;#673ab7 bold&#39;,
+Token.Instruction: &#39;&#39;,  # default
+Token.Answer: &#39;#f44336 bold&#39;,
+Token.Question: &#39;&#39;,
+})
+
+</code></pre>
+<p><code>style_from_dict</code> 被用来定义让界面自定义样式。 <code>Token</code> 就像一个组件，它下面有其他的组件。</p>
+<p>我们在前面的示例中看到了 <code>questions</code> 列表。并将其传递到<code>prompt</code> 中进行处理。</p>
+<p>你可以按照下面的示例来创建一个交互式命令行程序：</p>
+<pre><code class="python"># -*- coding: utf-8 -*-
+
+from __future__ import print_function, unicode_literals
+import regex
+
+from pprint import pprint
+from PyInquirer import style_from_dict, Token, prompt
+from PyInquirer import Validator, ValidationError
+
+style = style_from_dict({
+    Token.QuestionMark: &#39;#E91E63 bold&#39;,
+    Token.Selected: &#39;#673AB7 bold&#39;,
+    Token.Instruction: &#39;&#39;,  # default
+    Token.Answer: &#39;#2196f3 bold&#39;,
+    Token.Question: &#39;&#39;,
+})
+
+class PhoneNumberValidator(Validator):
+    def validate(self, document):
+        ok = regex.match(&#39;^([01]{1})?[-.\\s]?\\(?(\\d{3})\\)?[-.\\s]?(\\d{3})[-.\\s]?(\\d{4})\\s?((?:#|ext\\.?\\s?|x\\.?\\s?){1}(?:\\d+)?)?$&#39;, document.text)
+        if not ok:
+            raise ValidationError(
+                message=&#39;Please enter a valid phone number&#39;,
+                cursor_position=len(document.text))  # Move cursor to end
+
+class NumberValidator(Validator):
+    def validate(self, document):
+        try:
+            int(document.text)
+        except ValueError:
+            raise ValidationError(
+                message=&#39;Please enter a number&#39;,
+                cursor_position=len(document.text))  # Move cursor to end
+
+print(&#39;Hi, welcome to Python Pizza&#39;)
+
+questions = [
+    {
+        &#39;type&#39;: &#39;confirm&#39;,
+        &#39;name&#39;: &#39;toBeDelivered&#39;,
+        &#39;message&#39;: &#39;Is this for delivery?&#39;,
+        &#39;default&#39;: False
+    },
+    {
+        &#39;type&#39;: &#39;input&#39;,
+        &#39;name&#39;: &#39;phone&#39;,
+        &#39;message&#39;: &#39;What\&#39;s your phone number?&#39;,
+        &#39;validate&#39;: PhoneNumberValidator
+    },
+    {
+        &#39;type&#39;: &#39;list&#39;,
+        &#39;name&#39;: &#39;size&#39;,
+        &#39;message&#39;: &#39;What size do you need?&#39;,
+        &#39;choices&#39;: [&#39;Large&#39;, &#39;Medium&#39;, &#39;Small&#39;],
+        &#39;filter&#39;: lambda val: val.lower()
+    },
+    {
+        &#39;type&#39;: &#39;input&#39;,
+        &#39;name&#39;: &#39;quantity&#39;,
+        &#39;message&#39;: &#39;How many do you need?&#39;,
+        &#39;validate&#39;: NumberValidator,
+        &#39;filter&#39;: lambda val: int(val)
+    },
+    {
+        &#39;type&#39;: &#39;expand&#39;,
+        &#39;name&#39;: &#39;toppings&#39;,
+        &#39;message&#39;: &#39;What about the toppings?&#39;,
+        &#39;choices&#39;: [
+            {
+                &#39;key&#39;: &#39;p&#39;,
+                &#39;name&#39;: &#39;Pepperoni and cheese&#39;,
+                &#39;value&#39;: &#39;PepperoniCheese&#39;
+            },
+            {
+                &#39;key&#39;: &#39;a&#39;,
+                &#39;name&#39;: &#39;All dressed&#39;,
+                &#39;value&#39;: &#39;alldressed&#39;
+            },
+            {
+                &#39;key&#39;: &#39;w&#39;,
+                &#39;name&#39;: &#39;Hawaiian&#39;,
+                &#39;value&#39;: &#39;hawaiian&#39;
+            }
+        ]
+    },
+    {
+        &#39;type&#39;: &#39;rawlist&#39;,
+        &#39;name&#39;: &#39;beverage&#39;,
+        &#39;message&#39;: &#39;You also get a free 2L beverage&#39;,
+        &#39;choices&#39;: [&#39;Pepsi&#39;, &#39;7up&#39;, &#39;Coke&#39;]
+    },
+    {
+        &#39;type&#39;: &#39;input&#39;,
+        &#39;name&#39;: &#39;comments&#39;,
+        &#39;message&#39;: &#39;Any comments on your purchase experience?&#39;,
+        &#39;default&#39;: &#39;Nope, all good!&#39;
+    },
+    {
+        &#39;type&#39;: &#39;list&#39;,
+        &#39;name&#39;: &#39;prize&#39;,
+        &#39;message&#39;: &#39;For leaving a comment, you get a freebie&#39;,
+        &#39;choices&#39;: [&#39;cake&#39;, &#39;fries&#39;],
+        &#39;when&#39;: lambda answers: answers[&#39;comments&#39;] != &#39;Nope, all good!&#39;
+    }
+]
+
+answers = prompt(questions, style=style)
+print(&#39;Order receipt:&#39;)
+pprint(answers)
+
+</code></pre>
+<p>结果：</p>
+<p><img src="https://upload.ismdeep.com/images/2020/11/19/bba36b8ea3673d380414708274d217a8-2bd40f.png" alt="https://upload.ismdeep.com/images/2020/11/19/bba36b8ea3673d380414708274d217a8-2bd40f.png"></p>
+<h1 id="7-PyFiglet"><a href="#7-PyFiglet" class="headerlink" title="7. PyFiglet"></a>7. PyFiglet</h1><p><a href="https://github.com/pwaller/pyfiglet" target="_blank" rel="noopener">Pyfiglet</a>  是一个用于将字符串转换为带有艺术字体的 ASCII 文本的 Python 模块。Pyfiglet 是 FIGlet (<a href="http://www.figlet.org/" target="_blank" rel="noopener">http://www.figlet.org/</a>) 在纯 Python 中的完整移植。</p>
+<pre><code class="python">from pyfiglet import Figlet
+f = Figlet(font=&#39;slant&#39;)
+print f.renderText(&#39;text to render&#39;)
+
+</code></pre>
+<p>运行结果：</p>
+<p><img src="https://upload.ismdeep.com/images/2020/11/19/bfd7023cef9b4d8f735c6239a18508d3-9afe30.png" alt="https://upload.ismdeep.com/images/2020/11/19/bfd7023cef9b4d8f735c6239a18508d3-9afe30.png"></p>
+<h1 id="8-Clint"><a href="#8-Clint" class="headerlink" title="8. Clint"></a>8. Clint</h1><p><a href="https://pypi.org/project/clint/" target="_blank" rel="noopener">Clint</a> 包含了创建命令行程序所需的一切。它支持颜色，超强的可嵌套缩紧上下文管理器，支持自定义邮件样式的引号，超强列打印以及可选的自动扩展列，等等。</p>
+<pre><code class="python">#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+from __future__ import print_function
+
+import sys
+import os
+
+sys.path.insert(0, os.path.abspath(&#39;..&#39;))
+
+from clint.arguments import Args
+from clint.textui import puts, colored, indent
+
+args = Args()
+
+with indent(4, quote=&#39;&gt;&gt;&gt;&#39;):
+    puts(colored.blue(&#39;Aruments passed in: &#39;) + str(args.all))
+    puts(colored.blue(&#39;Flags detected: &#39;) + str(args.flags))
+    puts(colored.blue(&#39;Files detected: &#39;) + str(args.files))
+    puts(colored.blue(&#39;NOT Files detected: &#39;) + str(args.not_files))
+    puts(colored.blue(&#39;Grouped Arguments: &#39;) + str(dict(args.grouped)))
+
+print()
+
+</code></pre>
+<p><img src="https://upload.ismdeep.com/images/2020/11/19/5f2a366af561dc6b9ea03a2c186b197f-0857fd.png" alt="https://upload.ismdeep.com/images/2020/11/19/5f2a366af561dc6b9ea03a2c186b197f-0857fd.png"></p>
+<p>酷吧？我知道。</p>
+<h1 id="9-其他-Python-CLI-工具"><a href="#9-其他-Python-CLI-工具" class="headerlink" title="9. 其他 Python CLI 工具"></a>9. 其他 Python CLI 工具</h1><p><strong><a href="http://builtoncement.com/" target="_blank" rel="noopener">Cement</a>:</strong> 它是完整的命令行界面框架。Cement 提供了轻量且功能齐全的基础，可以构建从单个文件脚本到复杂且设计精巧的应用程序。</p>
+<p><strong><a href="https://docs.openstack.org/cliff/latest/" target="_blank" rel="noopener">Cliff</a>:</strong> Cliff 是用于构建命令行程序的框架。它使用 setuptools 入口点提供子命令，输出格式化程序和其他扩展。</p>
+<p><strong><a href="https://pypi.python.org/pypi/plac" target="_blank" rel="noopener">Plac</a>:</strong> Plac 是 Python 标准库 argparse 的简单封装。该库通过声明性接口隐藏了大多数复杂的东西：推断参数解析器，而不是强制性地写下来。</p>
+<h1 id="10-EmailCLI"><a href="#10-EmailCLI" class="headerlink" title="10. EmailCLI"></a>10. EmailCLI</h1><p>将所有内容加在一起，我编写了一个简单的命令行程序，用于通过 SendGrid 发送邮件。因此，要使用以下脚本，请从 <a href="https://sendgrid.com/" target="_blank" rel="noopener">SendGrid</a> 获取你的 API 密钥。</p>
+<h2 id="10-1-安装"><a href="#10-1-安装" class="headerlink" title="10.1 安装"></a>10.1 安装</h2><pre><code>pip install sendgrid click PyInquirer pyfiglet pyconfigstore colorama termcolor six
+
+</code></pre><pre><code class="python">import os
+import re
+
+import click
+import sendgrid
+import six
+from pyconfigstore import ConfigStore
+from PyInquirer import (Token, ValidationError, Validator, print_json, prompt,
+                        style_from_dict)
+from sendgrid.helpers.mail import *
+
+from pyfiglet import figlet_format
+
+try:
+    import colorama
+    colorama.init()
+except ImportError:
+    colorama = None
+
+try:
+    from termcolor import colored
+except ImportError:
+    colored = None
+
+conf = ConfigStore(&quot;EmailCLI&quot;)
+
+style = style_from_dict({
+    Token.QuestionMark: &#39;#fac731 bold&#39;,
+    Token.Answer: &#39;#4688f1 bold&#39;,
+    Token.Instruction: &#39;&#39;,  # default
+    Token.Separator: &#39;#cc5454&#39;,
+    Token.Selected: &#39;#0abf5b&#39;,  # default
+    Token.Pointer: &#39;#673ab7 bold&#39;,
+    Token.Question: &#39;&#39;,
+})
+
+def getDefaultEmail(answer):
+    try:
+        from_email = conf.get(&quot;from_email&quot;)
+    except KeyError, Exception:
+        from_email = u&quot;&quot;
+    return from_email
+
+def getContentType(answer, conttype):
+    return answer.get(&quot;content_type&quot;).lower() == conttype.lower()
+
+def sendMail(mailinfo):
+    sg = sendgrid.SendGridAPIClient(api_key=conf.get(&quot;api_key&quot;))
+    from_email = Email(mailinfo.get(&quot;from_email&quot;))
+    to_email = Email(mailinfo.get(&quot;to_email&quot;))
+    subject = mailinfo.get(&quot;subject&quot;).title()
+    content_type = &quot;text/plain&quot; if mailinfo.get(&quot;content_type&quot;) == &quot;text&quot; else &quot;text/html&quot;
+    content = Content(content_type, mailinfo.get(&quot;content&quot;))
+    mail = Mail(from_email, subject, to_email, content)
+    response = sg.client.mail.send.post(request_body=mail.get())
+    return response
+
+def log(string, color, font=&quot;slant&quot;, figlet=False):
+    if colored:
+        if not figlet:
+            six.print_(colored(string, color))
+        else:
+            six.print_(colored(figlet_format(
+                string, font=font), color))
+    else:
+        six.print_(string)
+
+class EmailValidator(Validator):
+    pattern = r&quot;\\&quot;?([-a-zA-Z0-9.`?{}]+@\\w+\\.\\w+)\\&quot;?&quot;
+
+    def validate(self, email):
+        if len(email.text):
+            if re.match(self.pattern, email.text):
+                return True
+            else:
+                raise ValidationError(
+                    message=&quot;Invalid email&quot;,
+                    cursor_position=len(email.text))
+        else:
+            raise ValidationError(
+                message=&quot;You can&#39;t leave this blank&quot;,
+                cursor_position=len(email.text))
+
+class EmptyValidator(Validator):
+    def validate(self, value):
+        if len(value.text):
+            return True
+        else:
+            raise ValidationError(
+                message=&quot;You can&#39;t leave this blank&quot;,
+                cursor_position=len(value.text))
+
+class FilePathValidator(Validator):
+    def validate(self, value):
+        if len(value.text):
+            if os.path.isfile(value.text):
+                return True
+            else:
+                raise ValidationError(
+                    message=&quot;File not found&quot;,
+                    cursor_position=len(value.text))
+        else:
+            raise ValidationError(
+                message=&quot;You can&#39;t leave this blank&quot;,
+                cursor_position=len(value.text))
+
+class APIKEYValidator(Validator):
+    def validate(self, value):
+        if len(value.text):
+            sg = sendgrid.SendGridAPIClient(
+                api_key=value.text)
+            try:
+                response = sg.client.api_keys._(value.text).get()
+                if response.status_code == 200:
+                    return True
+            except:
+                raise ValidationError(
+                    message=&quot;There is an error with the API Key!&quot;,
+                    cursor_position=len(value.text))
+        else:
+            raise ValidationError(
+                message=&quot;You can&#39;t leave this blank&quot;,
+                cursor_position=len(value.text))
+
+def askAPIKEY():
+    questions = [
+        {
+            &#39;type&#39;: &#39;input&#39;,
+            &#39;name&#39;: &#39;api_key&#39;,
+            &#39;message&#39;: &#39;Enter SendGrid API Key (Only needed to provide once)&#39;,
+            &#39;validate&#39;: APIKEYValidator,
+        },
+    ]
+    answers = prompt(questions, style=style)
+    return answers
+
+def askEmailInformation():
+
+    questions = [
+        {
+            &#39;type&#39;: &#39;input&#39;,
+            &#39;name&#39;: &#39;from_email&#39;,
+            &#39;message&#39;: &#39;From Email&#39;,
+            &#39;default&#39;: getDefaultEmail,
+            &#39;validate&#39;: EmailValidator
+        },
+        {
+            &#39;type&#39;: &#39;input&#39;,
+            &#39;name&#39;: &#39;to_email&#39;,
+            &#39;message&#39;: &#39;To Email&#39;,
+            &#39;validate&#39;: EmailValidator
+        },
+        {
+            &#39;type&#39;: &#39;input&#39;,
+            &#39;name&#39;: &#39;subject&#39;,
+            &#39;message&#39;: &#39;Subject&#39;,
+            &#39;validate&#39;: EmptyValidator
+        },
+        {
+            &#39;type&#39;: &#39;list&#39;,
+            &#39;name&#39;: &#39;content_type&#39;,
+            &#39;message&#39;: &#39;Content Type:&#39;,
+            &#39;choices&#39;: [&#39;Text&#39;, &#39;HTML&#39;],
+            &#39;filter&#39;: lambda val: val.lower()
+        },
+        {
+            &#39;type&#39;: &#39;input&#39;,
+            &#39;name&#39;: &#39;content&#39;,
+            &#39;message&#39;: &#39;Enter plain text:&#39;,
+            &#39;when&#39;: lambda answers: getContentType(answers, &quot;text&quot;),
+            &#39;validate&#39;: EmptyValidator
+        },
+        {
+            &#39;type&#39;: &#39;confirm&#39;,
+            &#39;name&#39;: &#39;confirm_content&#39;,
+            &#39;message&#39;: &#39;Do you want to send an html file&#39;,
+            &#39;when&#39;: lambda answers: getContentType(answers, &quot;html&quot;)
+
+        },
+        {
+            &#39;type&#39;: &#39;input&#39;,
+            &#39;name&#39;: &#39;content&#39;,
+            &#39;message&#39;: &#39;Enter html:&#39;,
+            &#39;when&#39;: lambda answers: not answers.get(&quot;confirm_content&quot;, True),
+            &#39;validate&#39;: EmptyValidator
+        },
+        {
+            &#39;type&#39;: &#39;input&#39;,
+            &#39;name&#39;: &#39;content&#39;,
+            &#39;message&#39;: &#39;Enter html path:&#39;,
+            &#39;validate&#39;: FilePathValidator,
+            &#39;filter&#39;: lambda val: open(val).read(),
+            &#39;when&#39;: lambda answers: answers.get(&quot;confirm_content&quot;, False)
+        },
+        {
+            &#39;type&#39;: &#39;confirm&#39;,
+            &#39;name&#39;: &#39;send&#39;,
+            &#39;message&#39;: &#39;Do you want to send now&#39;
+        }
+    ]
+
+    answers = prompt(questions, style=style)
+    return answers
+
+@click.command()
+def main():
+    &quot;&quot;&quot;
+    Simple CLI for sending emails using SendGrid
+    &quot;&quot;&quot;
+    log(&quot;Email CLI&quot;, color=&quot;blue&quot;, figlet=True)
+    log(&quot;Welcome to Email CLI&quot;, &quot;green&quot;)
+    try:
+        api_key = conf.get(&quot;api_key&quot;)
+    except KeyError:
+        api_key = askAPIKEY()
+        conf.set(api_key)
+
+    mailinfo = askEmailInformation()
+    if mailinfo.get(&quot;send&quot;, False):
+        conf.set(&quot;from_email&quot;, mailinfo.get(&quot;from_email&quot;))
+        try:
+            response = sendMail(mailinfo)
+        except Exception as e:
+            raise Exception(&quot;An error occured: %s&quot; % (e))
+
+        if response.status_code == 202:
+            log(&quot;Mail sent successfully&quot;, &quot;blue&quot;)
+        else:
+            log(&quot;An error while trying to send&quot;, &quot;red&quot;)
+
+if __name__ == &#39;__main__&#39;:
+    main()
+
+</code></pre>
+<p><img src="https://upload.ismdeep.com/images/2020/11/19/cf5a82fe55a7ff783b88f86c236349fc-ca9e34.png" alt="https://upload.ismdeep.com/images/2020/11/19/cf5a82fe55a7ff783b88f86c236349fc-ca9e34.png"></p>
+<p>如此而已。</p>
+<p>可以看看这篇文章 <a href="https://www.davidfischer.name/2017/01/python-command-line-apps/" target="_blank" rel="noopener">https://www.davidfischer.name/2017/01/python-command-line-apps/</a></p>
+<p>翻译自：<a href="https://codeburst.io/building-beautiful-command-line-interfaces-with-python-26c7e1bb54df" target="_blank" rel="noopener">https://codeburst.io/building-beautiful-command-line-interfaces-with-python-26c7e1bb54df</a></p>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

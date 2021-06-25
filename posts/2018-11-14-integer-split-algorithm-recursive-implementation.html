@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>整数拆分算法（递归实现） | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2018-11-14-integer-split-algorithm-recursive-implementation" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>整数拆分算法（递归实现）</h1>
+  
+
+      </header>
+      <div>
+      2018-11-14
+      
+        / 
+        
+          <span><a href="/tags/ACM-ICPC/">#ACM-ICPC</a></span>
+        
+          <span><a href="/tags/Algorithm/">#Algorithm</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+
+        </div>
+
+        <p>对于输入的数字n，那么要解决的问题就是(n,n)，对于第一个n是表示要拆分的数字n，第二个n表示拆分当前数字能使用的最大数字。</p>
+<p>那么 (n,m) 可以表示成 $ \sum_{cur = 1}^{m} cur + (n - i, max(m, n - i)) $</p>
+<pre><code class="c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+
+#define MIN(a,b) ((a) &lt; (b)) ? (a) : (b)
+
+#define MAX_VAL 1024
+
+int a[MAX_VAL];
+int cur_index;
+
+void do_print() {
+    for (int i = 0; i &lt;= cur_index; ++i) {
+        printf(&quot;%d &quot;, a[i]);
+    }
+    printf(&quot;\n&quot;);
+}
+
+void split(int val, int max_item) {
+    if (val &lt;= 0) {
+        do_print();
+        return;
+    }
+
+    for (int cur_item = MIN(max_item, val); cur_item &gt;= 1; --cur_item) {
+        ++cur_index;
+        a[cur_index] = cur_item;
+        split(val - cur_item, cur_item);
+        --cur_index;
+    }
+}
+
+int main() {
+    memset(a, 0, sizeof(int));
+    int val;
+    scanf(&quot;%d&quot;, &amp;val);
+    if (val &gt; MAX_VAL) {
+        fprintf(stderr, &quot;Can not process input value with is bigger than 1024.\n&quot;);
+        return 0;
+    }
+    cur_index = -1;
+    split(val, val);
+    return 0;
+}
+</code></pre>
+
+
+        
+        <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  "HTML-CSS": {
+    preferredFont: "TeX",
+    availableFonts: ["STIX","TeX"],
+    linebreaks: { automatic:true },
+    EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+  },
+  tex2jax: {
+    inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+    processEscapes: true,
+    ignoreClass: "tex2jax_ignore|dno",
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  TeX: {
+    noUndefined: {
+      attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" }
+    },
+    Macros: { href: "{}" }
+  },
+  messageStyle: "none"
+});
+</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Queue(function() {
+  var all = MathJax.Hub.getAllJax(), i;
+  for(i=0; i < all.length; i += 1) {
+    all[i].SourceElement().parentNode.className += ' has-jax';
+  }
+});
+</script>
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

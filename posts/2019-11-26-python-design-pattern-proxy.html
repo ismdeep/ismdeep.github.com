@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>Python 设计模式之代理模式 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2019-11-26-python-design-pattern-proxy" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>Python 设计模式之代理模式</h1>
+  
+
+      </header>
+      <div>
+      2019-11-26
+      
+        / 
+        
+          <span><a href="/tags/Java/">#Java</a></span>
+        
+          <span><a href="/tags/Python/">#Python</a></span>
+        
+          <span><a href="/tags/Design-Pattern/">#Design Pattern</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+
+        </div>
+
+        <p><strong>意图：</strong> 为其他对象提供一种代理以控制对这个对象的访问。</p>
+<p><strong>主要解决：</strong> 在直接访问对象时带来的问题，比如说：要访问的对象在远程的机器上。在面向对象系统中，有些对象由于某些原因（比如对象创建开销很大，或者某些操作需要安全控制，或者需要远程外的访问）直接访问会给使用者或者系统结构带来很多麻烦，我们可以在访问对象时加上一个对此对象的访问层。</p>
+<p><strong>何时使用：</strong> 想在访问一个类时做一些控制。</p>
+<p><strong>如何解决：</strong> 增加中间层。</p>
+<p><strong>关键代码：</strong> 实现与被代理类组合。</p>
+<p><strong>应用实例：</strong> 1. Windows 里面的快捷方式。 2. 买火车票不一定在火车站买，也可以去代售点。</p>
+<p><strong>优点：</strong> 1. 职责清晰 2. 高扩展性 3. 智能化</p>
+<p><strong>缺点：</strong> 1. 由于在客户端和真实主题之间增加了代理对象，因此有些类型的代理模式可能会造成请求的处理速度变慢。 2. 实现代理模式需要额外的工作，有些代理模式的实现非常复杂。</p>
+<p><strong>使用场景：</strong> 按职责来划分，通常有以下使用场景：1. 远程代理 2. 虚拟代理 3. Copy-on-Write 代理 4. 保护（Protect on Access）代理 5. Cache 代理 6. 防火墙（Firewall）代理 7. 同步化（Synchronization）代理 8. 智能引用（Smart Reference）代理</p>
+<p><img src="https://upload.ismdeep.com/images/2020/08/07/e01d086cfebb02a138d1d48b1fb7fc68-7300f3.jpg" alt="photo_2019-11-26_16-11-02"></p>
+<pre><code class="python"># -*- coding: utf-8 -*-
+
+#
+# 代理模式
+# 应用特性：需要在通信双方中间需要一些特殊的中间操作时引用，多加一个中间控制层。
+# 结构特性：建立一个中间类，创建一个对象，接收一个对象，然后把两者联通起来
+
+
+class sender_base:
+    def __init__(self):
+        pass
+
+    def send_something(self, something):
+        pass
+
+
+class send_class(sender_base):
+    def __init__(self, receiver):
+        self.receiver = receiver
+
+    def send_something(self, something):
+        print(&quot;SEND &quot; + something + &#39; TO &#39; + self.receiver.name)
+
+
+class agent_call(sender_base):
+    def __init__(self, receiver):
+        self.send_obj = send_class(receiver)
+
+    def send_something(self, something):
+        self.send_obj.send_something(something)
+
+
+class receive_class:
+    def __init__(self, someone):
+        self.name = someone
+
+
+if __name__ == &quot;__main__&quot;:
+    receive = receive_class(&#39;wuxinzhe&#39;)
+    agent_send = agent_call(receive)
+    agent_send.send_something(&#39;test message...&#39;)
+</code></pre>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>浅谈虚拟机网络配置 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2020-10-12-talking-about-virtual-machine-networks" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>浅谈虚拟机网络配置</h1>
+  
+
+      </header>
+      <div>
+      2020-10-12
+      
+        / 
+        
+          <span><a href="/tags/Hacker/">#Hacker</a></span>
+        
+          <span><a href="/tags/Development/">#Development</a></span>
+        
+          <span><a href="/tags/VirtualBox/">#VirtualBox</a></span>
+        
+          <span><a href="/tags/Network/">#Network</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#0x00-网络基础知识"><span class="toc-text">0x00 网络基础知识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x01-虚拟机内部设置"><span class="toc-text">0x01 虚拟机内部设置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x02-CentOS-网络配置"><span class="toc-text">0x02 CentOS 网络配置</span></a></li></ol>
+  </div>
+
+
+        </div>
+
+        <p>本文我打算讲一讲虚拟机网络配置的一些常见问题。当然，虚拟机有很多种，常见的有 VirtualBox、VMWare 等。在虚拟机使用上面，笔者更倾向使用 VirtualBox，因为这东西在我们常用的三大操作系统（Windows、Linux、macOS）上都有，这样无论我在什么样的设备上都可以用，好处就是我掌握了 Windows 上如何使用 VirtualBox，那 macOS 上就基本上相同了的。不过话说回来了，其实咱们掌握了 VirtualBox 的基本使用的话，VMWare 也就不在话下了。</p>
+<h2 id="0x00-网络基础知识"><a href="#0x00-网络基础知识" class="headerlink" title="0x00 网络基础知识"></a>0x00 网络基础知识</h2><p>虚拟机是一台通过虚拟机软件虚拟出来的计算机，其里面也有设备，虚拟出来的计算机有一个巨大的优势就是可以对虚拟计算机的设备进行修改，而不用像真是的计算机一样去购买新的设备更换啥的。比如，真实的电脑，你需要增加一个网卡，这个时候你就需要去购买新的网卡，然后往这台计算机上增加。成本就上来了。那么在虚拟机里呢，我们需要网卡，就给其新增一个虚拟的网卡上去；需要一个新的硬盘，就可以新增一个新的硬盘上去。这些都是可以通过虚拟机软件配置去做到的。</p>
+<p>好，我们回到网络基础知识上来，那么一台电脑需要上网的话，那肯定就需要网卡，然后拿一根网线，一头接到网卡上。另一头呢？可以插在路由器上。就跟你家里的网络一样。</p>
+<p>那么虚拟机里面配置网络有三种常用的网络连接方式：</p>
+<ul>
+<li><p>NAT 地址转换连接方式</p>
+<p>NAT主要是用来供虚拟机上网的，其实这里地址转换也就是说虚拟机用的网络IP其实还是宿主机的网络IP，宿主机能够上网的话，虚拟机也可以上网。但是，宿主机无法直接通过某个IP访问到虚拟机，当然外面的网络就更加不行了。</p>
+</li>
+<li><p>Host-Only 连接方式</p>
+<p>虚拟机软件在宿主系统中虚拟出一个虚拟的路由器，然后将虚拟机网卡与虚拟路由器连接起来。</p>
+</li>
+<li><p>桥接网卡（Bridge Adapter）连接方式</p>
+<p>虚拟机桥接到宿主机真实网卡上面，获得一个与宿主机同一个子网的独立IP地址。比如：宿主机有一个网卡且获得 IP 地址为 172.16.40.12 ，那么虚拟机桥接了这个网卡之后就可以通过DHCP方式获取一个由路由器或交换机分配的IP，或者是手动设置一个IP地址。这个 IP 可以是 172.16.40.13，只要没有被占用就行。</p>
+</li>
+</ul>
+<p>笔者在给虚拟机设置网络的时候，通常选择 <strong>NAT连接方式+Host-Only连接方式</strong> 、<strong>桥接（Bridge）网卡连接方式</strong> 这两种当中一种，具体选哪一种，视场景而定。</p>
+<ul>
+<li><strong>NAT连接方式+Host-Only连接方式：</strong> 这种方式，笔者用得更多一些，尤其是笔记本电脑里。因为笔记本网络使用并不固定，有时候用的是实验室的网络，有时候用的是宿舍的网络。使用桥接网卡就显得不是那么方便了。所以给第一张网卡以NAT网络，保证虚拟机能够上网，然后再选择Host-Only网络给第二张网卡，然后配置好IP这样宿主机就可以通过Host-Only配置的IP地址来访问虚拟机了。</li>
+<li><strong>桥接网卡连接方式</strong>：家里台式机、实验室台式机会选择这种方式。这样台式机里的虚拟机系统就能够直接获得与台式机同一个子网里的IP了。这样台式机连虚拟机或者在子网里其他设备就能够直接连虚拟机了。比如笔者所在学校的实验室拥有学校子网的IP，这样就算是回到宿舍，也能够在宿舍连接到实验室台式机里的虚拟机进行一些实验了。</li>
+</ul>
+<p>Host-Only 虚拟路由器需要先在虚拟机软件上进行创建和设置。</p>
+<ul>
+<li>VirtualBox 则在 “管理” - “主机网络管理器” 进行创建和管理。</li>
+<li>VMWare 则在 “编辑” - “虚拟网络编辑器” 进行创建和管理。</li>
+</ul>
+<h2 id="0x01-虚拟机内部设置"><a href="#0x01-虚拟机内部设置" class="headerlink" title="0x01 虚拟机内部设置"></a>0x01 虚拟机内部设置</h2><p>根据两种不同的连接方式组合，虚拟机的内部网络设置也有所不同。当然，我们这里主要讲述 Linux 下网络设置。首先，不得不吐槽一下 Linux 下网络设置一个很大的问题，就是太杂了。杂在哪里呢？<strong>各个 Linux 系统发行商都在搞自己的一套网络设置规则，甚至还出现了同一个发行商发布的 Linux 发行版，不同版本都有不同的网络配置方法。</strong>真希望各个厂商能够统一一下，给各位学子一个简单的网络配置环境。</p>
+<p>那么配置网路的大致步骤视连接方式而定：</p>
+<ul>
+<li><p><strong>NAT连接方式+Host-Only连接方式：</strong> 在系统中通过 <code>ip addr</code> 命令查看网卡，除了 <code>lo</code> 网卡以外还能看到两张网卡，这两张网卡一张则是NAT连接方式，另一张则是 Host-Only连接方式。其中一张应该系统已经默认给设置好了NAT网络的地址，这样的地址一般以 10.0 这样开头，如下图所示。</p>
+<p><img src="https://upload.ismdeep.com/images/2020/10/12/fbaedf8cbfb66afcac021eb453a6e7be-509ffe.png" alt="image-20201012145446055"></p>
+</li>
+<li><p><strong>桥接网卡连接方式：</strong> 在系统中通过 <code>ip addr</code> 命令查看网卡，除了 <code>lo</code> 网卡以外还能看到一张网卡，这种网卡就是桥接在宿主机真实网卡上的一个虚拟网卡。只需要按照宿主机中这种网卡的网络配置方式进行配置即可。</p>
+</li>
+</ul>
+<h2 id="0x02-CentOS-网络配置"><a href="#0x02-CentOS-网络配置" class="headerlink" title="0x02 CentOS 网络配置"></a>0x02 CentOS 网络配置</h2><p>首先通过 <code>ip addr</code> 查看有哪些网卡，每个网卡需要配置什么样的网络。我们以下面这张图为例</p>
+<p><img src="https://upload.ismdeep.com/images/2020/10/12/64ace12b98d0765c63c14d33a8093ca4-5ab0c7.png" alt="image-20201012150739812"></p>
+<p><code>enp0s3</code> 已经分配了一个 <code>10.0.2.15</code> 的 IP 地址，这个其实是一个 NAT 网络的地址。这里我们不去动这张网卡。</p>
+<p><code>enp0s8</code> 尚未配置 IP 地址，这时候我们需要给其配置一个 IP 地址。我们是通过 Host-Only 连接方式设置的这张网卡，且虚拟路由器的地址为 <code>192.168.62.1</code> ，那么我们希望给这张网卡配置一个 <code>192.168.62.100</code> 的 IP 地址。</p>
+<p>首先 CentOS 8.0 配置网络的目录是 <code>/etc/sysconfig/network-scripts</code> ，那么我们先</p>
+<p><code>cd /etc/sysconfig/network-scripts</code> 进入这个目录，并 <code>ls</code> 查看一下有哪些文件。笔者电脑上有两张网卡，但是只出现了一个 <code>ifcfg-enp0s3</code> 的文件，<code>ifcfg-enp0s8</code> 呢？不着急，这个文件没有的话，我们可以自己手动创建的。<strong>小技巧：手动创建，需要写的代码太多了，我们可以直接 <code>cp ifcfg-enp0s3 ifcfg-enp0s8</code> 复制一个出来。然后进行编辑。</strong></p>
+<p>以下是配置文件中常见的一些参数：</p>
+<pre><code>TYPE=Ethernet
+PROXY_METHOD=none
+BROWSER_ONLY=no
+BOOTPROTO=dhcp
+DEFROUTE=yes
+IPV4_FAILURE_FATAL=no
+IPV6INIT=yes
+IPV6_AUTOCONF=yes
+IPV6_DEFROUTE=yes
+IPV6_FAILURE_FATAL=no
+IPV6_ADDR_GEN_MODE=stable-privacy
+NAME=ens33
+UUID=e4987998-a4ce-4cef-96f5-a3106a97f5bf
+DEVICE=enp0s8
+ONBOOT=no
+</code></pre><p>我们主要关心的是以下几个参数：</p>
+<ul>
+<li><code>DEVICE</code> 这个是指代哪一个网卡，填写网卡名称，比如我这里要配置 <code>enp0s8</code> 这个网卡，那就写 <code>enp0s8</code></li>
+<li><code>NAME</code> 这个很简单，就是名称，就跟网卡名称一样就可以。</li>
+<li><code>DEFROUTE</code> 是否是默认路由，在NAT+Host-Only组合连接方式中，NAT连接方式的网卡设置成 <code>yes</code> ，其他都设置成 <code>no</code></li>
+<li><code>BOOTPROTO</code> 如果是 DHCP 方式获取 IP 的话就填写 <code>dhcp</code> ，如果想要静态方式分配 IP 地址，则填写 <code>static</code></li>
+<li><code>IPADDR</code> 静态配置的 IP 地址</li>
+<li><code>NETMASK</code> 静态配置网络的子网掩码</li>
+<li><code>GATEWAY</code> 静态配置网络的网关</li>
+<li><code>DNS1</code> 静态配置网络的 DNS 服务器地址（可以不配置）</li>
+<li><code>UUID</code> 这个就是一个随机字符串，用来作为网卡的唯一标识，虽然不知道怎么用，但是还是需要的，通过 <code>uuidgen enp0s8</code> 则可以为我的 <code>enp0s8</code> 这个网卡生成一个 UUID 然后复制过去即可。</li>
+<li><code>ONBOOT</code> 表示开机是否启用，这里我们都选择 <code>yes</code> 即可。</li>
+</ul>
+<p>那么笔者根据这里所说需求就可以设置成以下：</p>
+<pre><code>TYPE=Ethernet
+PROXY_METHOD=none
+BROWSER_ONLY=no
+BOOTPROTO=static
+DEFROUTE=no
+IPADDR=192.168.62.100
+NETMASK=255.255.255.0
+GATEWAY=192.168.62.1
+DNS1=114.114.114.114
+IPV4_FAILURE_FATAL=no
+NAME=enp0s8
+DEVICE=enp0s8
+UUID=223bdb47-2fed-4773-b984-5f5733e61904
+ONBOOT=yes
+</code></pre><p>配置完可以通过 <code>nmcli c reload</code> 命令重启网络服务，当然你还可以通过重启系统来试试。</p>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

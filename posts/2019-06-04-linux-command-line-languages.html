@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>如何设置Linux操作系统中shell命令所使用的语言 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2019-06-04-linux-command-line-languages" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>如何设置Linux操作系统中shell命令所使用的语言</h1>
+  
+
+      </header>
+      <div>
+      2019-06-04
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+
+        </div>
+
+        <p>跟上篇文章一样，我们在Linux终端中执行命令或者shell脚本中写的一些命令，我们需要命令返回的内容是英文的或是其他特定语言。这样能够方便解析。但是又不想去更改系统中语言设置。</p>
+<p>这样我们可以通过下面的命令去执行。而且这样执行的优势在于这条命令并不会改变上下文命令的语言设置。也就是说在执行完这条命令后再次单独执行其他语句，依旧会使用系统的语言设置。</p>
+<pre><code>root@Ubuntu:~ # LANGUAGE=UTF-8.en_US ifconfig
+docker0   Link encap:Ethernet  HWaddr 02:42:b2:02:ad:94
+          inet addr:172.17.0.1  Bcast:0.0.0.0  Mask:255.255.0.0
+          inet6 addr: fe80::42:b2ff:fe02:ad94/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:1710847 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:1866348 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0
+          RX bytes:3582006491 (3.5 GB)  TX bytes:2946591020 (2.9 GB)
+
+eth0      Link encap:Ethernet  HWaddr c0:3f:d5:7e:ef:77
+          inet addr:218.87.136.149  Bcast:218.87.136.255  Mask:255.255.255.0
+          inet6 addr: fe80::c23f:d5ff:fe7e:ef77/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:31800898 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:36529927 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:18452250191 (18.4 GB)  TX bytes:31488753081 (31.4 GB)
+
+lo        Link encap:Local Loopback
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+          RX packets:275598069 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:275598069 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1
+          RX bytes:103171269005 (103.1 GB)  TX bytes:103171269005 (103.1 GB)
+
+veth167a874 Link encap:Ethernet  HWaddr ce:e0:00:e9:71:55
+          inet6 addr: fe80::cce0:ff:fee9:7155/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:6036069 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:6420379 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0
+          RX bytes:3917653147 (3.9 GB)  TX bytes:1267777009 (1.2 GB)
+
+vethf4c4a08 Link encap:Ethernet  HWaddr f2:04:05:bf:d7:0c
+          inet6 addr: fe80::f004:5ff:febf:d70c/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:8067819 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:7841012 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0
+          RX bytes:4866869981 (4.8 GB)  TX bytes:6762834339 (6.7 GB)
+</code></pre>
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

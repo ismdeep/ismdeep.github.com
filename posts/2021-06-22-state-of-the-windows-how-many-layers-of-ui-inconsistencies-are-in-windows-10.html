@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>Windows的现状：Windows 10用了多少个不一致的UI层？ | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2021-06-22-state-of-the-windows-how-many-layers-of-ui-inconsistencies-are-in-windows-10" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>Windows的现状：Windows 10用了多少个不一致的UI层？</h1>
+  
+
+      </header>
+      <div>
+      2021-06-22
+      
+        / 
+        
+          <span><a href="/tags/Windows/">#Windows</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#第一层：Fluent-Design"><span class="toc-text">第一层：Fluent Design</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#第二层：Metro"><span class="toc-text">第二层：Metro</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#第三层：Windows-8-Win32-elements"><span class="toc-text">第三层：Windows 8 Win32 elements.</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#第四层：Windows-7-UI-elements"><span class="toc-text">第四层：Windows 7 UI elements</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#第五层：Windows-Vista"><span class="toc-text">第五层：Windows Vista.</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#第六层：Windows-XP"><span class="toc-text">第六层：Windows XP</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#第七层：Windows-2000"><span class="toc-text">第七层：Windows 2000</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#第八层：Windows-95-NT-4-0-中的元素"><span class="toc-text">第八层：Windows 95/NT 4.0 中的元素</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#第九层：像-Windows-3-1-和-DOS"><span class="toc-text">第九层：像 Windows 3.1 和 DOS</span></a></li></ol>
+  </div>
+
+
+        </div>
+
+        <p>我们可能都听说过这个梗：如果你在Windows 10中挖掘得足够深，你会发现可以追溯到Windows 3.x时代的元素。但这实际上是真的吗？在这篇文章中，我们将来探寻Windows中到底有多少个UI层，以及它们是何时被首次引入的。</p>
+<p>为了这个实验的目的，我选择了最新的Windows 10 Insider Build（截至2021年2月6日），即Windows 10 build 21301。</p>
+<p>所以，来不及解释了，赶紧上车。</p>
+<h1 id="第一层：Fluent-Design"><a href="#第一层：Fluent-Design" class="headerlink" title="第一层：Fluent Design"></a>第一层：Fluent Design</h1><p>首先，我们从最新和最伟大的，流畅设计开始。流利设计于2017年宣布，并与Windows 10 1803更新一起推出，是现代设计语言2（MDL2）的重大重新设计，旨在带来光、深度、运动、材料和规模等元素。它还引入了揭幕效果和亚克力半透明背景。</p>
+<p>截至目前，大多数收件箱（UWP）应用程序已经升级，以利用Fluent元素，以及一些更面向前台的元素，如开始菜单、活动中心和登录屏幕。</p>
+<p>尽管”Fluent Design”得到了好评，但大多数爱好者认为此举太少、太晚了，因为只有一小部分功能通过这种新的设计风格得到了加强。</p>
+<p><img src="https://upload.ismdeep.com/images/2021/06/22/18b4f09d05fdbcb468dc3d4e1550bc2e-8595be.png" alt="windows-10-x64-2021-02-06-19-26-06"></p>
+<p><img src="https://upload.ismdeep.com/images/2021/06/22/c349f7de56319c657b1c9a06cbfe37a8-973814.png" alt="windows-10-x64-2021-02-06-18-37-21-2"></p>
+<p><img src="https://upload.ismdeep.com/images/2021/06/22/9f1dabf457c499c1c52563ff59d97c90-454575.png" alt="windows-10-x64-2021-02-06-18-37-43-2"></p>
+<p><img src="https://upload.ismdeep.com/images/2021/06/22/3b0778764921af25ab0fd70f88e1a2e4-ec9cc9.png" alt="windows-10-x64-2021-02-06-18-38-23"></p>
+<p><img src="https://upload.ismdeep.com/images/2021/06/22/a00bfeacf059ab33b3b0f9979e2280b9-382164.png" alt="windows-10-x64-2021-02-06-18-38-28"></p>
+<h1 id="第二层：Metro"><a href="#第二层：Metro" class="headerlink" title="第二层：Metro"></a>第二层：Metro</h1><p>就在我们深入挖掘操作系统的时候，我们可以看到自Windows 8/8.1以来没有升级过的元素。</p>
+<p>其中一些是明显的遗漏，如音量、USB弹出以及登录屏幕的一些元素。</p>
+<p><img src="https://upload.ismdeep.com/images/2021/06/22/6c5721f7e75103296c415c288e03f78e-969e36.png" alt="vlcsnap-2021-02-06-19h42m58s859"></p>
+<p><img src="https://upload.ismdeep.com/images/2021/06/22/57e6ab78f4b1227890627ce513bd2b9d-6fb9d8.png" alt="windows-10-x64-2021-02-06-18-39-08-2"></p>
+<p><img src="https://upload.ismdeep.com/images/2021/06/22/2556f2411ce57a4750478da863f4b2d9-728320.png" alt="windows-10-x64-2021-02-06-18-39-24"></p>
+<p>其他Metro元素，虽然没有那么突出，但有开机画面（很快将被更新的画面取代）和WinRE。</p>
+<p><img src="https://upload.ismdeep.com/images/2021/06/22/5795778a09466b14ae57c462b19e0a74-6c1a3e.png" alt="windows-10-x64-2021-02-06-18-42-32"></p>
+<p><img src="https://upload.ismdeep.com/images/2021/06/22/63c97e33b250639787b84a5775f94c6d-507335.png" alt="windows-10-x64-2021-02-06-18-42-47"></p>
+<p><img src="https://upload.ismdeep.com/images/2021/06/22/befbad0586effc5e035fbd95540111a8-63a980.png" alt="7989boot"></p>
+<p>你知道吗：第一次引入旋转圆点是在Windows 8 build 7989。</p>
+<h1 id="第三层：Windows-8-Win32-elements"><a href="#第三层：Windows-8-Win32-elements" class="headerlink" title="第三层：Windows 8 Win32 elements."></a>第三层：Windows 8 Win32 elements.</h1><p>就像Windows 10一样，Windows 8也被不一致的问题所困扰（无论好坏）。然而，Windows 8为主要的用户元素增加了有意义的改进，如Windows Explorer或任务管理器。虽然它们在随后的Windows 10更新中会得到一些生活质量的改善，但变化是最小的。</p>
+<p>此外，Windows 8带来的一个重要变化是重新设计了文件传输对话框。</p>
+<p><img src="https://upload.ismdeep.com/images/2021/06/22/2d0fe5991b9564bf78b1191a87d27298-cf2302.png" alt="q"></p>
+<p><img src="https://upload.ismdeep.com/images/2021/06/22/b1a9c7702aeeda83f8d98780e0b5cf3b-bd4474.png" alt="windows-10-x64-2021-02-06-18-41-42"></p>
+<p><img src="https://upload.ismdeep.com/images/2021/06/22/758ae4acba59731d07a408a283e70bf4-deee77.png" alt="windows-10-x64-2021-02-06-18-44-45"></p>
+<p>其中一些变化从Windows 7开始，这使我们来到了第四层。</p>
+<h1 id="第四层：Windows-7-UI-elements"><a href="#第四层：Windows-7-UI-elements" class="headerlink" title="第四层：Windows 7 UI elements"></a>第四层：Windows 7 UI elements</h1><p>毫无疑问，Windows 7是有史以来最受喜爱的Windows版本之一，因其在Windows Vista基础上的巨大提升而受到称赞。它带来了许多新功能，虽然没有Vista引入的那些功能那么重要，但使Windows 7成为一个非常坚实的操作系统，是Windows XP的真正继承者。然而，Windows 7带来的最臭名昭著的变化之一是Ribbon UI，这是一个从Office 2007移植的功能。用新的Ribbon UI更新的一些应用程序是Paint和Wordpad。</p>
+<p>虽然在某些时候，微软决定废弃经典的画图，而采用新的画图3D（与Windows 10创意者更新一起推出），但在重大的反响之后，他们推翻了自己的决定。</p>
+<p><img src="https://upload.ismdeep.com/images/2021/06/22/299ab0007aad2b98141e5dbb1408097a-88b238.png" alt="windows-10-x64-2021-02-06-18-45-38"></p>
+<p><img src="https://upload.ismdeep.com/images/2021/06/22/1a6da87b67f96b57b7e42550aa7eda40-73063f.png" alt="windows-10-x64-2021-02-06-18-45-17"></p>
+<p>其他在Windows 7中更新并一直保持不变的功能有：Windows Media Player 12、远程桌面连接和一些文件对话框。</p>
+<p><img src="https://upload.ismdeep.com/images/2021/06/22/f3eb6efc2c8b7f3776950d213651939d-5daf11.png" alt="windows-10-x64-2021-02-06-18-46-33"></p>
+<p><img src="https://upload.ismdeep.com/images/2021/06/22/98dd430364d5842b6f5dae098c081624-fc9cbd.png" alt="windows-10-x64-2021-02-06-18-47-00"></p>
+<h1 id="第五层：Windows-Vista"><a href="#第五层：Windows-Vista" class="headerlink" title="第五层：Windows Vista."></a>第五层：Windows Vista.</h1><p>Windows Vista是一个具有纪念意义的Windows版本，它给平台带来了急需的现代化。几乎所有操作系统的基本要素都以某种方式得到了改进，从启动器到驱动模型。然而，正如我们现在都知道的，Windows Vista将成为有史以来最糟糕的Windows版本之一，从一开始就被各种问题所困扰。不过，为数不多的被称赞的功能之一是用户界面。它重新设计了一些自Windows 95以来没有更新过的基本要素。这一变化的主要推动者之一是引入了所谓的Aero Wizards，取代了以前的Wizard标准，即Wizard97。</p>
+<p><img src="https://upload.ismdeep.com/images/2021/06/22/9cf476c00df551b984a143ed89868c00-3ff4fe.png" alt="windows-10-x64-2021-02-06-18-56-42"></p>
+<p><img src="https://upload.ismdeep.com/images/2021/06/22/deda1aacc564130b5c1e09376b1a14db-6cf242.png" alt="windows-10-x64-2021-02-06-18-54-58"></p>
+<p>在Windows Vista中重新设计的其他功能，在Windows 10中基本相同：控制面板、搜索程序、Windows传真和扫描。</p>
+<p><img src="https://upload.ismdeep.com/images/2021/06/22/10230818e81267a0ff424976aaa48b32-139912.png" alt="windows-10-x64-2021-02-06-20-38-06"></p>
+<p><img src="https://upload.ismdeep.com/images/2021/06/22/78c980312e88bb5de70c876486642cd2-8df5d8.png" alt="windows-10-x64-2021-02-06-18-51-54"></p>
+<p><img src="https://upload.ismdeep.com/images/2021/06/22/29f220b3c58e6c6086a47a71b2649822-107af5.png" alt="windows-10-x64-2021-02-06-18-54-37"></p>
+<p>说到 Windows Vista：你知道在某些特殊情况下，Windows 10会退回到Vista的启动画面吗？比如当你的显卡不支持标准启动屏幕使用的视频模式时，就会发生这种情况。</p>
+<h1 id="第六层：Windows-XP"><a href="#第六层：Windows-XP" class="headerlink" title="第六层：Windows XP"></a>第六层：Windows XP</h1><p>信不信由你，没有那么多XP元素嵌入到Windows 10中。这可能是因为大多数基本要素已经被更新到Windows 2000中。然而，Windows 10包含一些来自XP的文件对话框，在安装驱动程序时可以看到这些对话框。</p>
+<p><img src="https://upload.ismdeep.com/images/2021/06/22/ceaa88a2d38271b753af4166aed27fd5-e63af8.png" alt="dri"></p>
+<h1 id="第七层：Windows-2000"><a href="#第七层：Windows-2000" class="headerlink" title="第七层：Windows 2000"></a>第七层：Windows 2000</h1><p>Windows 2000是微软NT系列操作系统的一个重要里程碑。它也是一块垫脚石，标志着开始向新的、统一的Windows愿景过渡。然而，Windows 2000仍然是一个面向商业的操作系统，这意味着它带来了许多为专家设计的新功能。</p>
+<p>最重要的一个新增功能就是管理控制台（MMC），其UI元素自那时起，至今几乎没变。</p>
+<p><img src="https://upload.ismdeep.com/images/2021/06/22/2af794583f3c4e3dc0e91272cd0f8e26-774ab5.png" alt="windows-10-x64-2021-02-06-19-05-34"></p>
+<p><img src="https://upload.ismdeep.com/images/2021/06/22/50896409dfbcb900718ea78f8f66471e-86c085.png" alt="windows-10-x64-2021-02-06-19-04-39"></p>
+<p><img src="https://upload.ismdeep.com/images/2021/06/22/82387a21f10004d96f0d211858733b85-8150a2.png" alt="windows-10-x64-2021-02-06-19-04-54"></p>
+<p>在Windows 2000中引入的另一个功能是Windows安装程序，它的图标仍然与最初时一样。</p>
+<p><img src="https://upload.ismdeep.com/images/2021/06/22/97155d138f355227e238fa8a7f279dd6-4dd4d4.png" alt="wi"></p>
+<p>还有另一个没有变化过的UI元素（当然除了品牌效应）是winver，它的设计是在Windows 2000 build 1946中被引入的。</p>
+<p><img src="https://upload.ismdeep.com/images/2021/06/22/f36f0655b6790b625e29ab80cc43d9eb-32f6e9.png" alt="windows2000-5.0.1946-about"></p>
+<p><img src="https://upload.ismdeep.com/images/2021/06/22/9a11782dd1ca5d6fb0087baa3bb59f15-bba104.png" alt="windows-10-x64-2021-02-06-19-04-04"></p>
+<p>虽然Windows 2000引入了许多针对高级用户的功能，但Windows 95可能是迄今为止最重要的Windows版本。它所引入的基本范式至今仍然有效。它引入了诸如开始菜单、上下文菜单、任务栏和回收站等功能。虽然这些功能经过多年的更新，但有些功能几乎完全保持不变。</p>
+<h1 id="第八层：Windows-95-NT-4-0-中的元素"><a href="#第八层：Windows-95-NT-4-0-中的元素" class="headerlink" title="第八层：Windows 95/NT 4.0 中的元素"></a>第八层：Windows 95/NT 4.0 中的元素</h1><p>一个基本上是老式计算习惯的遗留物的元素，即人们必须保护他们宝贵的CRT屏幕，这就是屏保设置。</p>
+<p><img src="https://upload.ismdeep.com/images/2021/06/22/cae1e6e40863f7c5c27c9d8429bd0b2f-d10bf0.png" alt="windows-95-2021-02-06-21-34-46-2"></p>
+<p><img src="https://upload.ismdeep.com/images/2021/06/22/953573c4521a3423a32201cdaf786657-3919f0.png" alt="windows-10-x64-2021-02-06-19-10-29-1"></p>
+<p>另一个惊人相似的元素是“运行”对话框。</p>
+<p><img src="https://upload.ismdeep.com/images/2021/06/22/efc0d1fc4749f03a1e14d826fd8033bd-c52a6a.png" alt="windows-95-2021-02-06-21-34-55-3"></p>
+<p><img src="https://upload.ismdeep.com/images/2021/06/22/d0b92b3c032f15fb9eb60410e9799063-76f214.png" alt="windows-10-x64-2021-02-06-19-10-53-1"></p>
+<p>还有一个通过时间考验的常见UI元素是文件夹属性窗口。</p>
+<p><img src="https://upload.ismdeep.com/images/2021/06/22/1986fa9346bdb225187a05d38b2ad05e-1fbd5d.png" alt="wi2-1"></p>
+<p><img src="https://upload.ismdeep.com/images/2021/06/22/189f12d27b85176bb324d65628648f39-74f606.png" alt="nf"></p>
+<p>还有很多UI元素自Windows 95以来就没有被碰过。这是一个永恒的设计的案例吗？</p>
+<h1 id="第九层：像-Windows-3-1-和-DOS"><a href="#第九层：像-Windows-3-1-和-DOS" class="headerlink" title="第九层：像 Windows 3.1 和 DOS"></a>第九层：像 Windows 3.1 和 DOS</h1><p>好吧，这其实算不上真正的“UI层”，因为我还没在Windows 10中发现Windows 95以前的任何界面元素（尽管我感觉肯定有）。然而，在Windows 10中有一个奇特的文件，叫做 moricons.dll，它包含了很多DOS时代的老图标。</p>
+<p><img src="https://upload.ismdeep.com/images/2021/06/22/3e17843443b9c99c79124e433af3280f-1df35e.png" alt="mori-1"></p>
+<p>嗯，这么多就是这样。可能你也知道了，微软正计划用他们的“太阳谷”更新来彻底重构Windows系统的用户界面，目的是统一操作系统的设计。然而，正如我们今天所看到的，Windows是一个庞大的操作系统。他们为最终形成一个统一的用户体验所做的努力会成功吗？让我们拭目以待吧。</p>
+<p>谢谢您的关注。</p>
+<hr>
+<p>翻译自：<a href="https://ntdotdev.wordpress.com/2021/02/06/state-of-the-windows-how-many-layers-of-ui-inconsistencies-are-in-windows-10/" target="_blank" rel="noopener">https://ntdotdev.wordpress.com/2021/02/06/state-of-the-windows-how-many-layers-of-ui-inconsistencies-are-in-windows-10/</a></p>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

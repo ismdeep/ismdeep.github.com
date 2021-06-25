@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>快速幂 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2018-04-17-fast-power" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>快速幂</h1>
+  
+
+      </header>
+      <div>
+      2018-04-17
+      
+        / 
+        
+          <span><a href="/tags/ACM-ICPC/">#ACM-ICPC</a></span>
+        
+          <span><a href="/tags/Algorithm/">#Algorithm</a></span>
+        
+          <span><a href="/tags/Number-Theory/">#Number Theory</a></span>
+        
+          <span><a href="/tags/Common-Lisp/">#Common Lisp</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+
+        </div>
+
+        <p>我们从一个简单的问题开始。 $ 6^{208}\%23 $等于多少。解这个题目最笨的方法是把$6^{208}$算出来，然后再算$6^{208}\%23$。接下来我们讲解一种快速计算的方法。此方法在ACM-ICPC中非常重要，在密码学考试中一样相当重要。</p>
+<p>首先我们来计算一下$6^{208}$是多少吧。</p>
+<p>先上幂运算代码(clisp)：</p>
+<pre><code class="lisp">(defun pow (x n)
+    (if (= n 0)
+        1
+        (* x (pow x (1- n)))))
+</code></pre>
+<p>运行结果</p>
+<pre><code class="text">* (defun pow (x n)
+    (if (= n 0)
+        1
+        (* x (pow x (1- n)))))
+
+POW
+* (pow 6 208)
+
+716902475118262214817011779393196661223001384517326117611478588644678638278414107572257870390965072733283553862876694482148415089417201250632070732438043011055616
+* (mod (pow 6 208) 23)
+
+4
+</code></pre>
+<p>接下来上快速幂代码(clisp)：</p>
+<pre><code class="lisp">;;;; pow_mod function
+(defun pow_mod (x n mod_value)
+    (if (= n 0)
+        1
+        (if (= n 1)
+            (mod x mod_value)
+            (mod
+                (*
+                    (mod (pow (pow_mod x (floor (/ n 2)) mod_value) 2) mod_value)
+                    (pow_mod x (mod n 2) mod_value)
+                )
+                mod_value))))
+</code></pre>
+<p>最后计算出来等于4</p>
+<p>那么接下来在说快速幂之前我们先讲一个公式： $ (a \times b) \% n = [ (a \% n) \times (b \% n) ] \% n $</p>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

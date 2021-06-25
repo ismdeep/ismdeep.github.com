@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>安装 Nginx + MySQL + PHP 环境（ macOS篇 ） | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2020-04-22-install-nginx-mysql-php-on-macos" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>安装 Nginx + MySQL + PHP 环境（ macOS篇 ）</h1>
+  
+
+      </header>
+      <div>
+      2020-04-22
+      
+        / 
+        
+          <span><a href="/tags/MySQL/">#MySQL</a></span>
+        
+          <span><a href="/tags/Development/">#Development</a></span>
+        
+          <span><a href="/tags/Server/">#Server</a></span>
+        
+          <span><a href="/tags/macOS/">#macOS</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#0x01-安装-Homebrew"><span class="toc-text">0x01 安装 Homebrew</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#0x02-安装必要的一些软件"><span class="toc-text">0x02 安装必要的一些软件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#0x03-安装-Nginx"><span class="toc-text">0x03 安装 Nginx</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#0x04-安装-MySQL"><span class="toc-text">0x04 安装 MySQL</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#0x05-安装-php72"><span class="toc-text">0x05 安装 php72</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#0x06-配置"><span class="toc-text">0x06 配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#0x06-启动-amp-关闭命令"><span class="toc-text">0x06 启动 &amp; 关闭命令</span></a></li></ol>
+  </div>
+
+
+        </div>
+
+        <p>现在的 PHP 开发基本上都是基于 Nginx + PHP-FPM + MySQL 环境来运行的，那么接下来笔者打算来简单介绍一下 macOS 环境下搭建 PHP 开发环境的步骤。</p>
+<h4 id="0x01-安装-Homebrew"><a href="#0x01-安装-Homebrew" class="headerlink" title="0x01 安装 Homebrew"></a>0x01 安装 Homebrew</h4><pre><code class="bash">/usr/bin/ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;
+</code></pre>
+<h4 id="0x02-安装必要的一些软件"><a href="#0x02-安装必要的一些软件" class="headerlink" title="0x02 安装必要的一些软件"></a>0x02 安装必要的一些软件</h4><pre><code class="bash">brew install wget
+brew install autoconf
+brew install openssl
+</code></pre>
+<h4 id="0x03-安装-Nginx"><a href="#0x03-安装-Nginx" class="headerlink" title="0x03 安装 Nginx"></a>0x03 安装 Nginx</h4><pre><code class="bash">brew install nginx
+</code></pre>
+<h4 id="0x04-安装-MySQL"><a href="#0x04-安装-MySQL" class="headerlink" title="0x04 安装 MySQL"></a>0x04 安装 MySQL</h4><pre><code class="bash">brew install mysql
+</code></pre>
+<h4 id="0x05-安装-php72"><a href="#0x05-安装-php72" class="headerlink" title="0x05 安装 php72"></a>0x05 安装 php72</h4><pre><code class="bash">brew install php72
+</code></pre>
+<h4 id="0x06-配置"><a href="#0x06-配置" class="headerlink" title="0x06 配置"></a>0x06 配置</h4><ol>
+<li><p>配置 php-fpm 权限</p>
+<p>打开 <code>/usr/local/etc/php/7.2/php-fpm.d/www.conf</code> 并找到 <code>user = _www</code> 和 <code>group = _www</code> ，应该就是相邻的两行，将 <code>user = _www</code> 的 <code>_www</code> 替换成自己的用户名，比如笔者用户名为 <code>ismdeep</code> ，则这一行就替换成 <code>user = ismdeep</code> 即可。<strong>注意：这里的 <code>group = _www</code> 是不需要修改的。</strong></p>
+<p><strong>用户名如何看？</strong> 打开终端，然后输入 <code>whoami</code> 即可。</p>
+</li>
+<li><p>配置 nginx 站点</p>
+<p>配置前，你需要想好一个用于测试的域名。这个域名当然不用去域名注册商注册。你只需要一个本地的一个名称即可。笔者推荐使用 <code>.test</code> 作为后缀。虽然我看网上也有教程教大家安装 dnsmaq 然后配置所有 <code>.dev</code> 后缀的域名都指向本地 <code>127.0.0.1</code> IP. 但是笔者觉得这样做并不好，两个原因：1. 多安装了一个软件；2. <code>.dev</code> 后缀域名在 Chrome 浏览器中会自动定向到 https</p>
+<p>嗨呀，想个名字好难呀。这里笔者以 <code>firstwebsite.test</code> 作为用于测试的域名。</p>
+<ul>
+<li><p>第一步，修改 <code>/etc/hosts</code> 文件。在最后添加 <code>127.0.0.1    firstwebsite.test</code> <strong>注意：IP 与域名之间用 tab 键进行分割。空格可能会有问题。</strong> 至于域名配置是否成功可以打开终端输入 <code>ping firstwebsite.test</code> 测试一下。如果返回是 <code>127.0.0.1</code> 那么说明配置是成功的。</p>
+</li>
+<li><p>第二步，你需要确定你的 php 代码所存放的目录。比如这里笔者写了一个简单的 php 程序放在了 <code>/Users/ismdeep/Data/firstwebsite</code></p>
+</li>
+<li><p>第三步，通过命令行进入 <code>/usr/local/etc/nginx/servers</code> 目录。然后在其中添加文件 <code>firstwebsite</code> ，并输入一下文本至 <code>firstwebsite</code></p>
+<pre><code class="text">server {
+    listen       80;
+    server_name  firstwebsite.test;
+    root /Users/ismdeep/Data/firstwebsite;
+
+    location / {
+        index index.php index.html;
+        autoindex on;
+    }
+
+    location ~ \.php$ {
+        fastcgi_pass   127.0.0.1:9000;
+        fastcgi_index  index.php;
+        fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+        include        fastcgi_params;
+    }
+
+}
+</code></pre>
+</li>
+<li><p>第四步，重启 php-fpm 和 nginx</p>
+<pre><code class="bash">sudo killall php-fpm
+sudo php-fpm -D
+sudo /usr/local/Cellar/nginx/1.17.9/bin/nginx -s quit
+sudo /usr/local/Cellar/nginx/1.17.9/bin/nginx
+</code></pre>
+</li>
+<li><p>第五步，打开浏览器并访问 <code>firstwebsite.test</code></p>
+</li>
+</ul>
+</li>
+</ol>
+<h4 id="0x06-启动-amp-关闭命令"><a href="#0x06-启动-amp-关闭命令" class="headerlink" title="0x06 启动 &amp; 关闭命令"></a>0x06 启动 &amp; 关闭命令</h4><ul>
+<li>php-fpm<ul>
+<li>启动 <code>sudo killall php-fpm</code></li>
+<li>停止 <code>sudo /usr/local/Cellar/php@7.2/7.2.29/sbin/php-fpm -D</code></li>
+</ul>
+</li>
+<li>nginx<ul>
+<li>启动 <code>sudo /usr/local/Cellar/nginx/1.17.9/bin/nginx</code></li>
+<li>停止 <code>sudo /usr/local/Cellar/nginx/1.17.9/bin/nginx -s quit</code></li>
+</ul>
+</li>
+<li>mysql<ul>
+<li>启动 <code>brew services start mysql</code></li>
+<li>停止 <code>brew services stop mysql</code></li>
+<li>重启 <code>brew services restart mysql</code></li>
+</ul>
+</li>
+</ul>
+<p><strong>提示：</strong> 以上命令中使用了绝对路径的调用方式。这是笔者一个执行程序的习惯。你可以把对应的目录加入到 <code>PATH</code> 环境变量中。</p>
+<p>软件对应的版本号可能会随着本文发布之后的时间推移会有所变化。</p>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

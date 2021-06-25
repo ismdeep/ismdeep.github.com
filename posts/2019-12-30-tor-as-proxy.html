@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>如何利用 Tor 网络转发流量 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2019-12-30-tor-as-proxy" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>如何利用 Tor 网络转发流量</h1>
+  
+
+      </header>
+      <div>
+      2019-12-30
+      
+        / 
+        
+          <span><a href="/tags/Hacker/">#Hacker</a></span>
+        
+          <span><a href="/tags/Tor/">#Tor</a></span>
+        
+          <span><a href="/tags/Proxy/">#Proxy</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#0x01-配置"><span class="toc-text">0x01 配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0x02-测试是否有用"><span class="toc-text">0x02 测试是否有用</span></a></li></ol>
+  </div>
+
+
+        </div>
+
+        <p>如果你比较关注网络互联网记录的隐私的话，我觉得你应该知道Tor网络（洋葱网络）。我觉得每个人都应该有使用 Tor 网络的需要。</p>
+<p><strong>Tor</strong> 是实现匿名通信的自由软件。用户可以通过 Tor 网络连接到全球志愿者免费提供的中继节点，从而达到至隐藏用户真实地址、避免网络监控及流量分析的目的。</p>
+<p>那么在使用 Tor 的时候，有时候我们想要其他软件的流量也从 Tor 网络通过，比如 Telegram 这样的聊天软件，或者是你的 Chrome 浏览器流量。这个时候就可以使用到 Tor 浏览器自带的 Tor Browser Bundle 功能。它可以提供一个监听端口，然后用户就可以在自己的软件中设置 Socks 代理进行使用 Tor 网络流量。</p>
+<h3 id="0x01-配置"><a href="#0x01-配置" class="headerlink" title="0x01 配置"></a>0x01 配置</h3><p>只需要打开 Tor 浏览器的配置文件 <code>torrc</code> ，然后在文件末尾添加以下内容即可：</p>
+<pre><code class="text">SocksListenAddress 0.0.0.0
+SocksPort 9998
+</code></pre>
+<ul>
+<li>macOS 上这个文件在 <code>subl &quot;/Users/&lt;Username&gt;/Library/Application Support/TorBrowser-Data/Tor/torrc&quot;</code> , 这里面的 <code>&lt;Username&gt;</code> 是你用户名，如果不知道就打开终端输入 <code>whoami</code> 并按回车就能看到了。</li>
+<li>Windows 上这个文件应该在 <code>&lt;InstallDirectory&gt;\Data\Tor\torrc</code> , 这里的 <code>&lt;InstallDirectory&gt;</code> 就是你安装的 Tor 浏览器的目录。比如笔者就习惯把 Tor 浏览器安装在 <code>C:\tor-app</code> 里面。</li>
+</ul>
+<p>很明显，这里启动的监听端口就是 9998 端口了。</p>
+<p>接下来你需要打开你的 Tor 浏览器，然后就可以使用其他软件设置代理地址为 <code>127.0.0.1</code> ，以及代理端口 <code>9998</code> 进行使用 Tor 网络流量。</p>
+<h3 id="0x02-测试是否有用"><a href="#0x02-测试是否有用" class="headerlink" title="0x02 测试是否有用"></a>0x02 测试是否有用</h3><p>UNIX/Linux 环境下，命令行一般都有 <code>curl</code> 这个命令，那么你可以使用以下两个命令对比一下返回的 IP 地址就可以判断了。</p>
+<pre><code class="bash">&gt; curl ip.sb
+180.7.6.4
+
+&gt; http_proxy=socks5://127.0.0.1:9998 curl ip.sb
+109.70.100.30
+</code></pre>
+<p>至于如何下载 Tor 浏览器并且使用 Tor 浏览器这等事情，emmmmmmmm……</p>
+<hr>
+<p>喵喵怪的小枪枪、biu~</p>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

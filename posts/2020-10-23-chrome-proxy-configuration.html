@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>Chrome 浏览器代理设置 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2020-10-23-chrome-proxy-configuration" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>Chrome 浏览器代理设置</h1>
+  
+
+      </header>
+      <div>
+      2020-10-23
+      
+        / 
+        
+          <span><a href="/tags/Hacker/">#Hacker</a></span>
+        
+          <span><a href="/tags/Proxy/">#Proxy</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+
+        </div>
+
+        <p>Chrome 浏览器（即谷歌浏览器），我听到最多的误解就是：谷歌不是访问不了了么？谷歌浏览器还能用吗？OK! Try it! Why NOT just TRY IT?!</p>
+<p>当然，谷歌浏览器自然是可以使用的，谷歌浏览器是一款非常好用的浏览器，有着非常多的插件，而且安全性也还是很优秀的。</p>
+<p>本文主要讲述谷歌浏览器在代理方面的设置，很多人用谷歌浏览器，为了访问国外的一些被墙的网站，都需要在谷歌浏览器上设置翻墙代理。本文推荐使用 Proxy SwitchyOmega：<a href="https://chrome.google.com/webstore/detail/padekgcemlokbadohgkifijomclgjgif" target="_blank" rel="noopener">https://chrome.google.com/webstore/detail/padekgcemlokbadohgkifijomclgjgif</a></p>
+<p>首先，设置 proxy 代理，设置成自己的代理服务器地址和端口。</p>
+<p>其实，推荐设置 auto switch，默认选择 Direct，Rule List 选择 Proxy，那么 Rule List 使用什么呢？这里推荐 <a href="https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt" target="_blank" rel="noopener">https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt</a> 这样设置之后，Chrome 可以根据规则列表，自动为访问的网站选择走代理还是走国内网络。以上 gfwlist 其实是一个被墙网址的集合，也就是大陆不能正常访问的域名列表，Proxy SwitchyOmega 在识别访问域名在此列表中，则选择走 proxy 代理。这样自动选择，能够让你访问国内的网站不至于通过 proxy 来访问，能够像正常国内访问一样迅速。当然也可以节省你购买的代理节点流量。</p>
+<p><img src="https://upload.ismdeep.com/images/2020/10/23/6cd37f8a78b17f6e9662cceb6397f66c-925f64.png" alt="image-20201023101616163"></p>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>Linux 下杀死进程 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2019-03-01-kill-process-in-linux" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>Linux 下杀死进程</h1>
+  
+
+      </header>
+      <div>
+      2019-03-01
+      
+        / 
+        
+          <span><a href="/tags/Linux/">#Linux</a></span>
+        
+          <span><a href="/tags/bash/">#bash</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+
+        </div>
+
+        <p>首先，我们需要了解一个命令 <code>kill -9 23499</code> ，这就是常见的 <code>kill</code> 命令，其中后面 <code>-9</code> 表示给 <code>23499</code> 这个 PID 的进程发送信号 <code>9</code> ，表示强制、尽快终止进程。</p>
+<pre><code class="text">[root@CentOS ~]# ps aux
+USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root         1  1.0  0.3 129096  6480 ?        Ss   22:59   0:01 /usr/lib/systemd/systemd --switched-root --system --deserialize 22
+root         2  0.0  0.0      0     0 ?        S    22:59   0:00 [kthreadd]
+root         3  0.0  0.0      0     0 ?        S    22:59   0:00 [ksoftirqd/0]
+root         4  0.0  0.0      0     0 ?        S    22:59   0:00 [kworker/0:0]
+root         5  0.0  0.0      0     0 ?        S&lt;   22:59   0:00 [kworker/0:0H]
+root         6  0.0  0.0      0     0 ?        S    22:59   0:00 [kworker/u64:0]
+root         7  0.0  0.0      0     0 ?        S    22:59   0:00 [migration/0]
+root         8  0.0  0.0      0     0 ?        S    22:59   0:00 [rcu_bh]
+root         9  0.2  0.0      0     0 ?        S    22:59   0:00 [rcu_sched]
+root        10  0.0  0.0      0     0 ?        S&lt;   22:59   0:00 [lru-add-drain]
+root        11  0.0  0.0      0     0 ?        S    22:59   0:00 [watchdog/0]
+root        12  0.0  0.0      0     0 ?        S    22:59   0:00 [watchdog/1]
+root        13  0.0  0.0      0     0 ?        S    22:59   0:00 [migration/1]
+root        14  0.0  0.0      0     0 ?        S    22:59   0:00 [ksoftirqd/1]
+root        15  0.0  0.0      0     0 ?        S    22:59   0:00 [kworker/1:0]
+root        16  0.0  0.0      0     0 ?        S&lt;   22:59   0:00 [kworker/1:0H]
+root        18  0.0  0.0      0     0 ?        S    22:59   0:00 [kdevtmpfs]
+root        19  0.0  0.0      0     0 ?        S&lt;   22:59   0:00 [netns]
+root        20  0.0  0.0      0     0 ?        S    22:59   0:00 [khungtaskd]
+root        21  0.0  0.0      0     0 ?        S&lt;   22:59   0:00 [writeback]
+root        22  0.0  0.0      0     0 ?        S&lt;   22:59   0:00 [kintegrityd]
+root        23  0.0  0.0      0     0 ?        S&lt;   22:59   0:00 [bioset]
+root        24  0.0  0.0      0     0 ?        S&lt;   22:59   0:00 [bioset]
+root        25  0.0  0.0      0     0 ?        S&lt;   22:59   0:00 [bioset]
+root        26  0.0  0.0      0     0 ?        S&lt;   22:59   0:00 [kblockd]
+root        27  0.0  0.0      0     0 ?        S&lt;   22:59   0:00 [md]
+root        28  0.0  0.0      0     0 ?        S&lt;   22:59   0:00 [edac-poller]
+root        29  0.0  0.0      0     0 ?        S&lt;   22:59   0:00 [watchdogd]
+root        30  0.0  0.0      0     0 ?        S    22:59   0:00 [kworker/0:1]
+root        35  0.0  0.0      0     0 ?        S    22:59   0:00 [kswapd0]
+root        36  0.0  0.0      0     0 ?        SN   22:59   0:00 [ksmd]
+root        37  0.0  0.0      0     0 ?        SN   22:59   0:00 [khugepaged]
+root        38  0.0  0.0      0     0 ?        S&lt;   22:59   0:00 [crypto]
+root        46  0.0  0.0      0     0 ?        S&lt;   22:59   0:00 [kthrotld]
+root        47  0.0  0.0      0     0 ?        S    22:59   0:00 [kworker/u64:1]
+root        48  0.0  0.0      0     0 ?        S&lt;   22:59   0:00 [kmpath_rdacd]
+root        49  0.0  0.0      0     0 ?        S    22:59   0:00 [kworker/0:2]
+root        50  0.0  0.0      0     0 ?        S&lt;   22:59   0:00 [kaluad]
+root        51  0.0  0.0      0     0 ?        R    22:59   0:00 [kworker/1:1]
+root        52  0.0  0.0      0     0 ?        S&lt;   22:59   0:00 [kpsmoused]
+root        53  0.0  0.0      0     0 ?        S    22:59   0:00 [kworker/1:2]
+root        54  0.0  0.0      0     0 ?        S&lt;   22:59   0:00 [ipv6_addrconf]
+root        67  0.0  0.0      0     0 ?        S&lt;   22:59   0:00 [deferwq]
+root        99  0.0  0.0      0     0 ?        S    22:59   0:00 [kauditd]
+root       216  0.0  0.0      0     0 ?        S    22:59   0:00 [kworker/1:3]
+root      1061  0.0  0.0      0     0 ?        S&lt;   22:59   0:00 [ata_sff]
+root      1095  0.0  0.0      0     0 ?        S    22:59   0:00 [scsi_eh_0]
+root      1110  0.0  0.0      0     0 ?        S&lt;   22:59   0:00 [scsi_tmf_0]
+root      1116  0.0  0.0      0     0 ?        S    22:59   0:00 [scsi_eh_1]
+root      1122  0.0  0.0      0     0 ?        S&lt;   22:59   0:00 [scsi_tmf_1]
+root      1132  0.0  0.0      0     0 ?        S    22:59   0:00 [kworker/u64:2]
+root      1133  0.0  0.0      0     0 ?        S    22:59   0:00 [scsi_eh_2]
+root      1139  0.0  0.0      0     0 ?        S&lt;   22:59   0:00 [scsi_tmf_2]
+root      1140  0.0  0.0      0     0 ?        S    22:59   0:00 [kworker/u64:3]
+root      1145  0.0  0.0      0     0 ?        S    22:59   0:00 [scsi_eh_3]
+root      1152  0.0  0.0      0     0 ?        S&lt;   22:59   0:00 [scsi_tmf_3]
+root      1159  0.0  0.0      0     0 ?        S    22:59   0:00 [scsi_eh_4]
+root      1166  0.0  0.0      0     0 ?        S&lt;   22:59   0:00 [scsi_tmf_4]
+root      1171  0.0  0.0      0     0 ?        S    22:59   0:00 [scsi_eh_5]
+root      1184  0.0  0.0      0     0 ?        S&lt;   22:59   0:00 [scsi_tmf_5]
+root      1189  0.0  0.0      0     0 ?        S    22:59   0:00 [scsi_eh_6]
+root      1196  0.0  0.0      0     0 ?        S&lt;   22:59   0:00 [scsi_tmf_6]
+root      1204  0.0  0.0      0     0 ?        S    22:59   0:00 [scsi_eh_7]
+root      1209  0.0  0.0      0     0 ?        S&lt;   22:59   0:00 [scsi_tmf_7]
+root      1215  0.0  0.0      0     0 ?        S    22:59   0:00 [kworker/u64:4]
+root      1222  0.0  0.0      0     0 ?        S    22:59   0:00 [kworker/u64:5]
+root      1227  0.0  0.0      0     0 ?        S    22:59   0:00 [kworker/u64:6]
+root      1232  0.0  0.0      0     0 ?        S    22:59   0:00 [kworker/u64:7]
+root      1237  0.0  0.0      0     0 ?        S    22:59   0:00 [kworker/u64:8]
+root      1246  0.0  0.0      0     0 ?        S    22:59   0:00 [kworker/u64:9]
+root      1664  0.0  0.0      0     0 ?        S&lt;   22:59   0:00 [kworker/0:1H]
+root      1671  0.0  0.0      0     0 ?        S&lt;   22:59   0:00 [kworker/1:1H]
+root      1711  0.0  0.0      0     0 ?        S&lt;   22:59   0:00 [kdmflush]
+root      1714  0.0  0.0      0     0 ?        S&lt;   22:59   0:00 [bioset]
+root      1726  0.0  0.0      0     0 ?        S&lt;   22:59   0:00 [kdmflush]
+root      1729  0.0  0.0      0     0 ?        S&lt;   22:59   0:00 [bioset]
+root      1747  0.0  0.0      0     0 ?        S&lt;   22:59   0:00 [bioset]
+root      1749  0.0  0.0      0     0 ?        S&lt;   22:59   0:00 [xfsalloc]
+root      1755  0.0  0.0      0     0 ?        S&lt;   22:59   0:00 [xfs_mru_cache]
+root      1760  0.0  0.0      0     0 ?        S&lt;   22:59   0:00 [xfs-buf/dm-0]
+root      1764  0.0  0.0      0     0 ?        S&lt;   22:59   0:00 [xfs-data/dm-0]
+root      1765  0.0  0.0      0     0 ?        S&lt;   22:59   0:00 [xfs-conv/dm-0]
+root      1766  0.0  0.0      0     0 ?        S&lt;   22:59   0:00 [xfs-cil/dm-0]
+root      1767  0.0  0.0      0     0 ?        S&lt;   22:59   0:00 [xfs-reclaim/dm-]
+root      1768  0.0  0.0      0     0 ?        S&lt;   22:59   0:00 [xfs-log/dm-0]
+root      1769  0.0  0.0      0     0 ?        S&lt;   22:59   0:00 [xfs-eofblocks/d]
+root      1770  0.0  0.0      0     0 ?        S    22:59   0:00 [xfsaild/dm-0]
+root      1840  0.2  0.1  38804  2496 ?        Ss   22:59   0:00 /usr/lib/systemd/systemd-journald
+root      1862  0.0  0.1 193424  3640 ?        Ss   22:59   0:00 /usr/sbin/lvmetad -f
+root      1873  0.0  0.0      0     0 ?        S    22:59   0:00 [kworker/0:3]
+root      1874  0.4  0.1  45920  2276 ?        Ss   22:59   0:00 /usr/lib/systemd/systemd-udevd
+root      2972  0.0  0.0      0     0 ?        S&lt;   22:59   0:00 [xfs-buf/sda1]
+root      2973  0.0  0.0      0     0 ?        S&lt;   22:59   0:00 [xfs-data/sda1]
+root      2974  0.0  0.0      0     0 ?        S&lt;   22:59   0:00 [xfs-conv/sda1]
+root      2976  0.0  0.0      0     0 ?        S&lt;   22:59   0:00 [xfs-cil/sda1]
+root      2977  0.0  0.0      0     0 ?        S&lt;   22:59   0:00 [xfs-reclaim/sda]
+root      2978  0.0  0.0      0     0 ?        S&lt;   22:59   0:00 [xfs-log/sda1]
+root      2979  0.0  0.0      0     0 ?        S&lt;   22:59   0:00 [xfs-eofblocks/s]
+root      2984  0.0  0.0      0     0 ?        S    22:59   0:00 [xfsaild/sda1]
+root      3484  0.0  0.0      0     0 ?        S&lt;   22:59   0:00 [kdmflush]
+root      3487  0.0  0.0      0     0 ?        S&lt;   22:59   0:00 [bioset]
+root      3496  0.0  0.0      0     0 ?        S&lt;   22:59   0:00 [xfs-buf/dm-2]
+root      3497  0.0  0.0      0     0 ?        S&lt;   22:59   0:00 [xfs-data/dm-2]
+root      3498  0.0  0.0      0     0 ?        S&lt;   22:59   0:00 [xfs-conv/dm-2]
+root      3499  0.0  0.0      0     0 ?        S&lt;   22:59   0:00 [xfs-cil/dm-2]
+root      3500  0.0  0.0      0     0 ?        S&lt;   22:59   0:00 [xfs-reclaim/dm-]
+root      3501  0.0  0.0      0     0 ?        S&lt;   22:59   0:00 [xfs-log/dm-2]
+root      3502  0.0  0.0      0     0 ?        S&lt;   22:59   0:00 [xfs-eofblocks/d]
+root      3503  0.0  0.0      0     0 ?        S    22:59   0:00 [xfsaild/dm-2]
+root      3524  0.0  0.0  55248   900 ?        S&lt;sl 22:59   0:00 /sbin/auditd
+root      3546  0.0  0.0  26104  1740 ?        Ss   22:59   0:00 /usr/lib/systemd/systemd-logind
+polkitd   3548  0.0  0.6 611976 12128 ?        Ssl  22:59   0:00 /usr/lib/polkit-1/polkitd --no-debug
+root      3549  0.0  0.0  21260  1232 ?        Ss   22:59   0:00 /usr/sbin/irqbalance --foreground
+dbus      3552  0.1  0.1  66208  2580 ?        Ssl  22:59   0:00 /usr/bin/dbus-daemon --system --address=systemd: --nofork --nopidfile --systemd-activation
+chrony    3555  0.0  0.0 117804  1704 ?        S    22:59   0:00 /usr/sbin/chronyd
+root      3566  0.1  0.5 547192 10636 ?        Ssl  22:59   0:00 /usr/sbin/NetworkManager --no-daemon
+root      3596  0.4  0.0 123848  1600 ?        Ss   22:59   0:00 /usr/sbin/crond -n
+root      3600  0.0  0.0 110092   860 tty1     Ss+  22:59   0:00 /sbin/agetty --noclear tty1 linux
+root      3616  0.0  0.2 107204  5452 ?        S    22:59   0:00 /sbin/dhclient -d -q -sf /usr/libexec/nm-dhcp-helper -pf /var/run/dhclient-eth0.pid -lf /var/lib/NetworkManager/dhcl
+root      3856  0.0  0.2 112604  4308 ?        Ss   22:59   0:00 /usr/sbin/sshd -D
+root      3857  0.3  0.9 573676 17108 ?        Ssl  22:59   0:00 /usr/bin/python2 -Es /usr/sbin/tuned -l -P
+root      3861  0.1  0.2 285896  3968 ?        Ssl  22:59   0:00 /usr/sbin/rsyslogd -n
+mysql     3932  0.5  9.3 1119716 176176 ?      Sl   22:59   0:00 /usr/sbin/mysqld --daemonize --pid-file=/var/run/mysqld/mysqld.pid
+root      4252  0.0  0.1  90252  2184 ?        Ss   22:59   0:00 /usr/libexec/postfix/master -w
+postfix   4271  0.0  0.2  90356  4264 ?        S    22:59   0:00 pickup -l -t unix -u
+postfix   4272  0.0  0.2  90424  4288 ?        S    22:59   0:00 qmgr -l -t unix -u
+root      4428  0.3  0.3 158608  5760 ?        Ds   22:59   0:00 sshd: root@pts/0
+root      4431  0.0  0.1 115544  2152 pts/0    Ss   22:59   0:00 -bash
+root      4467  0.0  0.0  18904   896 ?        Ss   23:01   0:00 nginx: master process nginx
+nginx     4468  0.0  0.0  19360  1628 ?        S    23:01   0:00 nginx: worker process
+root      4470  0.0  0.2 231100  5068 ?        Ss   23:01   0:00 php-fpm: master process (/usr/local/php/etc/php-fpm.conf)
+www-data  4471  0.0  0.2 231100  4612 ?        S    23:01   0:00 php-fpm: pool www
+www-data  4472  0.0  0.2 231100  4612 ?        S    23:01   0:00 php-fpm: pool www
+root      4474  0.0  0.0 155080  1808 pts/0    R+   23:01   0:00 ps aux
+</code></pre>
+<p>在这么多进程中，我们可以通过 <code>grep</code> 进行筛选。比如我们想找到所有的 php-fpm 进程。</p>
+<pre><code>[root@CentOS ~]# ps aux | grep php-fpm
+root      4470  0.0  0.2 231100  5068 ?        Ss   23:01   0:00 php-fpm: master process (/usr/local/php/etc/php-fpm.conf)
+www-data  4471  0.0  0.2 231100  4612 ?        S    23:01   0:00 php-fpm: pool www
+www-data  4472  0.0  0.2 231100  4612 ?        S    23:01   0:00 php-fpm: pool www
+root      4477  0.0  0.0 110248   668 pts/0    S+   23:02   0:00 grep --color=auto php-fpm
+</code></pre><p>在输出结果中第二列就是我们所需要的进程 PID，但是似乎多了一行，也就是最后一行。</p>
+<pre><code>[root@CentOS ~]# ps aux | grep php-fpm | grep -v grep
+root      4470  0.0  0.2 231100  5068 ?        Ss   23:01   0:00 php-fpm: master process (/usr/local/php/etc/php-fpm.conf)
+www-data  4471  0.0  0.2 231100  4612 ?        S    23:01   0:00 php-fpm: pool www
+www-data  4472  0.0  0.2 231100  4612 ?        S    23:01   0:00 php-fpm: pool www
+</code></pre><p><code>grep -v grep</code> 表示取消包含 grep 字符串的行。</p>
+<p>接下来就要去获取我们所需要的PID了。</p>
+<pre><code>[root@CentOS ~]# ps aux | grep php-fpm | grep -v grep | awk &#39;{print $2}&#39;
+4470
+4471
+4472
+</code></pre><p>再把获取的 PID 传给 <code>kill</code> 命令进行杀死。</p>
+<pre><code>[root@CentOS ~]# ps aux | grep php-fpm | grep -v grep | awk &#39;{print $2}&#39; | xargs kill -9
+</code></pre><p>这样就杀掉了所有 php-fpm 的进程。</p>
+<p>另附上一个简单的脚本，另脚本名称： <code>kill-by-key.sh</code></p>
+<pre><code class="bash">#!/bin/bash
+
+kill_by_key(){
+    ps aux | grep &quot;$2&quot; | grep -v grep | grep -v &quot;$1&quot; | awk &#39;{print $2}&#39; | xargs kill -9
+}
+ps aux | grep &quot;$1&quot; | grep -v grep | grep -v &quot;$0&quot;
+read -r -p &quot;Are You Sure To Kill These Processes? [Y/n] &quot; input
+case $input in
+    [yY][eE][sS]|[yY])
+        kill_by_key $0 $1
+        ;;
+
+    [nN][oO]|[nN])
+               ;;
+
+    *)
+    echo &quot;Invalid input...&quot;
+    exit 1
+    ;;
+esac
+</code></pre>
+<p>使用方法很简单。</p>
+<pre><code>./kill-by-key.sh php-fpm
+</code></pre>
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

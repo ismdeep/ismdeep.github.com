@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>如何通过命令行编译并运行程序之Windows版本 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2019-10-28-how-to-compile-c-codes-with-cmd-on-windows" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>如何通过命令行编译并运行程序之Windows版本</h1>
+  
+
+      </header>
+      <div>
+      2019-10-28
+      
+        / 
+        
+          <span><a href="/tags/C/">#C</a></span>
+        
+          <span><a href="/tags/Windows/">#Windows</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#0x00-下载-Windows-上-GCC-编译器套件-MinGW"><span class="toc-text">0x00 下载 Windows 上 GCC 编译器套件 MinGW</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x01-配置环境变量"><span class="toc-text">0x01 配置环境变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x02-配置鼠标右键打开命令提示符"><span class="toc-text">0x02 配置鼠标右键打开命令提示符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x03-安装-Sublime-Text-3-代码编辑器"><span class="toc-text">0x03 安装 Sublime Text 3 代码编辑器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x04-开始写代码"><span class="toc-text">0x04 开始写代码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x05-编译并运行程序。"><span class="toc-text">0x05 编译并运行程序。</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x06-中文乱码解决方法"><span class="toc-text">0x06 中文乱码解决方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x07-文末细语"><span class="toc-text">0x07 文末细语</span></a></li></ol>
+  </div>
+
+
+        </div>
+
+        <p>引言：大部分同学在学习C/C++语言时所使用的开发环境，要不就是上古时代遗留下来的毒瘤产品，比如：VC 6.0 甚至还有 Turbo C. 这种东西在笔者开始学习C语言时候都已经是一个没什么人用的产品了。那都已经是12年前的事情了，虽然一直不能理解为什么国内编写教学教材的这些专家们为什么就不能努力努力改变一下现状呢。于是有了这么一篇简单搭建最原始也是笔者认为朴素的开发环境。</p>
+<p>首先咱们需要知道几个概念：</p>
+<ol>
+<li><strong>编辑器：</strong> 编辑器是用来编写咱们的C语言或者是其他语言源代码的。</li>
+<li><strong>编译器：</strong> 编译器是一整个套件，里面有非常多的程序，主要是用来将咱们写出来的C语言代码编译器可执行程序。</li>
+<li><strong>调试器：</strong> 调试器是用来对编译出来的程序进行调试的，这次咱们搭建的环境中虽然有编译器，但是这种命令行调用调试器的方式略显麻烦。另外，笔者早期自学编程时还不知道有调试器这么好玩的东西的存在，于是用着 <code>printf</code> 这样的函数进行输出信息调试的。</li>
+</ol>
+<p>而现在常见的IDE(集成开发环境) 都是将上述功能集成在一个软件之上，虽然使用其他非常方便，但是但是如果在运行程序时候出现一些问题，解决其他就显得不是那么容易。这说明一个好的集成开发环境非常重要。Visual Studio 确实在功能上还算是一个很好的集成开发环境，但是微软搞的这一套，总是跟书上跟C语言标准不一样，所以对新手或者是算法竞赛的同学来说，并不太适合。Code::Blocks bug略显多呀，经常突然就不能编译了，而且在运行时候套用了一层 cb_console_runner 这个程序。</p>
+<p><strong>综上所述，</strong> 笔者非常推荐下面将要介绍的命令行编译运行的方式。而且这种方式不仅可以在Windows环境上使用，而且可以在Linux、macOS上使用，最重要的是，这样就不太需要图形化了。在Linux服务器上，一般来说是没有图形化的，也就是说只有通过这种命令行编译程序的方式来在服务器上编译程序了。</p>
+<h2 id="0x00-下载-Windows-上-GCC-编译器套件-MinGW"><a href="#0x00-下载-Windows-上-GCC-编译器套件-MinGW" class="headerlink" title="0x00 下载 Windows 上 GCC 编译器套件 MinGW"></a>0x00 下载 Windows 上 GCC 编译器套件 MinGW</h2><p>在学习C语言或者C++语言时候我们推荐使用 GCC 编译器，但是 GCC 编译器是 UNIX/Linux 系统上的，那么 Windows 上想要使用就需要安装对应的编译器套件，也就是 MinGW.</p>
+<p>首先通过下面的链接下载MinGW压缩包。</p>
+<p><a href="https://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win64/Personal%20Builds/mingw-builds/8.1.0/threads-posix/seh/x86_64-8.1.0-release-posix-seh-rt_v6-rev0.7z/download" target="_blank">MinGW下载地址</a></p>
+<p>下载后会得到一个 <code>x86_64-8.1.0-release-posix-seh-rt_v6-rev0.7z</code> 的文件。</p>
+<p>通过压缩软件解压（右键提取到 <code>&quot;x86_64-8.1.0-release-posix-seh-rt_v6-rev0\&quot;</code>）后在 <code>&quot;x86_64-8.1.0-release-posix-seh-rt_v6-rev0&quot;</code> 目录中可以得到一个 <code>mingw64</code> 的文件。将这个 <code>mingw64</code> 文件夹复制到 <code>C盘</code> 目录下面。</p>
+<p>打开 <code>mingw64</code> 目录下的 <code>bin</code> 子目录，将其中的 <code>mingw32-make.exe</code> 复制一份命名为 <code>make.exe</code></p>
+<h2 id="0x01-配置环境变量"><a href="#0x01-配置环境变量" class="headerlink" title="0x01 配置环境变量"></a>0x01 配置环境变量</h2><ol>
+<li><p>右键计算机（或叫我的电脑、Win10上叫此电脑），点击属性，然后点击高级系统属性。</p>
+<p> <img src="https://upload.ismdeep.com/images/2020/08/07/db8af158cc1453cfb69cb8f9b0f510d4-28607d.jpg" alt="72ccb7773912b31b3c39aa0a8b18367adab4e179"></p>
+</li>
+<li><p>点击顶部的“高级”，然后点击下面的环境变量。</p>
+<p> <img src="https://upload.ismdeep.com/images/2020/08/07/0f290f63389844e706c9355c8bc7536c-4576fb.jpg" alt="0b7b02087bf40ad1a71ea0c05a2c11dfa9ecce1f"></p>
+</li>
+<li><p>选中系统变量中的 Path ，点击编辑。</p>
+<p> <img src="https://upload.ismdeep.com/images/2020/08/07/ece1773b897c2202439df814d5b56b5d-2f622c.jpg" alt="94cad1c8a786c917245c341ac43d70cf3bc757b1"></p>
+</li>
+<li><p>然后在尾部添加一个 <code>;</code> (注意是英文符号的<code>;</code> 而不是中文输入法下的；) ，并将mingw目录以及后面的 <code>\bin</code> 一起复制到添加的  <code>;</code> 后面。笔者mingw所在目录为：<code>C:\mingw</code> 于是复制 <code>C:\mingw\bin</code> 到上述 <code>;</code> 后面。<strong>注：</strong> Windows 10 系统上Path环境变量编辑时是点击添加，此时不需要添加 <code>;</code></p>
+</li>
+<li><p>然后点击确定即可。</p>
+</li>
+<li><p>打开命令提示符（Win7通过Win+R然后输入cmd即可打开，Win10打开开始菜单搜索cmd即可找到）并输入<code>gcc --version</code> ，如果有如下图显示，则表示环境变量配置完成。</p>
+<p> <img src="https://upload.ismdeep.com/images/2020/08/07/03f89fa87f2da3fad2c9aeea67d982df-3cff98.png" alt="20191028094242"></p>
+</li>
+</ol>
+<h2 id="0x02-配置鼠标右键打开命令提示符"><a href="#0x02-配置鼠标右键打开命令提示符" class="headerlink" title="0x02 配置鼠标右键打开命令提示符"></a>0x02 配置鼠标右键打开命令提示符</h2><p>新建一个文本文档文件，打开输入如下代码，并将文件名改为 <code>opencmdhere.reg</code> 记住要更改后缀名，Windows 系统默认后缀名是隐藏的，需要设置为显示后缀名，至于怎么显示出来。请自行百度：Win7  如何显示文件后缀名</p>
+<pre><code class="text">Windows Registry Editor Version 5.00
+
+[HKEY_CLASSES_ROOT\Directory\Background\shell\opencmd]
+@=&quot;Open CMD Here&quot;
+&quot;Icon&quot;=&quot;C:\\Windows\\System32\\cmd.exe&quot;
+
+[HKEY_CLASSES_ROOT\Directory\Background\shell\opencmd\command]
+@=&quot;cmd.exe \&quot;%V\&quot;&quot;
+</code></pre>
+<p>在更改文件名后，文件图标应该会改变为如下所示。</p>
+<p><img src="https://upload.ismdeep.com/images/2020/08/07/21a6e5275cf5f699fe02413f4f5f6d5f-b0e76b.png" alt="20191028094625"></p>
+<p>双击该文件并点击确定。</p>
+<h2 id="0x03-安装-Sublime-Text-3-代码编辑器"><a href="#0x03-安装-Sublime-Text-3-代码编辑器" class="headerlink" title="0x03 安装 Sublime Text 3 代码编辑器"></a>0x03 安装 Sublime Text 3 代码编辑器</h2><p>事实上，这里我们用来编写的代码编辑器有很多很多，笔者比较喜欢用 Sublime Text 3 代码编辑器。 </p>
+<p>首先前往  <a href="http://www.sublimetext.com/" target="_blank" rel="noopener">http://www.sublimetext.com/</a>  下载并安装。安装过程中需要勾选 <code>Add to explorer context menu</code> 选项，勾选之后可以方便后续通过鼠标右键打开你的源码文件。</p>
+<p><strong>注：</strong> Sublime Text 3 是一款优秀的代码编辑器，也是收费软件，但是可以无限使用，只是在没有通过注册码激活的情况下，偶尔在保存代码的时候会弹出提示激活的提示。虽然可以通过网上找到一些激活的办法，但在个人经济允许的情况下购买激活码支持正版优秀软件。</p>
+<h2 id="0x04-开始写代码"><a href="#0x04-开始写代码" class="headerlink" title="0x04 开始写代码"></a>0x04 开始写代码</h2><ol>
+<li><p>新建一个空目录。笔者建议在新建目录时，这个目录名是不带空格的纯英文目录名，以避免中文字符带来的问题。而且这个目录的上一层目录以及之前的目录均是如此。</p>
+<p> 这里使用 <code>D:\codes-demo</code> 来举例。</p>
+</li>
+<li><p>打开上述空目录，并新建名为 <code>main.c</code> 的文件。（源码文件名可以随意命名，命名方式建议如上述目录名规则一样。）</p>
+</li>
+<li><p>选中 <code>main.c</code> 文件右键 <code>Open with sublimetext</code> </p>
+</li>
+<li><p>接下来就可以在编辑器中开始写代码了。</p>
+<pre><code class="c"> #include &lt;stdio.h&gt;
+
+ int main()
+ {
+     printf(&quot;Hello world.\n&quot;);
+     return 0;
+ }
+</code></pre>
+</li>
+</ol>
+<h2 id="0x05-编译并运行程序。"><a href="#0x05-编译并运行程序。" class="headerlink" title="0x05 编译并运行程序。"></a>0x05 编译并运行程序。</h2><ol>
+<li><p>在目录空白部分右键，<code>Open CMD Here</code></p>
+</li>
+<li><p>在弹出的命令提示符窗口中输入 <code>dir</code> 可以查看当前目录中的所有文件及文件夹。</p>
+<p> <img src="https://upload.ismdeep.com/images/2020/08/07/824275874760b5b1bace8eb91c47d712-198474.png" alt="20191028100327"></p>
+</li>
+<li><p>接下来输入 <code>gcc main.c -o main</code> 可以编译 <code>main.c</code> 文件到 <code>main.exe</code> ，当输出如下，没有编译错误信息，则表示程序编译正常，如果遇到错误信息则可以通过网络搜索找出错误在哪里。而且错误信息中都会明确指出错误出现的位置。</p>
+<p> <img src="https://upload.ismdeep.com/images/2020/08/07/a2593bc491563849b21700dc8ebdd133-c11bd7.png" alt="20191028100527"></p>
+</li>
+<li><p>通过编译出来的文件名进行运行。这里编译出来的是 <code>main.exe</code> 文件。</p>
+<p> <img src="https://upload.ismdeep.com/images/2020/08/07/b7dd93896f6df03d2f54a5bdf97ef462-57325f.png" alt="20191028100743"></p>
+</li>
+</ol>
+<h2 id="0x06-中文乱码解决方法"><a href="#0x06-中文乱码解决方法" class="headerlink" title="0x06 中文乱码解决方法"></a>0x06 中文乱码解决方法</h2><p>如果你写的程序中需要输出中文的话，那么正常编译是会乱码的。这是因为默认的GCC编译出来的中文字符集是UTF-8的，而 Windows 命令行字符集是GBK的，自然输出就乱码了。这个时候就只要指明编译的字符集。</p>
+<pre><code class="bash">gcc -fexec-charset=GBK main.c -o main
+</code></pre>
+<h2 id="0x07-文末细语"><a href="#0x07-文末细语" class="headerlink" title="0x07 文末细语"></a>0x07 文末细语</h2><p>这篇文章是在早上下雨不能骑车而在宿舍治疗拖延症的情况下写就的。这篇文章拖了整整六年了。终于在今天写出来了。</p>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>如何像程序员一样思考 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2019-12-08-how-to-think-like-a-programmer" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>如何像程序员一样思考</h1>
+  
+
+      </header>
+      <div>
+      2019-12-08
+      
+        / 
+        
+          <span><a href="/tags/Hacker/">#Hacker</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#为什么这很重要？"><span class="toc-text">为什么这很重要？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#框架"><span class="toc-text">框架</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-理解问题"><span class="toc-text">1. 理解问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-计划"><span class="toc-text">2. 计划</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-分解问题"><span class="toc-text">3. 分解问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-卡住了？"><span class="toc-text">4. 卡住了？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#练习"><span class="toc-text">练习</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li></ol>
+  </div>
+
+
+        </div>
+
+        <p>如果你对编程感兴趣的话，你应该听说过下面这段话：</p>
+<blockquote>
+<p>这个国家的每个人都应该学习编程，因为它可以教你如何思考。—— 史蒂夫·乔布斯</p>
+</blockquote>
+<p>你可能有点懵了。“像程序员一样思考”到底是什么意思？而且应该<em>怎么</em>做呢？</p>
+<p>其实啊，这都是一些关于 <strong>如何更有效的解决问题</strong> 的方法。</p>
+<p>在这篇文章里，我主要就是讲讲这些方法。</p>
+<p>在最后，你应该就会知道具体该怎么一步一步以更好的方式去解决问题。</p>
+<h3 id="为什么这很重要？"><a href="#为什么这很重要？" class="headerlink" title="为什么这很重要？"></a>为什么这很重要？</h3><p>解决问题这样的能力是基本技能。我们都在不断遇到问题，有大的也有小的。有时候，我们是怎么去面对它们的呢？很随意吧。</p>
+<p>除非你已经自成体系了，否则接下来的方式大概就是你解决问题的步骤了（这也是我开始学编程时候的样子）：</p>
+<ol>
+<li>尝试一个解决方案。</li>
+<li>如果不行，就换一个解决方案。</li>
+<li>如果不行，重复步骤 2 直到你运气来了终于试出来了。</li>
+</ol>
+<p>看吧，有时候你可能运气会比较好。这时解决问题最差的一种方式了。并且，这会浪费你很多，很多时间。</p>
+<p>最好的方式应该是 a) 整理好框架 b) <strong>练习</strong>。</p>
+<blockquote>
+<p>几乎所有的面试官都把解决问题的能力放在第一位。</p>
+<p>相比对编程语言的熟练程度、调试能力和系统设计能力，面试官更看重面试者的解决问题的能力。</p>
+<p>展示计算思维或解决大型复杂问题的能力与工作所需的基本技术技能有同样的价值。</p>
+<p>—— Hacker Rank（2018年开发者技能报告）</p>
+</blockquote>
+<h3 id="框架"><a href="#框架" class="headerlink" title="框架"></a>框架</h3><p>我遵循着Tim Ferriss关于学习的书《厨艺解构》中建议去寻找合适的框架。这也使我访问了两位令我印象深刻的人：C. Jordan Ball 和 V. Anton Spraul. 我问了他们一些问题，你们猜怎么着？他们的回答都近乎一样。你一会就能很快的了解这其中是为什么了。</p>
+<p>注：这并不意味着他们做什么事情都一样。每个人都是不同的。你也会跟他们不同。但是你如果从这些我们都认可是对的原则开始的话，你将会更快地更加深入地理解这些。</p>
+<blockquote>
+<p>我看到新手程序员遇到问题犯的最大错误是专注于学习编程语言的语法，而不是学习如何解决问题。—— V. Anton Spraul</p>
+</blockquote>
+<p>所以，当你遇到问题的时候你应该怎么做呢？</p>
+<p>步骤如下：</p>
+<h3 id="1-理解问题"><a href="#1-理解问题" class="headerlink" title="1. 理解问题"></a>1. 理解问题</h3><p>应该了解你要解决的问题是什么。很多很难的问题其难的原因在于你并没有理解问题（这也是为什么理解问题放在第一步的原因）</p>
+<p>怎么能够知道你已经完全理解问题了呢？就是当你能够用很直白的话语描述出来的时候。当你在一个问题上卡住的时候，尝试去解释这个问题。然后你马上就会发现你逻辑上漏洞。是不是有那种似曾相识的感觉？很多程序员都有这种感觉。这就是为什么你要把问题写下来的原因，画一画图表，或者跟别人说一说这是什么（或者跟某个物件…… 有些人会用一个小黄鸭）</p>
+<p>这也是费曼学习法里面的东西，尝试像别人解释你所学的知识。</p>
+<blockquote>
+<p>如果你不能以一种简单的方式去描述某个东西，那么就不算理解它。 —- Richard Feynman</p>
+</blockquote>
+<h3 id="2-计划"><a href="#2-计划" class="headerlink" title="2. 计划"></a>2. 计划</h3><p>不要在没有做好计划之前盲目的埋头解决问题。计划好你的解决方案。没有什么比你能够写下明确的解决步骤更好的了。</p>
+<p>在编程方面，这也就是说不要一开始就想着直接解决问题。先好好分析问题、处理信息。</p>
+<p>为了获得一个好的计划，应该尝试回答一下以下问题：</p>
+<p>“输入X，得出Y 需要那些必须的步骤？”</p>
+<p>注：程序员有一个非常好的工具去帮助他们来完成这样的计划——注释！</p>
+<h3 id="3-分解问题"><a href="#3-分解问题" class="headerlink" title="3. 分解问题"></a>3. 分解问题</h3><p>注意啦，这应该是所有问题中最为<strong>重要的</strong>。不要尝试去直接解决一个很大的问题。你会心态崩溃的。反而，你应该把问题拆解成一个个很容易解决的子问题。然后，从最简单的开始，挨个解决这些子问题。最简单就是你一眼就能知道答案的（或者很接近答案的）。当然，最简单的也意味着解决这个问题的时候并不依赖于其他问题的解决。</p>
+<p>当你解决了每个子问题后，将它们连起来。将你所有子问题的解决方案连起来，你就得到原问题的完整解决方案了。恭喜你！</p>
+<p>分解问题是解决问题的基石。记住以下内容（如有必要，再来看看以下步骤）：</p>
+<blockquote>
+<p>如果我要教会每一个编程初学者一项解决问题的技能的话，那会是“拆分问题的技能”。例如，假设你是一个编程初学者，你被要求编程实现读取10个数字然后找出其中第三大的数字。即使解决这个问题只要一点点基本的编程语言语法，但对一个编程初学者来说，这可能也还算是一个比较困难的任务了。</p>
+<p>如果你卡住了，你应该把问题拆分成更加简单的问题。不是去思考第三大的数字这个问题，而是去思考找所有数字中最大的数字呢？还是太难了？那么只给你三个数字找其中最大的呢？再或者两个数字中找最大的呢？</p>
+<p>不断拆分这个问题直到你知道如何解决或者能够直接写出解决方法。然后扩展这个问题并再次写出解决方案，直到回到最初你碰到的那个问题。</p>
+<p>—— V. Anton Spraul</p>
+</blockquote>
+<h3 id="4-卡住了？"><a href="#4-卡住了？" class="headerlink" title="4. 卡住了？"></a>4. 卡住了？</h3><p>到现在为止，你可能会想“嘿……这看上去很有趣呀。但是，要是我卡住了，甚至一个子问题都不能解决呢？”</p>
+<p>首先，深呼吸。然后，这很正常的。不要慌，每个人都会有这样的情况。</p>
+<p>好的程序员的不同之处在于他们在面对的bug或者错误的时候会充满好奇心，而不是烦躁。</p>
+<p>事实上，在遇到问题的时候可以尝试接下来三个步骤：</p>
+<ul>
+<li><p>调试：一步一步的去看看你的程序在哪一步出错了。程序员称这样的过程为<em>调试</em>。（事实上，这就是调试器的全部功能。）</p>
+<blockquote>
+<p>调试的艺术是在于找出你实际上告诉程序怎么做而不是你以为你告诉它怎么做了。—— Andrew Singer</p>
+</blockquote>
+</li>
+<li><p>重新评估：从另一个角度来看看这个问题。这是否可以抽象一下，是否有一个通用的方法能够解决这样的问题？</p>
+<blockquote>
+<p>有时候我们会在问题的细节中迷失了方向，以至于忽略了问题可以用一种更加通用的方法来解决。最经典的问题就是高斯小时候遇到的那个对连续的数列进行求和问题：1 + 2 + 3 + … + n. 他很快就意识到这直接有一个通用公式可以用：n(n+1)/2 来避免那么多加法计算。 —— C. Jordan Ball</p>
+</blockquote>
+<p>  注：另一个重新评估的好方法就是重新开始。删掉所有的东西，然后重新开始。这并不是开玩笑，因为你会惊奇地发现这真的很有效。</p>
+</li>
+<li><p>研究：哇哦，Google搜索呀，你没看错。无论你遇到什么问题，都有可能已经有人解决了的。找到他人的解决方法。然而事实上，就算你已经解决了问题也应该去搜一下，看看别人的解决方法。你可以从中学到更多的东西。</p>
+</li>
+</ul>
+<p><strong>警告：</strong>不要去寻找大问题的解决方法。应该仅仅去寻找子问题的解决方法。为什么？因为这不会让你学到什么东西。如果你学不到任何东西的话，你就是在浪费你自己的时间。</p>
+<h3 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h3><p>不要指望你花一周的时间就可以在解决问题方面变得很强。如果想你成为一个很好的解决问题的人，你需要解决大量的问题。</p>
+<p>练习！练习！练习！在你碰到一个问题会有“这个问题用XXX来解决就很简单”这样的想法之前，你唯一可以做的就是利用大量的时间来练习。</p>
+<p>如何练习？有很多，比如数学问题、数独游戏、游戏、加密猫、吧啦吧啦……</p>
+<p>事实上，很多成功人士的一些解决问题的常见模式都来自于他们解决“微小问题”的模式。</p>
+<blockquote>
+<p>Byron Reeves 表示：“如果你想了解三到五年内业务领导的模样，可以参考网络游戏发生的事情。”</p>
+<p>今天，Elon，Reid，Mark Zuckerberg 等人都表示游戏是他们成功创立他们公司的基础。</p>
+<p>—- Mary Meeker</p>
+</blockquote>
+<p>这是不是就是说你只要玩游戏就行了？当然不是了。但是游戏是什么呢？就是解决问题！</p>
+<p>因此，你应该做的是找到一个练习东西，这些东西可以让你练习很多微小的问题（当然，理想状态下都是一些你感兴趣的问题）。</p>
+<p>例如，我比较喜欢编程挑战，我每天就找上至少一个编程挑战的问题来练习。</p>
+<p>就像我说的，所有的问题都有着类似的模式。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>就这些了。现在你应该更好的理解了 “像程序员一样思考”是什么意思了。还知道了解决问题是一项不可思议的技能（基本技能）。如果这还不够的话，那你应该知道了如何练习解决问题的技能。是不是很酷呀。最后，我希望你能遇到很多问题。</p>
+<p>对，你没有看错。最少现在你知道如何去解决它们了。当然，以上我说的方法你也可以去改善的。</p>
+<blockquote>
+<p>当你认为自己已经成功克服了一个问题的时候，就会出现另一个问题。但这就是让生活变得有趣的原因。生活就是一个不断解决问题的过程，一系列我们必须突破的强化路线。</p>
+<p>每次我们都能学到些东西。</p>
+<p>每次我们都会变得更强、更有智慧、更有远见。</p>
+<p>每次更多的竞争都会消失。最后剩下的只有你：你自己最好的一个版本。</p>
+<p>—— Ryan Holiday</p>
+</blockquote>
+<p>现在，去找点问题来尝试尝试吧。加油，祝你好运。</p>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

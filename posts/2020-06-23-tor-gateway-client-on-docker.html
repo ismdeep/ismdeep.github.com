@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>Docker 中的 Tor 网关客户端 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2020-06-23-tor-gateway-client-on-docker" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>Docker 中的 Tor 网关客户端</h1>
+  
+
+      </header>
+      <div>
+      2020-06-23
+      
+        / 
+        
+          <span><a href="/tags/Hacker/">#Hacker</a></span>
+        
+          <span><a href="/tags/Docker/">#Docker</a></span>
+        
+          <span><a href="/tags/Tor/">#Tor</a></span>
+        
+          <span><a href="/tags/Proxy/">#Proxy</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+
+        </div>
+
+        <p>本文主要讲述如何通过 Docker 搭建 Tor 网络网关客户端。</p>
+<p>笔者在搭建 Tor 网关时需要用到上一篇文章的 Trojan 客户端 《<a href="/posts/2020-06-23-trojan-client-on-docker.html">Docker 中的 Trojan 客户端</a>》，将这篇文章运行的 Docker 容器链接到 Tor 容器中。</p>
+<ol>
+<li><p>通过 git 将项目下载到本地</p>
+<pre><code class="bash">git clone https://github.com/tor-on-synology/tor-client-minimal.git
+</code></pre>
+</li>
+<li><p>同上文一样修改 Dockerfile 文件</p>
+</li>
+<li><p>构建 Docker 镜像</p>
+<pre><code class="bash">docker build -t tor .
+</code></pre>
+</li>
+<li><p>准备你的 Tor 配置文件</p>
+<p>笔者使用的目录为 <code>/Users/ismdeep/Data/tor-config</code></p>
+<p>在上述文件夹中写入配置文件 <code>torrc</code></p>
+<pre><code class="text">## The directory for keeping all the keys/etc
+DataDirectory /var/lib/tor
+
+## Socks5Proxy
+Socks5Proxy trojan:1080
+
+## Tor opens a socks proxy on port 9150
+SocksPort 0.0.0.0:9150
+
+## Entry policies to allow/deny SOCKS requests based on IP address.
+## SocksPolicy accept 192.168.1.0/24
+SocksPolicy accept 172.17.0.0/16
+SocksPolicy reject *
+
+## Logs go to stdout at level &quot;notice&quot;
+Log notice stdout
+
+ControlPort 9051
+
+# Try for at most NUM seconds when building circuits. If the circuit isn&#39;t open in that time, give up on it. (Default: 1 minute.)
+CircuitBuildTimeout 5
+# Send a padding cell every N seconds to keep firewalls from closing our connections while Tor is not in use.
+KeepalivePeriod 60
+# Force Tor to consider whether to build a new circuit every NUM seconds.
+NewCircuitPeriod 15
+# How many entry guards should we keep at a time?
+NumEntryGuards 8
+</code></pre>
+<p>解释以上配置文件：</p>
+<p><code>Socks5Proxy trojan:1080</code> trojan 为上文中创建的 trojan 容器，在下面创建 Docker 容器时会用到</p>
+<p><code>SocksPort 0.0.0.0:9150</code> 则监听 9150 端口</p>
+</li>
+<li><p>创建 Docker 容器并运行</p>
+<pre><code class="bash">docker run --name tor --link trojan:trojan -v /Users/ismdeep/Data/tor-config:/etc/tor -p 9150:9150 -d tor
+</code></pre>
+</li>
+</ol>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

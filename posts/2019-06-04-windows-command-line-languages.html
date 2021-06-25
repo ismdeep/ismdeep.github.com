@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>让Windows命令提示符显示指定国家语言 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2019-06-04-windows-command-line-languages" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>让Windows命令提示符显示指定国家语言</h1>
+  
+
+      </header>
+      <div>
+      2019-06-04
+      
+        / 
+        
+          <span><a href="/tags/Windows/">#Windows</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#0x00-概述"><span class="toc-text">0x00 概述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#0x01-解决方案"><span class="toc-text">0x01 解决方案</span></a></li></ol></li></ol>
+  </div>
+
+
+        </div>
+
+        <p>在不同的Windows环境下我们都不能直接确定服务器上默认语言是什么。也不能直接修改服务器的默认语言，这里我们为什么要说服务器呢？因为脚本这种工具大多时候都是为了解决服务器上的一些问题而存在的。至于为什么有些人要用Windows来作为服务器呢，这我就没法理解了，毕竟Windows作为服务器的话，虽然操作简单，但是如果是想要做分布式，还是比较麻烦的，软件安装不能自动化，软件配置也不能自动化。</p>
+<p>这里我们需要解决的是 <strong>Windows上命令提示符指定显示的国家语言</strong>，但是这个解决方式也并不是完美的，首先指定指令有返回，而Windows上没有Linux那样的重定向黑洞（/dev/null）也就是需要生成一个新的文件来接收垃圾输出，而且由于系统默认的时间格式存在，导致部分程序的输出中还是带有中文。</p>
+<h2 id="0x00-概述"><a href="#0x00-概述" class="headerlink" title="0x00 概述"></a>0x00 概述</h2><p>在编写脚本的时候，有时候需要特定的返回结果显示语言。这里我们就需要知道怎么在Windows命令提示符中指定显示语言了。</p>
+<h3 id="0x01-解决方案"><a href="#0x01-解决方案" class="headerlink" title="0x01 解决方案"></a>0x01 解决方案</h3><p>就如下面</p>
+<pre><code>C:\Users\ismdeep&gt;ping www.baidu.com
+
+正在 Ping www.baidu.com [14.215.177.38] 具有 32 字节的数据:
+来自 14.215.177.38 的回复: 字节=32 时间=22ms TTL=52
+来自 14.215.177.38 的回复: 字节=32 时间=22ms TTL=52
+来自 14.215.177.38 的回复: 字节=32 时间=22ms TTL=52
+来自 14.215.177.38 的回复: 字节=32 时间=22ms TTL=52
+
+14.215.177.38 的 Ping 统计信息:
+    数据包: 已发送 = 4，已接收 = 4，丢失 = 0 (0% 丢失)，
+往返行程的估计时间(以毫秒为单位):
+    最短 = 22ms，最长 = 22ms，平均 = 22ms
+</code></pre><pre><code>下表列出了所有支持的代码页及其国家(地区)或者语言：
+代码页       国家(地区)或语言
+437          美国
+708          阿拉伯文(ASMO 708)
+720          阿拉伯文(DOS)
+850          多语言(拉丁文 I)
+852          中欧(DOS) - 斯拉夫语(拉丁文 II)
+855          西里尔文(俄语)
+857          土耳其语
+860          葡萄牙语
+861          冰岛语
+862          希伯来文(DOS)
+863          加拿大 - 法语
+865          日耳曼语
+866          俄语 - 西里尔文(DOS)
+869          现代希腊语
+874          泰文(Windows)
+932          日文(Shift-JIS)
+936          中国 - 简体中文(GB2312)
+949          韩文
+950          繁体中文(Big5)
+1200         Unicode
+1201         Unicode (Big-Endian)
+1250         中欧(Windows)
+1251         西里尔文(Windows)
+1252         西欧(Windows)
+1253         希腊文(Windows)
+1254         土耳其文(Windows)
+1255         希伯来文(Windows)
+1256         阿拉伯文(Windows)
+1257         波罗的海文(Windows)
+1258         越南文(Windows)
+20866        西里尔文(KOI8-R)
+21866        西里尔文(KOI8-U)
+28592        中欧(ISO)
+28593        拉丁文 3 (ISO)
+28594        波罗的海文(ISO)
+28595        西里尔文(ISO)
+28596        阿拉伯文(ISO)
+28597        希腊文(ISO)
+28598        希伯来文(ISO-Visual)
+38598        希伯来文(ISO-Logical)
+50000        用户定义的
+50001        自动选择
+50220        日文(JIS)
+50221        日文(JIS-允许一个字节的片假名)
+50222        日文(JIS-允许一个字节的片假名 - SO/SI)
+50225        韩文(ISO)
+50932        日文(自动选择)
+50949        韩文(自动选择)
+51932        日文(EUC)
+51949        韩文(EUC)
+52936        简体中文(HZ)
+65000        Unicode (UTF-7)
+65001        Unicode (UTF-8)
+</code></pre><pre><code>C:\Users\ismdeep&gt;mode con cp select=437 &gt; log.txt &amp;&amp; ping www.baidu.com
+
+Pinging www.baidu.com [14.215.177.39] with 32 bytes of data:
+Reply from 14.215.177.39: bytes=32 time=31ms TTL=52
+Reply from 14.215.177.39: bytes=32 time=30ms TTL=52
+Reply from 14.215.177.39: bytes=32 time=31ms TTL=52
+Reply from 14.215.177.39: bytes=32 time=30ms TTL=52
+
+Ping statistics for 14.215.177.39:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 30ms, Maximum = 31ms, Average = 30ms
+</code></pre>
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>汇编语言之排序并输出 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2017-10-22-sort-and-output-in-asm" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>汇编语言之排序并输出</h1>
+  
+
+      </header>
+      <div>
+      2017-10-22
+      
+        / 
+        
+          <span><a href="/tags/ASM/">#ASM</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+
+        </div>
+
+        <p>&nbsp;<br><a id="more"></a></p>
+<pre><code class="asm">;--------------------------------------------
+DATA  SEGMENT
+    BUF  DB  10H, 25H, 32H, 13H, 43H
+DATA  ENDS
+
+;--------------------------------------------
+STACK  SEGMENT  STACK  &#39;STACK&#39;
+    SB  DB  100  DUP(?)
+STACK  ENDS
+
+;--------------------------------------------
+
+CODE  SEGMENT
+    ASSUME  CS:CODE, DS:DATA, SS:STACK
+
+START:
+    MOV  AX, STACK
+    MOV  SS, AX
+    MOV  AX, DATA
+    MOV  DS, AX
+    LEA  DI, BUF
+    MOV  BL, 5
+
+AGN:
+    MOV  SI, DI
+    MOV  CL, BL
+
+AGN2:
+    MOV  AL, [SI]
+    CMP  AL, [SI + 1]
+    JNC  AGN3
+    XCHG [SI + 1], AL
+    MOV  [SI], AL
+
+AGN3:
+    INC  SI
+    DEC  CL
+    JNZ  AGN2
+    DEC  BL
+    JNZ  AGN
+
+;-------------------------
+    MOV  CH, 06H
+    MOV  CL, 04H
+    MOV  AH, 02H
+
+NEXT:
+    MOV  DL, [DI]
+    ROL  DL, CL
+    AND  DL, 0FH
+    CMP  DL, 0AH
+    JB   STORE
+    ADD  DL, 07H
+
+STORE:
+    ADD  DL, 30H
+    INT  21H
+
+;---------------
+    MOV  DL, [DI]
+    AND  DL, 0FH
+    CMP  DL, 0AH
+    JB   STORE2
+    ADD  DL, 07H
+
+STORE2:
+    ADD  DL, 30H
+    INT  21H
+    MOV  DL, &#39; &#39;
+    INT  21H
+    INC  DI
+    DEC  CH
+    JNE  NEXT
+
+;-------------------------
+    MOV  AH, 4CH
+    INT  21H
+CODE  ENDS
+
+;--------------------------------------------
+    END  START
+</code></pre>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

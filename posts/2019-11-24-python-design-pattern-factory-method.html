@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>Python 设计模式之工厂方法模式 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2019-11-24-python-design-pattern-factory-method" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>Python 设计模式之工厂方法模式</h1>
+  
+
+      </header>
+      <div>
+      2019-11-24
+      
+        / 
+        
+          <span><a href="/tags/Java/">#Java</a></span>
+        
+          <span><a href="/tags/Python/">#Python</a></span>
+        
+          <span><a href="/tags/Design-Pattern/">#Design Pattern</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+
+        </div>
+
+        <p>工厂方法模式和<a href="/posts/2019-11-24-python-design-pattern-simple-factory.html">简单工厂模式</a>的区别在于，简单工厂模式只有一个工厂，工厂方法模式对每一个产品都有相应的工厂。</p>
+<p>工厂方法模式是简单工厂模式的衍生，解决了很多简单工厂模式的问题。</p>
+<p><img src="https://upload.ismdeep.com/images/2020/08/07/2e01a3e3883dbb62027c6df58316f2e4-80f693.png" alt="factory-method"></p>
+<p>首先完全实现“开-闭”原则，实现了可扩展。其次更复杂的层次结构，可以应用于产品结果复杂的场合。</p>
+<p>工厂方法模式对简单工厂模式进行了抽象。有一个抽象的Factory类（可以是抽象类和接口），这个类将不再负责具体的产品生产，而是只制定一些规范，具体的生产工作由子类去完成。在这个模式中，工厂类和产品类往往可以依次对应。即一个抽象工厂对应一个抽象产品，一个具体工厂对应一个具体产品，这个具体的工厂就负责生产对应的产品。</p>
+<p>工厂方法模式（Factory Method Pattern）是最典型的模板方法模式（Template Method Pattern）应用</p>
+<p><strong>优点：</strong> 增加一个运算类（例如N次方类），只需要增加运算类和相对应的工厂，两个类，不需要修改工厂类。</p>
+<p><strong>缺点：</strong> 增加运算类，会修改客户端代码，工厂方法只是把简单工厂的内部逻辑判断移到了客户端进行。</p>
+<pre><code class="python"># coding:utf-8
+
+
+class AbstractSchool(object):
+    name = &#39;&#39;
+    addr = &#39;&#39;
+    principal = &#39;&#39;
+
+    def enroll(self, name, course):
+        raise NotImplementedError
+
+    def info(self):
+        raise NotImplementedError
+
+
+class AbstractCourse(object):
+    def __init__(self, name, time_range, study_type, fee):
+        self.name = name
+        self.time_range = time_range
+        self.study_type = study_type
+        self.fee = fee
+
+    def enroll_test(self):
+        &quot;&quot;&quot;
+        参加这门课程前需要进行的测试
+        :return
+        &quot;&quot;&quot;
+        print(&quot;课程[%s]测试中...&quot; % self.name)
+
+    def print_course_outline(self):
+        &quot;&quot;&quot;
+        打印课程大纲
+        :return:
+        &quot;&quot;&quot;
+        pass
+
+
+class LinuxOPSCourse(AbstractCourse):
+    &quot;&quot;&quot;Linux运维课程&quot;&quot;&quot;
+    def print_course_outline(self):
+        outline = &quot;&quot;&quot;
+        Linux 基础
+        Linux 基本服务使用
+        Linux 高级服务篇
+        Linux Shell 编程
+        &quot;&quot;&quot;
+        print(outline)
+
+    def enroll_test(self):
+        print(&quot;不用测试，是个人就能学...&quot;)
+
+
+class PythonCourse(AbstractCourse):
+    &quot;&quot;&quot;Python 自动化开发课程&quot;&quot;&quot;
+
+    def print_course_outline(self):
+        outline = &quot;&quot;&quot;
+        Python 介绍
+        Python 基础语法
+        Python 函数式编程
+        Python 面向对象
+        Python 网络编程
+        Python Web 开发基础
+        &quot;&quot;&quot;
+        print(outline)
+
+    def enroll_test(self):
+        print(&quot;------ Python 入学测试 ------&quot;)
+        print(&quot;------ 500 道题答完了 ------&quot;)
+        print(&quot;------ 通过了 ------&quot;)
+
+class BJSchool(AbstractSchool):
+    name = &quot;老男孩北京校区&quot;
+    def create_course(self, course_type):
+        if course_type == &#39;py_ops&#39;:
+            course = PythonCourse(&quot;Python 自动化开发&quot;, 7, &quot;面授&quot;, 11000)
+        elif course_type == &#39;linux&#39;:
+            course = LinuxOPSCourse(&quot;Linux 运维课程&quot;, 5, &quot;面授&quot;, 12800)
+        return course
+
+    def enroll(self, name, course):
+        print(&quot;开始为新学员[%s]办入学手续...&quot; % name)
+        print(&quot;帮学员[%s]注册课程[%s]...&quot; % (name, course.name))
+        course.enroll_test()
+
+    def info(self):
+        print(&quot;------ [%s] ------&quot; % self.name)
+
+
+class SHSchool(AbstractSchool):
+    name = &quot;老男孩上海分校&quot;
+    def create_course(self, course_type):
+        if course_type == &#39;py_ops&#39;:
+            course = PythonCourse(&quot;Python 自动化开发&quot;, 8, &#39;在线&#39;, 6500)
+        elif course_type == &#39;linux&#39;:
+            course = LinuxOPSCourse(&#39;Linux 运维课程&#39;, 6, &#39;在线&#39;, 8000)
+        return course
+
+    def enroll(self, name, course):
+        print(&quot;开始为新学员[%s]办入学手续...&quot; % name)
+        print(&quot;帮学员[%s]注册课程[%s]...&quot; % (name, course.name))
+        course.enroll_test()
+
+    def info(self):
+        print(&quot;------ [%s] ------&quot; % self.name)
+
+
+school1 = BJSchool()
+school2 = SHSchool()
+
+school1.info()
+c1 = school1.create_course(&#39;py_ops&#39;)
+school1.enroll(&#39;张三&#39;, c1)
+school1.enroll(&#39;王五&#39;, c1)
+
+school2.info()
+c2 = school2.create_course(&#39;py_ops&#39;)
+school2.enroll(&#39;李四&#39;, c2)
+</code></pre>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

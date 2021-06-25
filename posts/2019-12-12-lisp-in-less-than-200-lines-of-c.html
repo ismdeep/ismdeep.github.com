@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>Lisp in Less Than 200 Lines of C | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2019-12-12-lisp-in-less-than-200-lines-of-c" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>Lisp in Less Than 200 Lines of C</h1>
+  
+
+      </header>
+      <div>
+      2019-12-12
+      
+        / 
+        
+          <span><a href="/tags/Hacker/">#Hacker</a></span>
+        
+          <span><a href="/tags/C/">#C</a></span>
+        
+          <span><a href="/tags/Lisp/">#Lisp</a></span>
+        
+          <span><a href="/tags/Repost/">#Repost</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+
+        </div>
+
+        <p>&nbsp;</p>
+<a id="more"></a>
+<p><em>Objective: implement a lambda calculus based programming language like LisP, simply and briefly in C</em></p>
+<p>After learning some Scheme and Lisp and implementing LispKit and reading about eval/apply and how minimal the evaluator is, I decided to try implement Lisp in as little C as I could.</p>
+<p>Sine it’s less than 200 lines of C code I’ll just discuss the code inline:</p>
+<pre><code class="c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+</code></pre>
+<p>Included are standard headers files: <code>stdio.h</code> gives us <code>printf</code> and <code>puts</code> for printing to stdout, and <code>getchar</code> for retreving a character from stdin. <code>stdlib.h</code> provides <code>calloc</code> for dynamically allocating memory while the program is running. <code>string.h</code> provides <code>strcmp</code> for comparing two string, and <code>strdup</code> for making a duplicate copy of a string.</p>
+<pre><code class="c">#define debug(m,e) printf(&quot;%s:%d: %s:&quot;,__FILE__,__LINE__,m); print_obj(e,1); puts(&quot;&quot;);
+</code></pre>
+<p>This debug macro was used to help troubleshoot the program when it didn’t work. I’d add a line like <code>debug(&#39;evaluating&#39;, exp)</code> and it would print out the file, line number, a message, and the Lisp expression representation in a readable form.</p>
+<pre><code class="c">typedef struct List {
+    struct List *next;
+    void *data;
+} List;
+</code></pre>
+<p>The <code>List</code> structure is the fundamental data structure used to represent code and data. It is a singly linked list with two pointers: <code>next</code> points to the next item in the list, and <code>data</code> points to either a symbol or another list structure. <code>data</code> could be cast to either a <code>char *</code> or <code>List *</code>. To determine which one keep reading (spoiler: pointer tagging is used).</p>
+<pre><code class="c">List *symbols = 0;
+</code></pre>
+<p>The global variable <code>symbols</code> represents the head of a list of symbols. When symbol is parsed, we’ll look for it in the list of symbols, if it’s not there we’ll add it. This way we can compare two symbols by using the equals comparison operator, ==. It saves a little bit of storage space when the same symbol is repeated many times in a LisP program, but with 8GB of RAM memory in my computer I probably won’t notice the space saving.</p>
+<pre><code class="c">static int look; /* look ahead character */
+static char token[32]; /* token */
+</code></pre>
+<p>Because a symbol can contain more than one character, we have a complete symbol when a character that doesn’t belong in a symbol in encountered. Non symbol characters include whitespace(space, tab, newline etc), and syntax characters such as parenthesis, (,). To determine whether the end of a symbol has been reached we need to look ahead by one character. The <code>look</code> variable stores the look ahead character. If this character contains a non-symbol character we’ll know to stop reading the symbol. The <code>token</code> variable is an array of characters, it stores the current symbol that has been read from the input. Note that it has a size of 32, so the maxinum length of a symbol will be 31 characters, because the token is a NULL terminated string, so the token is always terminated with a <code>\0</code> character.</p>
+<pre><code class="c">#define is_space(x)  (x == &#39; &#39; || x == &#39;\n&#39;)
+#define is_parens(x) (x == &#39;(&#39; || x == &#39;)&#39;)
+</code></pre>
+<p>The two macros above are really just a convenience for the sake of readability and possibly maintainability and extensibility of the program. <code>is_space</code> takes a single character and will return true if that character is a space of a newline. <code>is_parens</code> takes a single character and will return true if that character is a parenthesis.</p>
+<pre><code class="c">static void gettoken() {
+    int index = 0;
+    while (is_space(look)) {
+        look = getchar();
+    }
+    if (is_parens(look)) {
+        token[index++] = look;
+        look = getchar();
+    } else {
+        while (look != EOF &amp;&amp; !is_space(look) &amp;&amp; !is_parens(look)) {
+            token[index++] = look;
+            took = getchar();
+        }
+    }
+    token[index] = &#39;\0&#39;;
+}
+</code></pre>
+<p>The function <code>gettoken</code> is responsible for reading characters from standard input and determining whether parenthesis or a symbol has been discovered. First it will skip over any white space. If the look variable, the look ahead character, is a parenthesis, it is stored in <code>token</code>, and the next character in the input stream read into <code>look</code>. If the lookahead character is not a parenthesis, it’s assumed to belong to a symbol. Keep looking ahead and saving the character until either <code>EOF</code> the end of file is reached, or the look ahead character is whitespace, or the look ahead character is a parenthesis. <code>index</code> stores the current position in the <code>token</code> array so it is incremented every time a character belonging to the symbol is stored. At the end of the token is NULL terminated.</p>
+<pre><code class="c">#define is_pair(x) (((long)x &amp;  0x1) == 0x1) /* tag pointer to pair with 0x1 (alignment dependent) */
+#define untag(x)   ((long) x &amp; ~0x1)
+#define tag(x)     ((long) x |  0x1)
+</code></pre>
+<p>Above contains a curiosity that can be found in many language implementations. Remember from the <code>List</code> structure that the <code>data</code> pointer can be either a <code>char *</code> a symbol, or <code>List *</code> another List. The way we are indicating the type of pointer is by setting the lowest bit on the pointer on. For example, given a pointer to the address <code>0x100200230</code>, if it’s a pair we’ll modify that pointer with a bitwise or with 1 so the address becomes <code>0x100200231</code>. The questionable thing about modifying a pointer in this way is how can we tell a pointer tagged with 1, from a regular untagged address. Well, partly as a performance optimization, many computers and their Operating System, allocate memory on set boundaries. It’s referred to as memory alignment, and if for example the alignment is to an 8-byte(64 bit) boundary, it means that when memory is allocated it’s address will be a multiple of 8. For example the next 8 byte boundary for the address <code>0x100200230</code> is <code>0x1000200238</code>. Memory could be aligned to 16-bits(2 bytes), 32-bits(4 bytes) as well. Typically it will be aligned on machine word, which means 32-bits if you have a 32-bit CPU and bus. [Thanks to mtnygard for pointing out that I’d mixed bits and bytes previously]. A more thorough discussion is on wikipedia<a href="https://en.wikipedia.org/wiki/Data_structure_alignment" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Data_structure_alignment</a>. Effectively for us it means that whenever we call <code>calloc</code> we’ll always get back an address where the lowest bit is off(0), so we can set it on if we want. The macro <code>is_pair</code> returns non-zero if the address is a pair (which means we’ll need to unset the lowest bit to get the address). It uses a bitwise and with 1 to determine this. The <code>untag</code> macro switches the lowest bit off, with a bitwise and of the ones complement of 1. The <code>tag</code> macro switches the lowest bit on with a bitwise or of 1.</p>
+<pre><code class="c">#define car(x) (((List*)untag(x))-&gt;data)
+#define cdr(x) (((List*)untag(x))-&gt;next)
+</code></pre>
+<p>There’s two fundamental primitive operations in a typical Lisp/Scheme, <code>car</code> which returns the head of a list, and <code>cdr</code> which returns the tail of the list. They are named after operations on an IBM computer, some information on the history is on Wikipedia <a href="https://en.wikipedia.org/wiki/CAR_and_CDR" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/CAR_and_CDR</a>. We could as easily call them head and tail, but since they are so ingrained in Lisp and Scheme conventions they are perpetuated here.</p>
+<pre><code class="c">#define e_true     cons( intern(&quot;quote&quot;), cons( intern(&quot;t&quot;), 0))
+#define e_false    0
+</code></pre>
+<p>The <code>e_true</code> and <code>e_false</code> macros are a convenience for defining a what true and false in this implementation. Basically so long as true is non-zero everything should be ok. It will help if the values they have can be readily printed in human readable form.</p>
+<pre><code class="c">List *cons(void *_car, void *_cdr) {
+    List *_pair = calloc(1, sizeof(List));
+    _pair-&gt;data = _car;
+    _pair-&gt;next = _cdr;
+    return (List*) tag(_pair);
+}
+</code></pre>
+<p>Another fundamental Lisp/Scheme operation is <code>cons</code>. It constructs a pair, which means a pair of pointers, in this implementation the <code>List</code> structure that holds the <code>data</code> pointer and the <code>next</code> pointer. <a href="https://en.wikipedia.org/wiki/Cons" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Cons</a> Because pointers to a <code>List</code> (a pair) must be tagged using the lowest bit, we rely on <code>calloc</code> to provide memory large enough to hold the <code>List</code> data structure and that the memory is aligned to an address that does not involve to lowest bit. The <code>cons</code> function here takes two arguments, the first is an address that will be stored in the <code>data</code> field, and the second an address that will be stored in the <code>next</code> field. Finally the address where the <code>List</code> structure is stored in returned, after being tagged as a special kind of pointer.</p>
+<pre><code class="c">void *intern(char *sym) {
+    List *_pair = symbols;
+    for (; _pair; _pair = cdr(_pair)) {
+        if (strncmp(sym, (char*) car(_pair), 32) == 0) {
+            return car(_pair);
+        }
+    }
+    symbols = cons(strdup(sym), symbols);
+    return car(symbols);
+}
+</code></pre>
+<p>Here’s where a symbol is retrieved from the global list of symbols, or added if it is not found. It takes a single string argument. It uses <code>strncmp</code> to determine if anyone of the symbols are equivalent to the string passed in. If we get to the end of the list of symbols and didn’t find a match. The symbol is duplicated with <code>strdup</code> and added to the head of the list. This is the effect of <code>cons</code> when given an existing list as the second parameter: a new symbol is pushed onto the list, and a new list head is constructed. The reason <code>strdup</code> is used, and the string is duplicated, is because we want a more permanent copy of the string. When the program runs, the <code>sym</code> parameter could be a pointer to the <code>token</code> global variable which will be modified as symbols are read from the input stream. The function is called <code>intern</code> out of convention, see <a href="https://en.wikipedia.org/wiki/String_interning" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/String_interning</a> for more background on string interning.</p>
+<pre><code class="c">List *getlist();
+</code></pre>
+<p>Above is a forward declaration of the function <code>getlist</code> which is defined further down. A forward declaration is needed because the <code>getobj</code> function can call it, and <code>getlist</code> can call <code>getobj</code> which is a chichen and egg kind of problem. The C compiler needs to know that the full signature of this function so it can be used before it is defined.</p>
+<pre><code class="c">void *getobj() {
+    if (token[0] == &#39;(&#39;) return getlist();
+    return intern(token);
+}
+</code></pre>
+<p>All <code>getobj</code> has to do is check if the current token from the input stream was an opening parenthesis, which means a list is being defined, and <code>getlist</code> can be called to construct the list. Otherwise, the token is treated as a symbol, and <code>intern</code> is used to either return the single copy, or create a single copy and add it to the list of symbols.</p>
+<pre><code class="c">List *getlist() {
+    List *tmp;
+    gettoken();
+    if (token[0] == &#39;(&#39;) return 0;
+    tmp = getobj();
+    return cons(tmp, getlist());
+}
+</code></pre>
+<p>The function <code>getlist</code> reads the next token from the input. If the token is a closing parenthesis it returns 0 (a NULL pointer). Otherwise the token is probably a symbol, so call <code>getobj</code> and intern that symbol, the use <code>cons</code> to add that symbol to the head of the list, calling <code>getlist</code> recursively to get the tail of the list. Take note that the variable <code>tmp</code> - an abbreviation ot temporary - and explicity assigned to the return value of <code>getobj</code> before the <code>cons</code>. This is to ensure that the list is constructed in the correct order from head towards tail. Before the <code>cons</code> function is called, it’s arguments are evaluated, and in this case it’s second argument is a function call to <code>getlist</code>. So <code>getlist</code> is called again before <code>cons</code> is called, and either the end of the list (right parens) is discovered, or the next item in the list is. How this recursive function call works is worthwhile understanding. In C, when function are called, the arguments to the function, and the variables in the function are pushed on top of a data structure called a stack. A stack is literally a stack of things, like a stack of plates, where the last thing on top is the first thing that will come off. The arguments and variable to the function come off the stack when the function returns, literally where you see <code>return</code> in the code. With every call to the <code>getlist</code> function as it comes across items in the list it is processing, the stack grows with another set of variables needed by <code>getlist</code>. So 3 recursive calls to <code>getlist</code> means the stack grows by 3 times the <code>getlist</code> functions storage requirements. The inefficiency here is the longer the list, the taller the stack. Some programming languages have a stack overflow error where the stack has out grown the available memory. Wikipedia has a page about this <a href="https://en.wikipedia.org/wiki/Stack_overflow" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Stack_overflow</a> Programming languages like Scheme implement something called tail call optimization where the language can determine if the variable used by a recursive function call will be needed after is returns and if not, it does not grow the stack. This is a pretty cool feature of a programming language and it would be great to have in this language, and maybe we can add it later on. For more on tail calls, <a href="https://en.wikipedia.org/wiki/Tail_call" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Tail_call</a></p>
+<pre><code class="c">void print_obj(List *ob, int head_of_list) {
+    if (!is_pair(jb)) {
+        printf(&quot;%s&quot;, ob ? (char *) ob : &quot;null&quot;);
+    } else {
+        if (head_of_list) {
+            printf(&quot;(&quot;);
+        }
+        print_obj(car(ob), 1);
+        if (cdr(ob) != 0) {
+            if (is_pair(cdr(ob))) {
+                printf(&quot; &quot;);
+                print_obj(cdr(ob), 0);
+            }
+        } else {
+            printf(&quot;)&quot;);
+        }
+    }
+}
+</code></pre>
+<p>The <code>print_obj</code> function is tremendously useful in that it can print either a symbol, or an entire list, to stdout so that we can read it. If the first argument, <code>object</code> isn’t the specially tagged pointer, it’s just a symbol so it can be output with <code>printf</code> using the <code>%s</code> format specifier, which says that the provided pointer is a null terminated string. Otherwise <code>print_obj</code> is being asked to print a list, so <code>ob</code> will be the address of a <code>List</code> structure, meaning it is somewhere, either the beginning, middle or end, or printing a list. The <code>head_of_lst</code> argument is the giveaway here. If <code>head_of_list</code> is non-zero, it’s the beginning of a new list, so print the left parenthesis. In any case it has to print the value of the current item (it could either be a symbol or a nested listed) so it calls itself with the value of the current head of the list, <code>car(ob)</code>. If the tail of the list is non-zero, this means there’s more, so as long as the tail of the list is a pointer to another <code>List</code> structure, print a space, and then print the tail of the list. Otherwise, the tail of the list is zero, which means we’re at the end of the list, so print the closing parenthesis.</p>
+<pre><code class="c">List *fcons(List *a)    {  return cons(car(a), car(cdr(a)));  }
+List *fcar(List *a)     {  return car(car(a));  }
+List *fcdr(List *a)     {  return cdr(car(a));  }
+List *feq(List *a)      {  return car(a) == car(cdr(a)) ? e_true : e_false;  }
+List *fpair(List *a)    {  return is_pair(car(a))       ? e_true : e_false;  }
+List *fsym(List *a)     {  return ! is_pair(car(a))     ? e_true : e_false;  }
+List *fnull(List *a)    {  return car(a) == 0           ? e_true : e_false; }
+List *freadobj(List *a) {  look = getchar(); gettoken(); return getobj();  }
+List *fwriteobj(List *a){  print_obj(car(a), 1); puts(&quot;&quot;); return e_true;  }
+</code></pre>
+<p>Above are defined the basic primitive operations required by Lisp, all using the same return value and argument specification. These functions will be referenced in the interpreters environment so the can be used from a Lisp program. Because the Lisp language we’re implementing will know nothing about C and how many arguments and what type they should be in C, the arguments are represented using the linked list structure, which has an equivalent Lisp representation using parenthesis, whitespace and symbols. These functions are prefixed with <code>f</code> which stands for function. They are called indirectly only when a Lisp program looks one up and wants to apply it.</p>
+<pre><code class="c">List *eval(List *exp, List *env);
+</code></pre>
+<p>This is a forward declaration of eval the meta-circular evaluator.</p>
+<pre><code class="c">List *evlist(List *list, List *env) {
+    List *head = 0, **args == &amp;head;
+    for (; list; list = cdr(list)) {
+        *args = cons(eval(car(list), env), 0);
+        args = &amp;((list *)untag(*args))-&gt;next;
+    }
+    return head;
+}
+</code></pre>
+<p>Above is the <code>evlist</code> function, short for “evaluate list”. It takes a list and an environment, and evaluates each item in the list, returning a corresponding list with the evaluation of each input item, maintaining the order. There is use of a pointer to a pointer here which makes this code less immediately obvious, but it means we can walk through the list, creating a parallel list with the evaluated elements in the same order. In “The C Programming Lanugae” by Brian Kernighan and Dennis Ritchie, a pointer is said to be a variable that contains the address of another variable, The <code>*</code> operator dereferences a pointer, giving the object pointed to. The <code>&amp;</code> operator gives the address of a variable. <code>evlist</code> iterates through the <code>list</code> argument in a for loop. Two local variables , a pointer, <code>head</code>, is initialized to 0, the purpose of <code>head</code> is to store the head of the list that will be returned. <code>args</code> is a pointer to a pointer, it is initialied to the address of <code>head</code>. On each iteration, <code>args</code> is dereferenced and the resulting pointer is assigned to a newly constructed cell. On the next time, <code>args</code> is assigned to the address of the <code>next</code> field in that constructed cell. This means that on the next iteration, <code>args</code> is a pointer to a pointer to the <code>next</code> field of the previous element. When it is dereferenced with a signle <code>*</code> and assigned, we are effectively setting the <code>next</code> field to point to the newly constructed cell in the current iteration.</p>
+<pre><code class="c">List *apply_primitive(void *primfn, List *args) {
+    return ((List * (*) (List *))primfn) (args);
+}
+</code></pre>
+<p>The <code>apply_primitive</code> function does nothing more than cast the <code>primfn</code> to a pointer to a function that takes a single <code>List *</code> and returns a <code>List *</code>, and then calls that function with <code>args</code>.</p>
+<pre><code class="c">List *eval(List *exp, List *env) {
+    if (!is_pair(exp)) {
+        for (; env != 0; env = cdr(env)) {
+            if (exp == car(car(env)))
+                return car(cdr(car(env)));
+        }
+        return 0;
+    } else {
+        if (!is_pair(car(exp))) {
+            /* special forms */
+            if (car(exp) == intern(&quot;quote&quot;)) {
+                return car(cdr(exp));
+            } else if (car(exp) == intern(&quot;if&quot;)) {
+                if (eval(car(cdr(exp)), env) != 0) {
+                    return eval(car(cdr(cdr(exp))), env);
+                } else {
+                    return eval(car(cdr(cdr(cdr(exp)))), env);
+                }
+            } else if (car(exp) == intern(&quot;lambda&quot;)) {
+                return exp; /* todo: create a closure and capture free vars */
+            } else if (car(exp) == intern(&quot;apply&quot;)) {
+                /* apply function to list */
+                List *args = evlist(cdr(cdr(exp)), env);
+                args = car(args); /* assume one argument and that it is a list */
+                return apply_primitive(eval(car(cdr(exp)), env), args);
+            } else {
+                /* function call */
+                List *primop = eval(car(exp), env);
+                if (is_pair(primop)) {
+                    /* user defined lambda, arg list eval happens in binding below */
+                    return eval(cons(primop, cdr(exp)), env);
+                } else if (primop) {
+                    /* built-in primitive */
+                    return apply_primitive(primop, evlist(cdr(exp), env));
+                }
+            }
+        } else {
+            /* should be a lambda, bind names into env and eval body */
+            if (car(car(exp)) == intern(&quot;lambda&quot;)) {
+                List *extenv = env, *names = car(cdr(car(exp))), *vars = cdr(exp);
+                for (; names; names = cdr(names), vars = cdr(vars)) {
+                    extenv = cons(cons(car(names), cons(eval(car(vars), env), 0)), extenv);
+                }
+                return eval(car(cdr(cdr(car(exp)))), extenv);
+            }
+        }
+    }
+    puts(&quot;cannot evaluate expression&quot;);
+    return 0;
+}
+</code></pre>
+<p>The <code>eval</code> function is the heart of LiSP. It interprets LisP expressions. If the expression is not a pair (not a <code>List</code> structure), we look for that value it is associated with in the environment. In other implementations of eval, the equivalent test is if the expression is an <code>atom</code>. Otherwise the expression must be a list, and then the first element of that list is checked, if that first element is not a <code>List</code> structure - it is a symbol, or more officially an atom, then the following series of if statements handle it: if the first element is a <code>quote</code> symbol, the next element is return, that is, the head of the tail of the list; if the first element is an <code>if</code> symbol, the head of the tail of the list is evaluated, if that returns non-zero, the head of the tail of the tail of the list is evaluated and returned, if it returns zero, the head of the tail of the tail of the tail is evaluated and returned. If the first element is the symbol <code>lambda</code> the expression is simply returned (maybe this is redundant so many indicate a bug or some optimization that is missing). In a Scheme interpreter, a closure would be created and the free variables in the closure captured using the current environment. If the first symbols is <code>apply</code> that means, in this interpreter at least, that the next element is a function and the element after that, the third element in this list is a list - the <code>(b c d)</code> in <code>(apply a (b c d))</code>. The assumption is that <code>apply</code> is being used to call one of the basic primitive operations defined above: <code>car</code>, <code>cdr</code>, <code>cons</code>, <code>eq?</code>, <code>pair?</code>, <code>symbol?</code>, <code>null?</code>, <code>read</code>, <code>write</code>. If the first symbol did not match any of the prior if statements, we assume a the first symbol is in the environment and is either a user defined function - a lambda, or a primitive function (and apply is not being used to call it). We find out which it is by evaluating that first element, if it’s a pair, it’s a list, i.e. an expression in the form <code>(lambda (arg) (body expressions ...))</code>. If it’s not a pair we assume it’s a pointer to a function, and use <code>apply_primitive</code> to invocate that function, evaluating it’s arguments before calling it. The remaining block is the <code>else</code> which meant the first argument in the expression was a pair - eval was called with a list nested inside a list, i.e. <code>((x y z))</code>, and the only form of nested expression handled, is lambda, e.g. <code>((lambda (arg) (body expr ....)) value )</code>. In this case the names of the arguments in the lambda definition are bound to the corresponding values, and the name value pairs are pushed onto the head of the environment, until there are no more arguments (names) left to bind. The body of the lambda is then evaluated with the extended environment.</p>
+<p>A newer article describing eval is called “The Root of Lisp” by Paul Graham, and can be downloaded from <a href="http://www.paulgraham.com/rootsoflisp.html" target="_blank" rel="noopener">http://www.paulgraham.com/rootsoflisp.html</a>. A thorough explanation can be found is “Structure and Interpretation of Computer Programs”, by Harold Ableson and Gerald Jay Sussman. This book can be found online: <a href="https://mitpress.mit.edu/sicp/full-text/book/book-Z-H-26.html#%_sec_4.1" target="_blank" rel="noopener">https://mitpress.mit.edu/sicp/full-text/book/book-Z-H-26.html#%_sec_4.1</a>. The earliest implementations of eval I have found is in the Lisp 1.5 Programmers Manual.</p>
+<pre><code class="c">int main(int argc, char *argv[]) {
+    List *env = cons (cons(intern(&quot;car&quot;), cons((void *)fcar, 0)),
+                cons (cons(intern(&quot;cdr&quot;), cons((void *)fcdr, 0)),
+                cons (cons(intern(&quot;cons&quot;), cons((void *)fcons, 0)),
+                cons (cons(intern(&quot;eq?&quot;), cons((void *)feq, 0)),
+                cons (cons(intern(&quot;pair?&quot;), cons((void *)fpair, 0)),
+                cons (cons(intern(&quot;symbol?&quot;), cons((void *)fsym, 0)),
+                cons (cons(intern(&quot;null?&quot;), cons((void *)fnull, 0)),
+                cons (cons(intern(&quot;read&quot;), cons((void *)freadobj, 0)),
+                cons (cons(intern(&quot;write&quot;), cons((void *)fwriteobj, 0)),
+                cons (cons(intern(&quot;null&quot;), cons(0,0)), 0))))))))));
+    look = getchar();
+    gettoken();
+    print_obj( eval(getobj(), env), 1 );
+    printf(&quot;\n&quot;);
+    return 0;
+}
+</code></pre>
+<p><code>main</code>is the entry point for this program when it is run. It has one variable, <code>env</code> which is assigned to a list of lists, effectively just associating a symbol with a primitive function. The remaining lines, look ahead one character, load the first token with <code>gettoken</code>, and then print with <code>print_obj</code>, the evaluated object read by <code>getobj</code>.</p>
+<p>That is it a very small and incomplete interpreter… Noticeably there is no garbage collection, or even any explicit free of the memory allocated by <code>calloc</code>. Neither is there any error handling, so a program with missing or unmatched parenthesis, unresolved symbols, etc will likely just result in something like a segmentation fault.</p>
+<p>Despite the limitations, this interpreter provides enough primitive functions to implement an equivalent eval on itself.</p>
+<p>The complete source code and some tests can be found at <a href="https://github.com/carld/micro-lisp" target="_blank" rel="noopener">https://github.com/carld/micro-lisp</a>. Pull requests on github are welcome.</p>
+<p>An implementation of eval that runs on the interpreter about can be found in <code>repl.lisp</code>. It implements a Read Eval Print Loop and it can. be run using:</p>
+<pre><code class="bash">cat repl.lisp - | ./micro-lisp
+</code></pre>
+<p>Repost from <a href="https://carld.github.io/2017/06/20/lisp-in-less-than-200-lines-of-c.html" target="_blank" rel="noopener">https://carld.github.io/2017/06/20/lisp-in-less-than-200-lines-of-c.html</a></p>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

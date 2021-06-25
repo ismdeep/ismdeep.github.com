@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>关闭macOS上的SIP安全功能 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2019-11-03-disable-sip-on-macos" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>关闭macOS上的SIP安全功能</h1>
+  
+
+      </header>
+      <div>
+      2019-11-03
+      
+        / 
+        
+          <span><a href="/tags/macOS/">#macOS</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#关闭-Mac-的-SIP-安全设置功能"><span class="toc-text">关闭 Mac 的 SIP 安全设置功能</span></a></li></ol>
+  </div>
+
+
+        </div>
+
+        <p>macOS 从 10.11 就是开始在系统中增加了 SIP (System Integrity Protection) 安全设置功能，不关闭这个功能，在很多时候会有很多问题。比如笔者最近就遇到一个比较麻烦的问题，就是在每次重新编译C语言代码之后，首次运行都需要多运行一些时间。这部分时间应该就是系统在进行安全性检查。</p>
+<h3 id="关闭-Mac-的-SIP-安全设置功能"><a href="#关闭-Mac-的-SIP-安全设置功能" class="headerlink" title="关闭 Mac 的 SIP 安全设置功能"></a>关闭 Mac 的 SIP 安全设置功能</h3><ol>
+<li>重启 Mac，按住 Command + R 键知道 Apple Logo 出现，进入 Recovery Mode</li>
+<li>点击 Utilities &gt; Terminal</li>
+<li>在 Terminal 中输入 <code>csrutil disable</code> ，然后换行。</li>
+<li>重启 Mac</li>
+</ol>
+<p>这样 SIP 安全设置就已经被关闭了。如果想重新开启该安全设置，重复上面步骤，在第三步中将命令更换为 csrutil enable。</p>
+<p>PS：在关闭 SIP 之后发现CLion使用起来更加流畅了。</p>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>静态方法和方法重写 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2018-04-17-static-function-and-function-rewrite" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>静态方法和方法重写</h1>
+  
+
+      </header>
+      <div>
+      2018-04-17
+      
+        / 
+        
+          <span><a href="/tags/Java/">#Java</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+
+        </div>
+
+        <p>Have you ever found yourself in a situation where you have to optimize a piece of code(code with lots of objects) ? Well, don’t worry if you haven’t encountered yet, eventually you will. This post will be about a confusing scenario of Static methods and method overriding.</p>
+<p>Static is a keyword in Java which is helpful in memory management. It can be used with classes, variables, methods and blocks.</p>
+<p>Static members belong to the class instead of a specific instance, this means if you make a member static, you have the option to optimize and access it without object(You can also access it with objects). Only one instance of a static field exists even if you create a million instances of the class. It will be shared by all instances in memory. On the other hand, for non-static methods, we must need to create an object of the class in order to call it. Below example will help you understand the concept better:</p>
+<pre><code class="java">class TestA {
+    public static int sum(int a, int b) {
+        return a+b;
+    }
+
+    public int foo(int a, int b) {
+        return a+b;
+    }
+}
+
+class TestB extends TestA {
+    public static int sum(int a, int b) {
+        return a-b;
+    }
+    public int foo(int a, int b) {
+        return a-b;
+    }
+}
+
+public class TestRunner {
+    public static void main(String[] args) {
+        //Section 1
+        System.out.println(“Calling the static methods without object creation”);
+        System.out.println(TestA.sum(1,2));
+        System.out.println(TestB.sum(1,2));
+        TestB test1 = new TestB();
+        TestA test2 = new TestB(); // Notice the reference variable and actual reference are of different classes
+        TestA test3 = new TestA();
+        //Section 2
+        System.out.println(“Calling the non-static methods with object creation and method overriding”);
+        System.out.println(test1.foo(1,2));
+        System.out.println(test2.foo(1,2)); // line 1
+        System.out.println(test3.foo(1,2));
+        //Section 3
+        System.out.println(“Calling the static methods with object creation and method overriding”);
+        System.out.println(test1.sum(1,2));
+        System.out.println(test2.sum(1,2)); // line 2
+        System.out.println(test3.sum(1,2));
+    }
+}
+</code></pre>
+<p>Output:</p>
+<pre><code>Calling the static methods without object creation
+3
+-1
+Calling the non-static methods with object creation and method overriding
+-1
+-1
+3
+Calling the static methods with object creation and method overriding
+-1
+3
+3
+</code></pre><p>Lets see what’s happening here.</p>
+<p>test1 and test3 are objects of classes TestB and TestA respectively whereas test2 is variable of class TestA but it holds the reference of class TestB.</p>
+<p>Section 1 : This section of code shows you how to call static methods with objects. They are directly called using the class name.</p>
+<p>Section 2 : This section of code shows you how to call non-static methods and their behavior in the case of method overriding. If we call non static method foo() from test2 object(see comment //line 1), it will be handled by actual reference i.e. TestB. This is the reason why the output here is -1</p>
+<p>Section 3 : This section of code shows you how to call static methods without creating objects and their behavior in the case of method overriding. If we call static method sum() from test2 object(see comment //line 2), it will be handled by the class of reference variable i.e. TestA. This is the reason why the output here is 3</p>
+<p>source: <a href="https://codeburst.io/static-methods-and-method-overriding-d810f30f3c18" target="_blank" rel="noopener">https://codeburst.io/static-methods-and-method-overriding-d810f30f3c18</a></p>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

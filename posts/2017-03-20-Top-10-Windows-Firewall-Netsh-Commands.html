@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>Top 10: Windows Firewall Netsh Commands | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2017-03-20-Top-10-Windows-Firewall-Netsh-Commands" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>Top 10: Windows Firewall Netsh Commands</h1>
+  
+
+      </header>
+      <div>
+      2017-03-20
+      
+        / 
+        
+          <span><a href="/tags/Windows/">#Windows</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+
+        </div>
+
+        <p>Configure Windows Server networking and firewall functions from the command line Everyone has probably heard that <a href="http://windowsitpro.com/windows-server-2012" target="_blank" rel="noopener">Windows Server 2012</a> will add around 2,300 new <a href="http://windowsitpro.com/article/windows-powershell/introducing-windows-powershell" target="_blank" rel="noopener">Windows PowerShell</a> commands. Today, however, PowerShell still works with just a subset of the Windows Server management functions. One area that it doesn’t directly touch is the ability to configure Windows Server networking and firewall functions, for which you need to use the venerable netsh commands. Even with the advent of PowerShell, netsh has continued to evolve, and it’s particularly useful for configuring Windows Server Core.</p>
+<p><strong>Related:</strong> <a href="http://windowsitpro.com/article/dhcp2/network-configuration-tasks-with-netsh-103027" target="_blank" rel="noopener">Network Configuration Tasks with Netsh</a></p>
+<p>In this column, I’ll show you 10 <a href="http://windowsitpro.com/article/task-scheduling/netsh-tricks-50425" target="_blank" rel="noopener">handy netsh commands</a> you can use to query and configure your Windows Firewall settings. It’s worth noting that you can call these netsh commands from within your PowerShell scripts.</p>
+<p><strong>10. Query firewall rules:</strong> One of the first things you’ll probably need to use netsh for is to discover Windows Firewall’s current configuration properties. You can query Windows Firewall settings using the following netsh command:</p>
+<pre><code class="bash">netsh advfirewall firewall show rule name=all
+</code></pre>
+<p><strong>9. Enable and disable Windows Firewall:</strong> It’s typically a best practice to leave Windows Firewall enabled, but sometimes when you’re performing testing or setting up new applications, you need to turn Windows Firewall off for a period. The following commands illustrate how to turn Windows Firewall off and then back on:</p>
+<pre><code class="bash">netsh advfirewall set allprofiles state on
+netsh advfirewall set allprofiles state off
+</code></pre>
+<p><strong>8. Reset Windows Firewall:</strong> If you make a mistake configuring Windows Firewall, you might want to use the following netsh command to reset it back to its default settings:</p>
+<pre><code class="bash">netsh advfirewall reset
+</code></pre>
+<p><strong>7. Set logging:</strong> The default path for the Windows Firewall log files is \Windows\system32\LogFiles\Firewall\pfirewall.log. The netsh command below changes the location of the log file to the C:\temp directory:</p>
+<pre><code class="bash">netsh advfirewall set currentprofile logging filename &quot;C:\temp\pfirewall.log&quot;
+</code></pre>
+<p><strong>6. Allow and prevent ping:</strong> You can use netsh to control how and if a given system responds to ping requests. The following two netsh commands show how you can block and then open Windows Firewall to ping requests:</p>
+<pre><code class="bash">netsh advfirewall firewall add rule name=&quot;All ICMP V4&quot; dir=in action=block protocol=icmpv4
+netsh advfirewall firewall add rule name=&quot;All ICMP V4&quot; dir=in action=allow protocol=icmpv4
+</code></pre>
+<p><strong>5. Enable and delete a port:</strong> One of the most common things you need to do with Windows Firewall is open ports that are used by different programs. The following examples show how to use netsh to create a rule to open and then close port 1433, which is used by Microsoft SQL Server:</p>
+<pre><code class="bash">netsh advfirewall firewall add rule name=&quot;Open SQL Server Port 1433&quot; dir=in action=allow protocol=TCP localport=1433
+netsh advfirewall firewall delete rule name=&quot;Open SQL Server Port 1433&quot; protocol=tcp localport=1433
+</code></pre>
+<p><strong>4. Enable a program:</strong> Another common task is opening Windows Firewall for a given program. The following example illustrates how to add a rule that enables <a href="http://windowsitpro.com/article/tips/windows-live-messenger-is-the-next-generation-of-msn-messenger-" target="_blank" rel="noopener">Windows Live Messenger</a> to work through Windows Firewall:</p>
+<pre><code class="bash">netsh advfirewall firewall add rule name=&quot;Allow Messenger&quot; dir=in action=allow program=&quot;C:\programfiles\messenger\msnmsgr.exe&quot;
+</code></pre>
+<p><strong>3. Enable remote management:</strong> Another common requirement, especially when you’re setting up new systems, is to enable remote management so that tools such as the Microsoft Management Console can connect to remote systems. To open Windows Firewall for remote management, you can use the following command:</p>
+<pre><code class="bash">netsh advfirewall firewall set rule group=&quot;remote administration&quot; new enable=yes
+</code></pre>
+<p><strong>2. Enable Remote Desktop Connection:</strong> One of the first things I do with most of the server systems I set up is enable Remote Desktop Connection for easy remote systems management. The following command shows how to use netsh to open Windows Firewall for Remote Desktop Connections:</p>
+<pre><code class="bash">netsh advfirewall firewall set rule group=&quot;remote desktop&quot; new enable=Yes
+</code></pre>
+<p><strong>1. Export and import firewall settings:</strong> After you get Windows Firewall configured, it’s a good idea to export your settings so that you can easily reapply them later or import them into another system. In the following netsh commands, you can see how to export and then import your Windows Firewall configuration:</p>
+<pre><code class="bash">netsh advfirewall export &quot;C:\temp\WFconfiguration.wfw&quot;
+netsh advfirewall import &quot;C:\temp\WFconfiguration.wfw&quot;
+</code></pre>
+<p><strong>Learn more:</strong> <a href="http://windowsitpro.com/article/tips/jsi-tip-7908-netsh-command-syntax-for-the-netsh-firewall-context--80601" target="_blank" rel="noopener">Netsh Command Syntax for the Netsh Firewall Context</a></p>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

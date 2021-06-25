@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>解决Python中pip安装包速度慢的问题 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2019-03-14-too-slow-to-install-package-using-pip-solve-it" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>解决Python中pip安装包速度慢的问题</h1>
+  
+
+      </header>
+      <div>
+      2019-03-14
+      
+        / 
+        
+          <span><a href="/tags/Python/">#Python</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+
+        </div>
+
+        <p>Life is short, I use python. Python 的优势就不多说了，包有很多很多。截至笔者写此篇文章时候，pypi官网 (<a href="https://pypi.org" target="_blank" rel="noopener">https://pypi.org</a>) 就已经有 171921 个项目了。然而在某些环境下，我们需要花费非常长非常长的时间去下载一个包，甚至最后而不可得。那么我们可以通过第三方镜像来安装我们所需要的包。</p>
+<pre><code class="bash">pip install numpy
+</code></pre>
+<p>根据这个命令，我们加上镜像地址即可。</p>
+<pre><code class="bash">pip install -i https://mirrors.huaweicloud.com/repository/pypi/simple numpy
+</code></pre>
+<p>这样的镜像地址国内还有很多，最早的时候豆瓣源是最出名的。</p>
+<pre><code class="text">中国科技大学 https://pypi.mirrors.ustc.edu.cn/simple
+豆瓣(douban) http://pypi.douban.com/simple
+清华大学 https://pypi.tuna.tsinghua.edu.cn/simple
+</code></pre>
+<p>当然也可以将镜像地址设置为默认，pip的配置文件在用户根目录下的 <code>~/.pip/pip.conf</code> 文件，Windows 环境下文件地址为： <code>C:\Users\&lt;UserName&gt;\pip\pip.ini</code> ，如果目录不存在的话，手动创建即可。</p>
+<pre><code class="text">[global]
+index-url = https://mirrors.huaweicloud.com/repository/pypi/simple
+trusted-host = mirrors.huaweicloud.com
+timeout = 120
+</code></pre>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

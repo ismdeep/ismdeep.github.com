@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>Python 设计模式之模板方法模式 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2019-11-26-python-design-pattern-template-method" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>Python 设计模式之模板方法模式</h1>
+  
+
+      </header>
+      <div>
+      2019-11-26
+      
+        / 
+        
+          <span><a href="/tags/Java/">#Java</a></span>
+        
+          <span><a href="/tags/Python/">#Python</a></span>
+        
+          <span><a href="/tags/Design-Pattern/">#Design Pattern</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+
+        </div>
+
+        <p>在模板方法模式（Template Method Pattern）中，一个抽象类公开定义了执行它的方法/模板。它的子类可以按需要重写方法实现，但调用将以抽象类中定义的方式进行。这种类型的设计模式属于行为型模式。</p>
+<p><strong>意图：</strong> 定义一个操作中的算法的骨架，而将一些步骤延迟到子类中。模板方法使得子类可以不改变一个算法的结构即可重定义该算法的某些特定步骤。</p>
+<p><strong>主要解决：</strong> 一些方法通用，却在每一个子类都重新写了这个方法。</p>
+<p><strong>何时使用：</strong> 有一些通用的方法。</p>
+<p><strong>如何解决：</strong> 将这些通用的算法抽象出来。</p>
+<p><strong>关键代码：</strong> 在抽象类实现，其他步骤在子类实现。</p>
+<p><strong>应用实例：</strong> 冒泡排序中的排序算法是固定的，但是针对不同的数据类型有不同的排序规则，比如整数数列中的排序既有从小到大排序，也有从大到小排序的。</p>
+<p><strong>优点：</strong> 1. 封装不变部分，扩展可变部分。 2. 提取公共代码，便于维护。 3. 行为由父类控制，子类实现。</p>
+<p><strong>缺点：</strong> 每一个不同的实现都需要一个子类来实现，导致类的个数增加，使得系统更加庞大。</p>
+<p><strong>使用场景：</strong> 1. 有多个子类共有的方法，且逻辑相同。 2. 重要的、复杂的方法，可以考虑作为模板方法。</p>
+<pre><code class="python"># -*- coding: utf-8 -*-
+# 模板方法模式概述
+#        在现实生活中，很多事情都包含几个实现步骤，例如请客吃饭，无论吃什么，一般都包含点单、吃东西、买单等几个步骤，通常情况下这几个步骤的次序是：点单 --&gt; 吃东西 --&gt; 买单。在这三个步骤中，点单和买单大同小异，最大的区别在于第二步——吃什么？吃面条和吃满汉全席可大不相同，如图1所示：
+#
+# 图1 请客吃饭示意图
+#         在软件开发中，有时也会遇到类似的情况，某个方法的实现需要多个步骤（类似“请客”），其中有些步骤是固定的（类似“点单”和“买单”），而有些步骤并不固定，存在可变性（类似“吃东西”）。为了提高代码的复用性和系统的灵活性，可以使用一种称之为模板方法模式的设计模式来对这类情况进行设计，在模板方法模式中，将实现功能的每一个步骤所对应的方法称为基本方法（例如“点单”、“吃东西”和“买单”），而调用这些基本方法同时定义基本方法的执行次序的方法称为模板方法（例如“请客”）。在模板方法模式中，可以将相同的代码放在父类中，例如将模板方法“请客”以及基本方法“点单”和“买单”的实现放在父类中，而对于基本方法“吃东西”，在父类中只做一个声明，将其具体实现放在不同的子类中，在一个子类中提供“吃面条”的实现，而另一个子类提供“吃满汉全席”的实现。通过使用模板方法模式，一方面提高了代码的复用性，另一方面还可以利用面向对象的多态性，在运行时选择一种具体子类，实现完整的“请客”方法，提高系统的灵活性和可扩展性。
+#        模板方法模式定义如下：
+# 模板方法模式：定义一个操作中算法的框架，而将一些步骤延迟到子类中。模板方法模式使得子类可以不改变一个算法的结构即可重定义该算法的某些特定步骤。
+#
+# Template Method Pattern:  Define the skeleton of an algorithm in an  operation, deferring some steps to subclasses. Template Method lets  subclasses redefine certain steps of an algorithm without changing the  algorithm&#39;s structure.
+#        模板方法模式是一种基于继承的代码复用技术，它是一种类行为型模式。
+#        模板方法模式是结构最简单的行为型设计模式，在其结构中只存在父类与子类之间的继承关系。通过使用模板方法模式，可以将一些复杂流程的实现步骤封装在一系列基本方法中，在抽象父类中提供一个称之为模板方法的方法来定义这些基本方法的执行次序，而通过其子类来覆盖某些步骤，从而使得相同的算法框架可以有不同的执行结果。模板方法模式提供了一个模板方法来定义算法框架，而某些具体步骤的实现可以在其子类中完成。
+#
+
+class Register(object):
+    &#39;&#39;&#39;用户注册接口&#39;&#39;&#39;
+
+    def register(self):
+        pass
+
+    def login(self):
+        pass
+
+    def auth(self):
+        self.register()
+        self.login()
+
+
+class RegisterByQQ(Register):
+    &#39;&#39;&#39;qq注册&#39;&#39;&#39;
+
+    def register(self):
+        print(&quot;---用qq注册-----&quot;)
+
+    def login(self):
+        print(&#39;----用qq登录-----&#39;)
+
+
+class RegisterByWeiChat(Register):
+    &#39;&#39;&#39;微信注册&#39;&#39;&#39;
+
+    def register(self):
+        print(&quot;---用微信注册-----&quot;)
+
+    def login(self):
+        print(&#39;----用微信登录-----&#39;)
+
+
+if __name__ == &quot;__main__&quot;:
+    register1 = RegisterByQQ()
+    register1.auth()
+
+    register2 = RegisterByWeiChat()
+    register2.auth()
+</code></pre>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

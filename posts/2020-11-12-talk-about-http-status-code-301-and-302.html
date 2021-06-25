@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>聊一聊 HTTP 状态码 301 和 302 的区别 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2020-11-12-talk-about-http-status-code-301-and-302" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>聊一聊 HTTP 状态码 301 和 302 的区别</h1>
+  
+
+      </header>
+      <div>
+      2020-11-12
+      
+        / 
+        
+          <span><a href="/tags/Development/">#Development</a></span>
+        
+          <span><a href="/tags/Study/">#Study</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#301-永久重定向"><span class="toc-text">301 永久重定向</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#302-Found-临时重定向"><span class="toc-text">302 Found/临时重定向</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#307-临时重定向（HTTP-1-1）"><span class="toc-text">307 临时重定向（HTTP 1.1）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Meta-Refresh"><span class="toc-text">Meta Refresh</span></a></li></ol>
+  </div>
+
+
+        </div>
+
+        <p>今天面试了一个厂子，结果又被问到我不熟悉的知识点了，太久没看 HTTP 状态了，也就知道 200 OK，404 NOT FOUND，500，502 系统异常，巴拉巴拉，对于 302 也就是有一点点印象，完全来自于在调试程序从 Chrome 开发者模式的 http response 中看见过。那么，对于 HTTP 状态码的 301 和 302 都有哪些区别呢？</p>
+<p>首先我们先说一下什么是 HTTP 状态码，其实 HTTP 状态码是服务器用来告诉浏览器每一次 HTTP 访问请求的状态的，比如正常的话就返回 200；而如果用户访问了一个不存在的页面，就会返回 404；而当用户访问了一个页面，而这个页面上由于程序员编写的程序不够健壮，或者是后台某个服务停掉了（比如数据库被人删库了）就会出现 500 错误。</p>
+<div style="text-align: center"><img src="https://upload.ismdeep.com/images/2020/11/13/76b3ee0a96d45e20982a0244627d2273-37c2cc.png" alt="img"></div>
+
+<p>其中 301 和 302 都是用来进行页面重定向的，所以在说起这两个状态码区别之前，我们先说一说页面重定向。在网页重定向中，其实是指当访问了一个网页，启动跳转至新的网页页面。比如：当你在一个网站中反问个人中心页面，然而这时你并没有登录，于是后台作出重定向页面的反应；接下来你在用户登录页面进行登录操作，登录成功后自动跳转至个人中心页面。而这里使用了不同的重定向页面方式，根据不同的需求场景，开发者也会使用不同的重定向技术。</p>
+<p>常用重定向页面方式有：</p>
+<ul>
+<li>301, “Moved Permanently” 永久重定向，推荐用于 SEO 优化</li>
+<li>302, “Found” or “Moved Temporarily”</li>
+<li>307, “Moved Temporarily” (HTTP 1.1 Only)</li>
+<li>Meta Refresh</li>
+</ul>
+<p>下面我们分三个部分对三种页面重定向方式进行说明。</p>
+<h2 id="301-永久重定向"><a href="#301-永久重定向" class="headerlink" title="301 永久重定向"></a>301 永久重定向</h2><p>被请求的资源已永久移动到新位置，并且将来任何对此资源的引用都应该使用本响应放回的若干 URI 之一。如果可能，拥有链接编辑功能的客户端应当自动把请求的地址修改为从服务器反馈回来的地址。除非额外指定，否则这个响应也是可缓存的。</p>
+<p>301 最简单最常用的一个常见应该就是域名跳转了。比如，我们访问 <a href="http://www.google.com" target="_blank" rel="noopener">http://www.google.com</a> 会自动跳转至 <a href="https://www.google.com" target="_blank" rel="noopener">https://www.google.com</a> ，这一个访问过程是这样的：发送请求之后，服务器给你返回一个 301 状态码，并在 Response Header 中设置 Location 为。<a href="https://www.google.com" target="_blank" rel="noopener">https://www.google.com</a> ，浏览器收到这样的响应自动修改地址栏中的地址，继续访问新的地址。</p>
+<p>注意：301 请求是可以缓存的，也就是说，用户下一次通过浏览器访问 <a href="http://www.google.com" target="_blank" rel="noopener">http://www.google.com</a> 时，浏览器则直接访问 <a href="https://www.google.com" target="_blank" rel="noopener">https://www.google.com</a> 了，而不需要再去访问服务器，然后又一次拿到响应。这就是永久重定向的意思。</p>
+<h2 id="302-Found-临时重定向"><a href="#302-Found-临时重定向" class="headerlink" title="302 Found/临时重定向"></a>302 Found/临时重定向</h2><p>请求的资源现在临时从不同的 URI 响应请求。由于这样的重定向是临时的，除非有 Cache-Control 或者是 Expires 说明情况下才可以进行缓存，否则都是不可以缓存的。在不缓存的情况下（默认情况），下一次访问原地址时，浏览器应该继续访问服务器。</p>
+<p>302 一个例子就是上述说的用户访问用户中心的例子，在未登录的情况下，需要重定向至登录页面，而在已经登录的情况下，则需要直接显示已登录后用户中心的页面。这次每一次访问都需要进行判断，所以只能是临时重定向。</p>
+<h2 id="307-临时重定向（HTTP-1-1）"><a href="#307-临时重定向（HTTP-1-1）" class="headerlink" title="307 临时重定向（HTTP 1.1）"></a>307 临时重定向（HTTP 1.1）</h2><p>307 重定向是 302 重定向的 HTTP 1.1 后续版本。当客户端的 POST 请求收到服务端 307 状态码响应时，需要跟用户询问是否应该在新 URI 上发起 POST 方法，也就是说，307 是不会把 POST 转为 GET 的。</p>
+<h2 id="Meta-Refresh"><a href="#Meta-Refresh" class="headerlink" title="Meta Refresh"></a>Meta Refresh</h2><p>这个写过前端代码的同学肯定用过，就是 JavaScript 里面的 <code>location.href = &quot;/profile&quot;;</code> 这样的语句啦。我们继续来说上面说的用户登录的例子。有的用户交互设计是这样的，用户在页面上输入账号密码，点击登录按钮并不是通过页面 POST 数据到某个页面上，而是通过 Ajax 方式进行异步访问，当异步返回数据显示登录成功之后再通过 <code>location.href</code> 方式进行 Meta Refresh.</p>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

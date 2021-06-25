@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>谁去参赛？ | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2020-04-12-who-goto-the-contest-problem" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>谁去参赛？</h1>
+  
+
+      </header>
+      <div>
+      2020-04-12
+      
+        / 
+        
+          <span><a href="/tags/ACM-ICPC/">#ACM-ICPC</a></span>
+        
+          <span><a href="/tags/Easy/">#Easy</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#问题描述"><span class="toc-text">问题描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#问题分析"><span class="toc-text">问题分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#完整代码"><span class="toc-text">完整代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li></ol>
+  </div>
+
+
+        </div>
+
+        <p>最近再次遇到一个很久以前就见过的一个编程题。当然，题目是非常简单的，很多参加算法竞赛的同学应该都见过这个问题。</p>
+<p>事情是这样的，在一个阳光还算明媚的下午，肖导给我发来一张图片。如下：</p>
+<p><img src="https://upload.ismdeep.com/images/2020/08/07/738908e89b8fd537b19a796b6e329a92-01db4e.JPG" alt="img"></p>
+<p>原来是肖导受到了关爱，要求写这样的一个程序。这个题目看上去就很简单，分成三个步骤：</p>
+<ol>
+<li><p>枚举所有可能的参赛组合情况</p>
+</li>
+<li><p>对每一个组合情况进行上诉判断</p>
+</li>
+<li><p>如果通过所有的判断则输出当前组合去参赛的同学名称</p>
+</li>
+</ol>
+<p>但是可达鸭眉头一皱，觉得问题并不简单。</p>
+<h3 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h3><p>A、B、C、D、E、F、G、H、I、J十名同学有可能参加本次竞赛，也有可能不参加。因为某种原因，他们是否参赛收到下列条件的约束：</p>
+<ol>
+<li>如果 A 参加，B 也参加；</li>
+<li>如果 C 不参加， D 也不参加；</li>
+<li>A 和 C 中只能有一人可以参加；</li>
+<li>B 和 D 有且只有一个人可以参加；</li>
+<li>D 、E 、F 、G 、H 五个人中至少有两个人参加；</li>
+<li>C 和 G 或者都参加，或者都不参加；</li>
+<li>C 、 E 、 G 、 I 中至多只能有两人参加；</li>
+<li>如果 E 参加，那么 F 和 G 也都参加；</li>
+<li>如果 F 参加，G 和 H 就不能参加；</li>
+<li>如果 I 和 J 都不参加，那么 H 必须参加。</li>
+</ol>
+<p>请编程实现判断这些同学哪些会参加本次竞赛，如果有多种可能，则输出所有可能情况。每种情况占一行。参赛同学按字母升序排列，之间用空格隔开。</p>
+<h3 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h3><p>如上述分析，只需三步。那么笔者觉得问题并不简单的考虑在于，如果按照上述方式来编写代码，其实很容易实现，但是写出来的代码可读性非常差。随手翻看了一下网上找到的几篇博客写的代码</p>
+<p><a href="https://blog.csdn.net/u013091087/article/details/43793545" target="_blank" rel="noopener">https://blog.csdn.net/u013091087/article/details/43793545</a></p>
+<p><a href="https://blog.csdn.net/wang263334857/article/details/9191215" target="_blank" rel="noopener">https://blog.csdn.net/wang263334857/article/details/9191215</a></p>
+<p><a href="http://bbs.bccn.net/thread-341841-1-1.html" target="_blank" rel="noopener">http://bbs.bccn.net/thread-341841-1-1.html</a></p>
+<p>当然我这里并不是打算去 diss 谁，或者说是批评这些代码写得如何如何不好。</p>
+<p><strong>首先</strong>，分析一下遍历的过程，我大概看到最多的遍历就是 <code>for</code> 循环一层套一层，如下所示：</p>
+<pre><code class="c">for (int a = 0; a &lt;= 1; a++) {
+    for (int b = 0; b &lt;= 1; b++) {
+        for (int c = 0; c &lt;= 1; c++) {
+            for (int d = 0; d &lt;= 1; d++) {
+                ...
+            }
+        }
+    }
+}
+</code></pre>
+<p>还有就是通过 DFS（Depth-First Search，深度优先搜索）的方式进行遍历所有的组合，如下所示：</p>
+<pre><code class="c">void dfs(int cur) {
+    if (cur == 10) {
+        Test();
+        return ;
+    }
+    a[cur] = 1;
+    dfs(cur+1);
+    a[cur] = 0;
+    dfs(cur + 1);
+}
+</code></pre>
+<p>都是可以实现的， 第一种方式通过层层 <code>for</code> 嵌套带来的问题就是代码太长，而且使用大量的变量；第二种方式通过 DFS 遍历带来的问题在于可读性会变差，而且这里还使用了全局变量。</p>
+<p>在编写程序时，需要尽量不使用全局变量，因为全局变量可能会带来变量冲突的问题。</p>
+<p>那么通过分析发现，其实这里每一位同学的参赛情况就是两种状态：参加、不参加。而十位同学的所有参赛状态组合，正好就是十位二进制的所有数字，即：数字0 ～ 数字1023的二进制表示。</p>
+<p>于是对于遍历就可以非常简单的变为：<code>for (int val = 0; val &lt;= 1023; val++)</code> 然后只需要将 <code>val</code> 展开成每位同学的参赛情况即可。</p>
+<p>展开代码如下：</p>
+<pre><code class="c">void extract_data(int val, bool data[]) {
+    for (int i = 0; i &lt; STU_CNT; i++) {
+        data[i] = val % 2;
+        val /= 2;
+    }
+}
+</code></pre>
+<p><strong>其次</strong>，约束判断的写法也有考虑，通过对问题的分析发现所有的约束条件都可以写成：<strong>如果 p ，那么 q.</strong> 这样的形式。也就是说在 <code>p</code> 发生的条件下，<code>q</code> 必须要满足。言下之意，如果 <code>p</code> 不发生，那么就不需要去考虑 <code>q</code> 是否成立。</p>
+<p>于是笔者封装了如下函数：</p>
+<pre><code class="c">bool if_then (bool if_case, bool then_case) {
+    if (if_case &amp;&amp; !then_case) {
+        return false;
+    }
+    return true;
+}
+</code></pre>
+<p>至于判断是否满足约束时，则只需要设置好十个条件，一次判断并计数通过判断的个数，最后如果通过判断个数的计数器等于 10 ，则表明通过了所有的判断。</p>
+<p><strong>最后</strong>，输出参加比赛的学生列表。这里比较简单，就不过多去说了。</p>
+<pre><code class="c">void print_students(bool data[]) {
+    for (int i = 0; i &lt; STU_CNT; i++) {
+        if (data[i]) {
+            printf(&quot;%C &quot;, &#39;A&#39; + i);
+        }
+    }
+    printf(&quot;\n&quot;);
+}
+</code></pre>
+<h3 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h3><pre><code class="c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;stdbool.h&gt;
+
+#define A 0
+#define B 1
+#define C 2
+#define D 3
+#define E 4
+#define F 5
+#define G 6
+#define H 7
+#define I 8
+#define J 9
+
+#define STU_CNT 10
+#define MAX_VAL (1&lt;&lt;STU_CNT)-1
+
+void extract_data(int val, bool data[]) {
+    for (int i = 0; i &lt; STU_CNT; i++) {
+        data[i] = val % 2;
+        val /= 2;
+    }
+}
+
+bool if_then (bool if_case, bool then_case) {
+    if (if_case &amp;&amp; !then_case) {
+        return false;
+    }
+    return true;
+}
+
+bool test_func (const bool data[]) {
+    int passed = 0;
+    /* 1. 如果A参加，B也参加 */
+    passed += if_then(data[A], data[B]);
+    /* 2. 如果C不参加，D也不参加 */
+    passed += if_then(!data[C], !data[D]);
+    /* 3. A和C中只能有一人可以参加 */
+    passed += if_then(true, data[A] + data[C] &lt; 2);
+    /* 4. B和D有且只有一个人可以参加 */
+    passed += if_then(true, data[B] + data[D] == 1);
+    /* 5. D、E、F、G、H五个人中至少有两个人参加 */
+    passed += if_then(true, data[D] + data[E] + data[F] + data[G] + data[H] &gt;= 2);
+    /* 6. C与G或者都参加，或者都不参加 */
+    passed += if_then(true, data[C] + data[G] == 2 || data[C] + data[G] == 0);
+    /* 7. C、E、G、I中至多只能有两人都参加 */
+    passed += if_then(true, data[C] + data[E] + data[G] + data[I] &lt;= 2);
+    /* 8. 如果E参加，那么F和G也都参加 */
+    passed += if_then(data[E], data[F] &amp;&amp; data[G]);
+    /* 9. 如果F参加，G和H就不能参加 */
+    passed += if_then(data[F], !data[G] &amp;&amp; !data[H]);
+    /* 10. 如果I和J都不参加，那么H必须参加 */
+    passed += if_then(!data[I] &amp;&amp; !data[J], data[H]);
+
+    if (passed &lt; 10) {
+        return false;
+    }
+
+    return true;
+}
+
+void print_students(bool data[]) {
+    for (int i = 0; i &lt; STU_CNT; i++) {
+        if (data[i]) {
+            printf(&quot;%C &quot;, &#39;A&#39; + i);
+        }
+    }
+    printf(&quot;\n&quot;);
+}
+
+int main() {
+    bool *data = (bool*) malloc(sizeof(bool) * STU_CNT);
+    for (int val = 0; val &lt;= MAX_VAL; val++) { /* 1. 遍历 */
+        extract_data(val, data);               /* 2. 展开 */
+        if (test_func(data)) {                 /* 3. 约束判断 */
+            print_students(data);              /* 4. 输出 */
+        }
+    }
+    return 0;
+}
+</code></pre>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ol>
+<li>完整代码中宏定义是一个增强代码可读性的一个方法，通过宏定义设置 <code>A</code> 同学占用 <code>data[0]</code> ，依此类推。</li>
+<li>通过函数封装提高代码的可读性</li>
+<li>出现多个同属性的数据时应该考虑使用数组进行存储，如这里的十位同学是否参赛的数据。</li>
+</ol>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

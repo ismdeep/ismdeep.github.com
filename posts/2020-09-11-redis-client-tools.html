@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>Redis 客户端工具 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2020-09-11-redis-client-tools" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>Redis 客户端工具</h1>
+  
+
+      </header>
+      <div>
+      2020-09-11
+      
+        / 
+        
+          <span><a href="/tags/Development/">#Development</a></span>
+        
+          <span><a href="/tags/Redis/">#Redis</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-IRedis-命令行工具"><span class="toc-text">1. IRedis 命令行工具</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Redis-Desktop-Manager"><span class="toc-text">2. Redis Desktop Manager</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-medis"><span class="toc-text">3. medis</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-AnotherRedisDesktopManager"><span class="toc-text">4. AnotherRedisDesktopManager</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-FastoRedis"><span class="toc-text">5. FastoRedis</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-RedisPlus"><span class="toc-text">6. RedisPlus</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-Red"><span class="toc-text">7. Red</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-Redis-Insight"><span class="toc-text">8. Redis Insight</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-Iedis2"><span class="toc-text">9. Iedis2</span></a></li></ol>
+  </div>
+
+
+        </div>
+
+        <p>Redis 在开发工作中的地位变得越来越重要了，作为开发者，日常对 Redis 数据进行操作也更加的频繁，不知道各位在日常操作 Redis 时都用着哪些工具呢？</p>
+<p>本文将介绍几款非常优秀的 Redis 客户端工具/软件，以供大家参考。</p>
+<h2 id="1-IRedis-命令行工具"><a href="#1-IRedis-命令行工具" class="headerlink" title="1. IRedis 命令行工具"></a>1. IRedis 命令行工具</h2><p>笔者以前使用工具更加偏向命令行工具，命令行工具都具有轻量、操作速度快、简洁等功能。</p>
+<p>此处要介绍的便是一款命令行使用的 Redis 工具：<a href="https://iredis.io" target="_blank" rel="noopener">IRedis</a></p>
+<p>附上这个工具的官网网址，喜欢用命令行的朋友可以去试一试，绝对能让喜欢命令行的你爽的飞起来。</p>
+<blockquote>
+<p><a href="https://iredis.io" target="_blank" rel="noopener">https://iredis.io</a></p>
+</blockquote>
+<p><img src="https://upload.ismdeep.com/images/2020/09/11/fe0161d38631a13f61b0cdd132dd482f-38b049.svg" alt></p>
+<h2 id="2-Redis-Desktop-Manager"><a href="#2-Redis-Desktop-Manager" class="headerlink" title="2. Redis Desktop Manager"></a>2. Redis Desktop Manager</h2><p>这个工具应该是现在使用率最广的可视化工具了。存在时间很久。经过了数次迭代。跨平台支持。以前是免费的，现在为收费工具。试用可以有半个月的时间。链接为：</p>
+<blockquote>
+<p><a href="https://redisdesktop.com/" target="_blank" rel="noopener">https://redisdesktop.com/</a></p>
+</blockquote>
+<p><strong>评测：</strong></p>
+<p>之前用觉得功能还行，就是界面UI丑了点。最近下了最新版，感觉经过了那么长时间迭代，界面看着也还凑合。该有的功能都有。界面看着比较简洁，功能很全。</p>
+<p>key的显示可以支持按冒号分割的键名空间，除了基本的五大数据类型之外，还支持redis 5.0新出的Stream数据类型。在value的显示方面。支持多达9种的数据显示方式。</p>
+<p>命令行模式也同以前有了很大的进步，支持了命令自动提示。</p>
+<p><img src="https://upload.ismdeep.com/images/2020/09/11/7dd64b3ff2cacf02d1fa5c2270da4c71-3c27ca.png" alt="img"></p>
+<h2 id="3-medis"><a href="#3-medis" class="headerlink" title="3. medis"></a>3. medis</h2><p>现阶段我使用率最高的redis可视化工具。界面符合个人审美。布局简洁。跨平台支持，关键是免费。链接为：</p>
+<blockquote>
+<p><a href="http://getmedis.com/" target="_blank" rel="noopener">http://getmedis.com/</a></p>
+</blockquote>
+<p><strong>评测：</strong></p>
+<p>颜值挺高，功能符合日常使用要求。对key有颜色鲜明的图标标识。在key的搜索上挺方便的，可以模糊搜索出匹配的key，渐进式的scan，无明显卡顿。在搜索的体验上还是比较出色的。</p>
+<p>缺点是不支持key的命名空间展示，不支持redis 5.0的stream数据类型，命令行比较单一，不支持自动匹配和提示。支持的value的展现方式也只有3种。</p>
+<p><img src="https://upload.ismdeep.com/images/2020/09/11/2f055c12db25d8248ba7346de19071c2-62f15e.png" alt="Medis"></p>
+<h2 id="4-AnotherRedisDesktopManager"><a href="#4-AnotherRedisDesktopManager" class="headerlink" title="4. AnotherRedisDesktopManager"></a>4. AnotherRedisDesktopManager</h2><p>一款比较稳定简洁的redis UI工具。链接为：</p>
+<blockquote>
+<p><a href="https://github.com/qishibo/AnotherRedisDesktopManager" target="_blank" rel="noopener">https://github.com/qishibo/AnotherRedisDesktopManager</a></p>
+</blockquote>
+<p><strong>评测：</strong></p>
+<p>很中规中矩的一款免费的redis可视化工具，基本的功能都有。有监控统计，支持暗黑主题，还支持集群的添加。</p>
+<p>缺点是没什么亮点，UI很简单，不支持stream数据类型。命令行模式也比较单一。value展示支持的类型也只有3种。</p>
+<p><img src="https://camo.githubusercontent.com/0eab991c8dc2a2c50909dd48f2cc82540ce41a14/68747470733a2f2f696d6775702e7169693430342e78797a2f6769746875622f32303230303331333134313634312e6a7067" alt="redis status dark"></p>
+<h2 id="5-FastoRedis"><a href="#5-FastoRedis" class="headerlink" title="5. FastoRedis"></a>5. FastoRedis</h2><p>FastoRedis之前没听到过。然后去下了体验了下。</p>
+<p>使用这款工具首先得去官网注册账号。这款软件是收费软件，虽然跨平台，但是试用只有一天的时间。链接为：</p>
+<blockquote>
+<p><a href="https://fastoredis.com/" target="_blank" rel="noopener">https://fastoredis.com/</a></p>
+</blockquote>
+<p><strong>评测：</strong></p>
+<p>毕竟是收费软件，虽然界面一股浓浓的windows风格，乍看上去有点像redis desktop manager，但是就功能而言。确实不错，支持了集群模式和哨兵模式，key的命名空间展示，redis 5.0的stream数据类型也支持。</p>
+<p>命令行模式支持自动提示补全</p>
+<p>value的显示支持树状，表格状等等显示方式。令我惊讶的是，值对象支持多达17种渲染方式</p>
+<p>总的来说，除了界面UI交互略生硬，还有是一款收费软件之外，还是一款很不错的redis可视化工具。</p>
+<p><img src="https://upload.ismdeep.com/images/2020/09/11/29a72f19f6f8489588b203ab06379545-aa4776.png" alt="img"></p>
+<h2 id="6-RedisPlus"><a href="#6-RedisPlus" class="headerlink" title="6. RedisPlus"></a>6. RedisPlus</h2><p>一款开源的免费桌面客户端软件链接：</p>
+<blockquote>
+<p><a href="https://gitee.com/MaxBill/RedisPlus" target="_blank" rel="noopener">https://gitee.com/MaxBill/RedisPlus</a></p>
+</blockquote>
+<p><strong>评测：</strong></p>
+<p>没什么亮点，也就基本功能。加分项可能也就是有一个监控。其他的都很普通 。甚至于这款软件连命令行模式都没有。用的是javafx开发，按道理说，应该是跨平台的软件 ，但是提供的下载地址，并没有mac的直接安装包。况且就算是跨平台的吧。</p>
+<p>⚠️：该软件作者表示不再更新迭代。</p>
+<p><img src="https://upload.ismdeep.com/images/2020/09/11/5ba1d33270f127eb0b33e7f961fbc358-7559f8.jpeg" alt="img"></p>
+<h2 id="7-Red"><a href="#7-Red" class="headerlink" title="7. Red"></a>7. Red</h2><p>这是一款在苹果app store下载的redis可视化工具。</p>
+<p><strong>评测：</strong></p>
+<p>只支持Mac端，颜值还是不错的。功能中规中矩。基本功能都有，支持key命名空间的展示。</p>
+<p><img src="https://upload.ismdeep.com/images/2020/09/11/7b426d4f2eec503d18b5e9b5baacab35-296f1d.png" alt="image-20200911160733359"></p>
+<h2 id="8-Redis-Insight"><a href="#8-Redis-Insight" class="headerlink" title="8. Redis Insight"></a>8. Redis Insight</h2><p>这个软件来头挺大的，是redis labs出的一款监控分析级别的redis可视化工具。这款软件是web版的</p>
+<p>那redis labs是啥公司，redis labs创立于2011年，公司致力于为Redis、Memcached等流行的NoSQL开源数据库提供云托管服务。可以算是专门致力于redis云的一家专业公司。他们的提供的软件中，除了可以连接企业私有的redis服务，也可以连接他们的redis云。链接：</p>
+<blockquote>
+<p><a href="https://redislabs.com/redisinsight/" target="_blank" rel="noopener">https://redislabs.com/redisinsight/</a></p>
+</blockquote>
+<p><strong>评测：</strong></p>
+<p>虽然是web版本，但是这个软件超越了我对redis可视化工具的认识，一看界面就觉得很专业，不像是个人开发出来的开源产品。我发现key的查询和浏览只是这里的一个功能模块而已。</p>
+<p>命令行方面：除了有命令补全提示，右边还有相关命令的文档解释。怎么样，是不是超人性化呢？</p>
+<p>同样支持redis 5.0的Stream数据类型</p>
+<p>下面的三个功能，是需要在server端安装他们家的其他redis模块的。分别是可查询的图表，redis的时间序列展示和全文本查询功能。</p>
+<p>最牛的是，redisInsight竟然还支持rdb的分析功能，之前分析rdb的存储分布，有点经验的都会用rdb-tools去分析。而redisInsight竟然把这个都集成进去了。我之前用这个分析了公司生产环境的rdb，找出了导致数据量增长过快的原因，简直是一个神器。</p>
+<p>这是我上次利用这个软件分析rdb出来的结果。很明确的找到了哪个key占据内存过大。</p>
+<p>在分析功能中的Profiler能监听一段时间内所有执行的redis命令 ，Slowlog能显示出执行比较慢的redis命令。</p>
+<p>除此之外，这个软件还能批量操作。</p>
+<p>RedisInsight这个可视化工具对redis的覆盖之全面令人咋舌。虽然他的查询key的功能算不上优秀，但是他的全面性和分析监控方面，确实是其他redis可视化工具难以企及的，况且颜值还那么高，强烈推荐。</p>
+<p><img src="https://upload.ismdeep.com/images/2020/09/11/a5d1a8f73183fd8ef963b841ae3cbbc1-984f65.png" alt="img"></p>
+<h2 id="9-Iedis2"><a href="#9-Iedis2" class="headerlink" title="9. Iedis2"></a>9. Iedis2</h2><p>Iedis是一款基于IntelliJ IDEA的插件，在IDEA的plugin市场里就可以搜到，但是为收费插件，可试用7天。</p>
+<p><strong>评测：</strong></p>
+<p>作为IDEA的插件，当然是跨平台的，风格完全遵从于IDEA，颜值有保障。从功能上来说，Iedis也是不含糊。基本查询功能基本上挑不出毛病。加上IDEA的使用习惯，让你用起来得心应手，不需要另外打开软件。在代码和插件窗口中切换也是能提高效率的。</p>
+<p>这个插件最大的特点就是能支持lua脚本的编写和调试，这在其他软件中是不曾看到的。以前在一个业务中大量用了lua进行redis操作，虽然尝到了redis lua原子性和性能上的甜头，但是在编写调试的时候，那叫一个痛苦，因为不能在debug所以每次都需要返回一个值来检查是哪里出了错。看到这个工具，悔恨没早点发现这个插件，付费也愿意。</p>
+<p>这个插件还能支持慢命令的查看。</p>
+<p>总的来说，Iedis除了需要付费，其他的一切都看上去很美好。价格是$139/年。还是美元，看到这个价格，是不是长叹一口气呢。</p>
+<p><img src="https://upload.ismdeep.com/images/2020/09/11/66c72f54001138e6855dbc4f363832f4-552058.png" alt="Screenshot 1"></p>
+<p><img src="https://upload.ismdeep.com/images/2020/09/11/e9630f2d0f9cdf62494d367cce576fa0-96cad4.png" alt="Screenshot 2"></p>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

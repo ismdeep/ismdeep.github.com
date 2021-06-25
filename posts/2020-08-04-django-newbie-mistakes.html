@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>Django 新手常见错误 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2020-08-04-django-newbie-mistakes" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>Django 新手常见错误</h1>
+  
+
+      </header>
+      <div>
+      2020-08-04
+      
+        / 
+        
+          <span><a href="/tags/Python/">#Python</a></span>
+        
+          <span><a href="/tags/Development/">#Development</a></span>
+        
+          <span><a href="/tags/Django/">#Django</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#常见错误一：POST-提交数据到视图而丢失-POST-数据"><span class="toc-text">常见错误一：POST 提交数据到视图而丢失 POST 数据</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#现象"><span class="toc-text">现象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#可能的原因"><span class="toc-text">可能的原因</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解决方法"><span class="toc-text">解决方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#常见错误二：表单无法上传文件"><span class="toc-text">常见错误二：表单无法上传文件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#现象-1"><span class="toc-text">现象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#可能的原因-1"><span class="toc-text">可能的原因</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解决方法-1"><span class="toc-text">解决方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#另一种可能"><span class="toc-text">另一种可能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解决方法-2"><span class="toc-text">解决方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#常见错误三：URLconf-include-失效"><span class="toc-text">常见错误三：URLconf include() 失效</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#现象-2"><span class="toc-text">现象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#可能的原因-2"><span class="toc-text">可能的原因</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解决方法-3"><span class="toc-text">解决方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#常见错误四：空白对象名"><span class="toc-text">常见错误四：空白对象名</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#现象-3"><span class="toc-text">现象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#可能的原因-3"><span class="toc-text">可能的原因</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解决方法-4"><span class="toc-text">解决方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#常见错误五：整数和空值"><span class="toc-text">常见错误五：整数和空值</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#问题"><span class="toc-text">问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解决方法-5"><span class="toc-text">解决方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#常见错误六：日期和空值"><span class="toc-text">常见错误六：日期和空值</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#常见错误七：无法往-session-中添加列表"><span class="toc-text">常见错误七：无法往 session 中添加列表</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#问题-1"><span class="toc-text">问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解决方法-6"><span class="toc-text">解决方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#常见错误八：关于带有一个字符名称的未定义属性的错误"><span class="toc-text">常见错误八：关于带有一个字符名称的未定义属性的错误</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#问题-2"><span class="toc-text">问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解决方法-7"><span class="toc-text">解决方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#常见错误九：使用-formfields-FormWrapper-但表单字段均不显示"><span class="toc-text">常见错误九：使用 formfields.FormWrapper 但表单字段均不显示</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#问题-3"><span class="toc-text">问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解决方法-8"><span class="toc-text">解决方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#常见错误十：使用-SQLite3-时，Django-提示-“Unable-to-Open-Database-File”"><span class="toc-text">常见错误十：使用 SQLite3 时，Django 提示 “Unable to Open Database File”</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#问题-4"><span class="toc-text">问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解决方法-9"><span class="toc-text">解决方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#常见错误十一：如何将-Apache-指向媒体文件目录"><span class="toc-text">常见错误十一：如何将 Apache 指向媒体文件目录</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#问题-5"><span class="toc-text">问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解决方法-10"><span class="toc-text">解决方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#常见错误十二：数据库查询结果并不是列表"><span class="toc-text">常见错误十二：数据库查询结果并不是列表</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#问题-6"><span class="toc-text">问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解决方法-11"><span class="toc-text">解决方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#常见错误十三：在应用程序中使用保留名称会破坏管理"><span class="toc-text">常见错误十三：在应用程序中使用保留名称会破坏管理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#现象-4"><span class="toc-text">现象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#可能的原因-4"><span class="toc-text">可能的原因</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解决方法-12"><span class="toc-text">解决方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#常见错误十四：未绑定方法-contribute-to-class"><span class="toc-text">常见错误十四：未绑定方法 contribute_to_class()</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#现象-5"><span class="toc-text">现象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#可能的原因-5"><span class="toc-text">可能的原因</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解决方法-13"><span class="toc-text">解决方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#常见错误十五：使用静态服务时权限被拒绝"><span class="toc-text">常见错误十五：使用静态服务时权限被拒绝</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#可能的原因-6"><span class="toc-text">可能的原因</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解决方法-14"><span class="toc-text">解决方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#常见错误十六：默认值和调用"><span class="toc-text">常见错误十六：默认值和调用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#现象-6"><span class="toc-text">现象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#可能的原因-7"><span class="toc-text">可能的原因</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解决方法-15"><span class="toc-text">解决方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#常见错误十七：页面无法找到"><span class="toc-text">常见错误十七：页面无法找到</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#常见错误十八：空表单"><span class="toc-text">常见错误十八：空表单</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#问题-7"><span class="toc-text">问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解决方法-16"><span class="toc-text">解决方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#常见错误十九：SECRET-KEY-不可为空"><span class="toc-text">常见错误十九：SECRET_KEY 不可为空</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#现象-7"><span class="toc-text">现象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#可能的原因-8"><span class="toc-text">可能的原因</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解决方法-17"><span class="toc-text">解决方法</span></a></li></ol></li></ol>
+  </div>
+
+
+        </div>
+
+        <p>当你开始学习并使用 Django 后，请勿吝啬分享让你兴奋的东西（错误）。我们将尝试改进 Django 的错误处理，以在将来捕获此类错误。</p>
+<h2 id="常见错误一：POST-提交数据到视图而丢失-POST-数据"><a href="#常见错误一：POST-提交数据到视图而丢失-POST-数据" class="headerlink" title="常见错误一：POST 提交数据到视图而丢失 POST 数据"></a>常见错误一：POST 提交数据到视图而丢失 POST 数据</h2><h3 id="现象"><a href="#现象" class="headerlink" title="现象"></a>现象</h3><p>你有一个需要提交数据到某个视图的表单，然而视图并没有获取到 POST 提交的表单数据。</p>
+<h3 id="可能的原因"><a href="#可能的原因" class="headerlink" title="可能的原因"></a>可能的原因</h3><p>你可能在表单的 <code>action</code> 中忘了最后的 <code>/</code>. 如果是这样的话，<code>CommonMiddleware</code>（查看你的 <code>MIDDLEWARE_CLASSES</code>） 会重定向至视图的确切名称 —— 并且总会有带上一个 <code>/</code>. 因为它是通过标准 HTTP 的 <code>Location</code>  头来实现重定向的，所以它无法传递 POST 数据，这就是为什么它会丢失数据的原因。</p>
+<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><p>始终确保表单 <code>action</code> 以 <code>/</code> 结尾，如下所示：</p>
+<pre><code class="html">&lt;form action=&quot;/registration/login/&quot; method=&quot;POST&quot;&gt;
+&lt;input name=&quot;username&quot;&gt;
+&lt;input name=&quot;password&quot; type=&quot;password&quot;&gt;
+&lt;/form&gt;
+</code></pre>
+<p>注：Django 现在正尝试捕获这个问题，见 <a href="https://www.djangoproject.com/svntogit/3109/" target="_blank" rel="noopener">[3109]</a></p>
+<h2 id="常见错误二：表单无法上传文件"><a href="#常见错误二：表单无法上传文件" class="headerlink" title="常见错误二：表单无法上传文件"></a>常见错误二：表单无法上传文件</h2><h3 id="现象-1"><a href="#现象-1" class="headerlink" title="现象"></a>现象</h3><p>在你的表单中有 <code>FileField()</code> 和 <code>ImageField()</code> ，但是当你提交表单后，并没有上传文件。</p>
+<h3 id="可能的原因-1"><a href="#可能的原因-1" class="headerlink" title="可能的原因"></a>可能的原因</h3><p>当你实例化 <code>Form</code> 时，你可能忘记了 <code>request.FILES</code> 参数。</p>
+<h3 id="解决方法-1"><a href="#解决方法-1" class="headerlink" title="解决方法"></a>解决方法</h3><p>确保实例化 <code>Form</code> 时传递 <code>requests.FILES</code>.</p>
+<pre><code class="python">form = MyForm(request.POST, request.FILES)
+</code></pre>
+<h3 id="另一种可能"><a href="#另一种可能" class="headerlink" title="另一种可能"></a>另一种可能</h3><p>表单中可能缺少 <code>enctype</code> 属性。</p>
+<h3 id="解决方法-2"><a href="#解决方法-2" class="headerlink" title="解决方法"></a>解决方法</h3><p>确保你的表单中有如下形式的 <code>enctype</code> 属性：</p>
+<pre><code class="html">&lt;form method=&quot;post&quot; action=&quot;/some/url/&quot; enctype=&quot;multipart/form-data&quot;&gt;
+</code></pre>
+<h2 id="常见错误三：URLconf-include-失效"><a href="#常见错误三：URLconf-include-失效" class="headerlink" title="常见错误三：URLconf include() 失效"></a>常见错误三：URLconf include() 失效</h2><h3 id="现象-2"><a href="#现象-2" class="headerlink" title="现象"></a>现象</h3><p>你的 <code>URLconf</code> 文件无法正常工作，但也收不到任何关于找不到模块 <code>index</code> 的信息（<code>index</code> 是你尝试分配为视图的某些功能） 或者 模块 <code>foo</code> 缺失 <code>urlpattern</code> 属性的信息。</p>
+<h3 id="可能的原因-2"><a href="#可能的原因-2" class="headerlink" title="可能的原因"></a>可能的原因</h3><p>你可能在 <code>URLconf</code> 文件中用 <code>include()</code> 方法尝试加载视图文件 （ 在教程 3 中，是  <code>myproject/settings/urls/main.py</code> ）。这里的 <code>include()</code> 调用是假设加载的也是一个 <code>URLconf</code> 文件</p>
+<h3 id="解决方法-3"><a href="#解决方法-3" class="headerlink" title="解决方法"></a>解决方法</h3><p>移除 <code>include()</code> 方法。就用模块名和函数名（例如：<code>myproject.apps.polls.views.polls.index</code>） 组成字符串即可，不需要 <code>include()</code> 方法去包含它。</p>
+<h2 id="常见错误四：空白对象名"><a href="#常见错误四：空白对象名" class="headerlink" title="常见错误四：空白对象名"></a>常见错误四：空白对象名</h2><h3 id="现象-3"><a href="#现象-3" class="headerlink" title="现象"></a>现象</h3><p>The automatic admin interface is showing nothing (or a single <code>&amp;nbsp;</code>) in the “Select [object_type] to change” view.</p>
+<h3 id="可能的原因-3"><a href="#可能的原因-3" class="headerlink" title="可能的原因"></a>可能的原因</h3><p>You may have forgotten to create a <code>__str__()</code> function for your model (<code>__unicode__()</code> in Python 2). Django calls <code>__str__()</code> to find out how to display objects in the admin interface. An alternate cause is the string you return from <code>__str__()</code> includes brackets (an therefore looks like an html tag), and is cleaned up by the <code>strip_tags</code> template filter, resulting in blank entries.</p>
+<h3 id="解决方法-4"><a href="#解决方法-4" class="headerlink" title="解决方法"></a>解决方法</h3><p>Add a correct <code>__str__()</code> function (without brackets in the output) to all your models. Make it a habit so it becomes automatic.</p>
+<h2 id="常见错误五：整数和空值"><a href="#常见错误五：整数和空值" class="headerlink" title="常见错误五：整数和空值"></a>常见错误五：整数和空值</h2><h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>你有如下字段：</p>
+<pre><code>current_zip = meta.IntegerField(max_length=5, blank=True)
+</code></pre><p>Django 会在你的数据库中创建一个非空的字段。然而，当你表单留空（在管理后台或者是网页上）时，Django 会尝试向你数据库插入 <code>NULL</code> 的空值。</p>
+<h3 id="解决方法-5"><a href="#解决方法-5" class="headerlink" title="解决方法"></a>解决方法</h3><p>加上 <code>null=True</code> :</p>
+<pre><code class="python">current_zip = meta.IntegerField(max_length=5, null=True, blank=True)
+</code></pre>
+<h2 id="常见错误六：日期和空值"><a href="#常见错误六：日期和空值" class="headerlink" title="常见错误六：日期和空值"></a>常见错误六：日期和空值</h2><p>问题与解决方法同 “常见错误五：整数和空值”。</p>
+<h2 id="常见错误七：无法往-session-中添加列表"><a href="#常见错误七：无法往-session-中添加列表" class="headerlink" title="常见错误七：无法往 session 中添加列表"></a>常见错误七：无法往 session 中添加列表</h2><h3 id="问题-1"><a href="#问题-1" class="headerlink" title="问题"></a>问题</h3><p>session 中有一个列表，但是无法向该列表中添加数据。</p>
+<h3 id="解决方法-6"><a href="#解决方法-6" class="headerlink" title="解决方法"></a>解决方法</h3><p>将列表拷贝出来，然后添加数据，再拷贝回去：</p>
+<pre><code class="python">sessionlist = request.session[&#39;my_list&#39;]
+sessionlist.append(new_object)
+request.session[&#39;my_list&#39;] = sessionlist
+</code></pre>
+<p>或者，将 session 标记为已修改：</p>
+<pre><code class="python">request.session[&#39;my_list&#39;].append(new_object)
+request.session.modified = True
+</code></pre>
+<h2 id="常见错误八：关于带有一个字符名称的未定义属性的错误"><a href="#常见错误八：关于带有一个字符名称的未定义属性的错误" class="headerlink" title="常见错误八：关于带有一个字符名称的未定义属性的错误"></a>常见错误八：关于带有一个字符名称的未定义属性的错误</h2><h3 id="问题-2"><a href="#问题-2" class="headerlink" title="问题"></a>问题</h3><p>You get an AttributeError with some weird attribute name that’s only one char long. You don’t have that attribute name anywhere in your code.</p>
+<h3 id="解决方法-7"><a href="#解决方法-7" class="headerlink" title="解决方法"></a>解决方法</h3><p>Search your model and code for situations where you have to pass a tuple of values and want to pass a tuple with one element - and that element is a string like in this sample:</p>
+<pre><code>class META:     
+    ...
+    admin = meta.Admin(
+        list_display = (&#39;total_price&#39;),
+        ...
+    )
+</code></pre><p>You are just missing a comma in the list_display assignment like this:</p>
+<pre><code>class META:     
+    ...
+    admin = meta.Admin(
+        list_display = (&#39;total_price&#39;,),
+        ...
+    )
+</code></pre><p>Remember, in python:</p>
+<pre><code>&gt;&gt;&gt; a = (1) ## This causes problems
+1
+&gt;&gt;&gt; a = (1,) ## These are fine.
+(1,)
+&gt;&gt;&gt; a = [1]
+[1]
+&gt;&gt;&gt; a = [1,]
+[1]
+</code></pre><p>Since a tuple is expected but a string provided, the code will merrily iterate over the characters of the string instead of the tuple elements - and that’s where the single-char attribute names come from. If the commas are consistently causing you problems, try using brackets [] instead of parentheses.</p>
+<h2 id="常见错误九：使用-formfields-FormWrapper-但表单字段均不显示"><a href="#常见错误九：使用-formfields-FormWrapper-但表单字段均不显示" class="headerlink" title="常见错误九：使用 formfields.FormWrapper 但表单字段均不显示"></a>常见错误九：使用 <code>formfields.FormWrapper</code> 但表单字段均不显示</h2><h3 id="问题-3"><a href="#问题-3" class="headerlink" title="问题"></a>问题</h3><p>You are using code similar to that documented <a href="http://www.djangoproject.com/documentation/forms/" target="_blank" rel="noopener">here</a>, but when you put , you get nothing. </p>
+<h3 id="解决方法-8"><a href="#解决方法-8" class="headerlink" title="解决方法"></a>解决方法</h3><p>Make sure when you create your form object, you are passing in empty <strong>dictionaries</strong>, not tuples. For example:</p>
+<pre><code>    manip = things.AddManipulator()
+    form = formfields.FormWrapper(manip, {}, {})
+</code></pre><p>Not:</p>
+<pre><code>    manip = things.AddManipulator()
+    form = formfields.FormWrapper(manip, (), ())
+</code></pre><p>If you pass in empty tuples for data &amp; errors, it will silently fail to insert your form fields.</p>
+<h2 id="常见错误十：使用-SQLite3-时，Django-提示-“Unable-to-Open-Database-File”"><a href="#常见错误十：使用-SQLite3-时，Django-提示-“Unable-to-Open-Database-File”" class="headerlink" title="常见错误十：使用 SQLite3 时，Django 提示 “Unable to Open Database File”"></a>常见错误十：使用 SQLite3 时，Django 提示 “Unable to Open Database File”</h2><h3 id="问题-4"><a href="#问题-4" class="headerlink" title="问题"></a>问题</h3><p>You’re using SQLite3, your DATABASE_NAME is set to the database file’s full path, the database file is writeable by Apache, but you still get the above error.</p>
+<h3 id="解决方法-9"><a href="#解决方法-9" class="headerlink" title="解决方法"></a>解决方法</h3><p>Make sure Apache can also write to the parent directory of the database. SQLite needs to be able to write to this directory. Avoid setting the permissions to 777, as it’s a security risk (see <a href="http://askubuntu.com/questions/20105/why-shouldnt-var-www-have-chmod-777" target="_blank" rel="noopener">this page</a> for an explanation why).</p>
+<p>Make sure each folder of your database file’s full path does not start with number, eg. /www/4myweb/db (observed on Windows 2000).</p>
+<p>If DATABASE_NAME is set to something like ‘/Users/yourname/Sites/mydjangoproject/db/db’, make sure you’ve created the ‘db’ directory first.</p>
+<p>Make sure your /tmp directory is world-writable (an unlikely cause as other thing on your system will also not work). <code>ls /tmp -ald</code> should produce <code>drwxrwxrwt ...</code>.</p>
+<p>Make sure the path to the database specified in settings.py is a full path.</p>
+<p>If you working on windows make also sure that you have the path to the db directory written with double backlashes (using os.path methods are recommended)</p>
+<pre><code>&#39;C:\\django\\sqlite\\django.db&#39;
+</code></pre><p>or</p>
+<pre><code>r&#39;C:\django\sqlite\django.db&#39;
+</code></pre><p>Make sure there is no special charcaters in the path like “éè” or “(“.</p>
+<p>If you are using Windows and this message appears intermittently make sure that your security software (Anti-malware) are not opening (and locking) your database file to check for malware presence.</p>
+<h2 id="常见错误十一：如何将-Apache-指向媒体文件目录"><a href="#常见错误十一：如何将-Apache-指向媒体文件目录" class="headerlink" title="常见错误十一：如何将 Apache 指向媒体文件目录"></a>常见错误十一：如何将 Apache 指向媒体文件目录</h2><h3 id="问题-5"><a href="#问题-5" class="headerlink" title="问题"></a>问题</h3><p>You have no clue how to map a media url to your media directory when using apache2. </p>
+<h3 id="解决方法-10"><a href="#解决方法-10" class="headerlink" title="解决方法"></a>解决方法</h3><p>Use the <em>Alias</em> Directive and don’t forget to set-up access rights correctly.</p>
+<pre><code class="xml">Alias /mediaurl /path/to/files
+&lt;Directory /path/to/files&gt;
+Order allow,deny
+Allow from all
+&lt;/Directory&gt;
+</code></pre>
+<h2 id="常见错误十二：数据库查询结果并不是列表"><a href="#常见错误十二：数据库查询结果并不是列表" class="headerlink" title="常见错误十二：数据库查询结果并不是列表"></a>常见错误十二：数据库查询结果并不是列表</h2><h3 id="问题-6"><a href="#问题-6" class="headerlink" title="问题"></a>问题</h3><p>You have been playing with the database API and noticed that a returned query set looks a lot like a list:</p>
+<pre><code>&gt;&gt;&gt; from mysite.polls.models import Poll,Choice
+&gt;&gt;&gt; Poll.objects.all()
+[&lt;Poll: What is up?&gt;, &lt;Poll: What is your favourite colour?&gt;]  ## looks a lot like a list to me
+</code></pre><p>But, it doesn’t behave like a list in some cases.</p>
+<h3 id="解决方法-11"><a href="#解决方法-11" class="headerlink" title="解决方法"></a>解决方法</h3><p>Here are a couple of cases where the behaviour is not list-like and their solution.</p>
+<p>In Python this is how we can test for an empty list:</p>
+<pre><code>&gt;&gt;&gt; b=[]
+&gt;&gt;&gt; b==[]
+True
+</code></pre><p>This doesn’t work with a QuerySet. You might try the following but it will fail:</p>
+<pre><code>&gt;&gt;&gt; from mysite.polls.models import Poll,Choice
+&gt;&gt;&gt; p = Poll.objects.filter(question__startswith=&#39;ZZZZZZZZZZZZ&#39;)
+&gt;&gt;&gt; p
+[]
+&gt;&gt;&gt; p==[]
+False
+</code></pre><p>The way to do it is test for p.exists: </p>
+<pre><code>&gt;&gt;&gt; from mysite.polls.models import Poll,Choice
+&gt;&gt;&gt; p = Poll.objects.filter(question__startswith=&#39;ZZZZZZZZZZZZ&#39;)
+&gt;&gt;&gt; p
+[]
+&gt;&gt;&gt; p.exists()
+False
+</code></pre><p>Another case occurs when you want to retrieve the last member of a QuerySet:</p>
+<pre><code>&gt;&gt;&gt; from mysite.polls.models import Poll,Choice
+&gt;&gt;&gt; p = Poll.objects.all()
+&gt;&gt;&gt; p
+[&lt;Poll: What is up?&gt;, &lt;Poll: What is your favourite colour?&gt;]
+&gt;&gt;&gt; p[-1]
+Traceback (most recent call last):
+  File &quot;&lt;console&gt;&quot;, line 1, in ?
+  File &quot;c:\python24\lib\site-packages\django-0.95-py2.4.egg\django\db\models\query.py&quot;, line 98, in
+__getitem__
+    assert (not isinstance(k, slice) and (k &gt;= 0)) \
+AssertionError: Negative indexing is not supported.
+</code></pre><p>The way I get the last member is either:</p>
+<pre><code>&gt;&gt;&gt; p[p.count()-1]
+&lt;Poll: What is your favourite colour?&gt;
+</code></pre><p>or</p>
+<pre><code class="python">&gt;&gt;&gt; p.last()
+&lt;Poll: What is your favourite colour?&gt;
+</code></pre>
+<h2 id="常见错误十三：在应用程序中使用保留名称会破坏管理"><a href="#常见错误十三：在应用程序中使用保留名称会破坏管理" class="headerlink" title="常见错误十三：在应用程序中使用保留名称会破坏管理"></a>常见错误十三：在应用程序中使用保留名称会破坏管理</h2><h3 id="现象-4"><a href="#现象-4" class="headerlink" title="现象"></a>现象</h3><p>After creating a new application, with a model that validates, trying to log on to the admin causes an error similar to:</p>
+<pre><code>ImproperlyConfigured: Error importing middleware django.middleware.common: &quot;No module named ... &quot;
+</code></pre><h3 id="可能的原因-4"><a href="#可能的原因-4" class="headerlink" title="可能的原因"></a>可能的原因</h3><p>Check to see that you didn’t use a reserved name in naming your application, i.e. “email”, “date” and “time” are common application names that would validate when the server starts but will break Django’s admin. </p>
+<h3 id="解决方法-12"><a href="#解决方法-12" class="headerlink" title="解决方法"></a>解决方法</h3><p>Rename your application directory using a non-reserved name, i.e., “email_app” instead of “email”. Go into the <code>INSTALLED_APPS</code> section of settings.py and change the name there too. Also, don’t forget to migrate your database (<code>python manage.py migrate</code>) to create the newly renamed app in your database. You may also want to go in to your database and drop the old “mis-named” table.</p>
+<h2 id="常见错误十四：未绑定方法-contribute-to-class"><a href="#常见错误十四：未绑定方法-contribute-to-class" class="headerlink" title="常见错误十四：未绑定方法 contribute_to_class()"></a>常见错误十四：未绑定方法 <code>contribute_to_class()</code></h2><h3 id="现象-5"><a href="#现象-5" class="headerlink" title="现象"></a>现象</h3><p>模型不可用，报错信息如下：</p>
+<pre><code>Validating models...
+project.allication: Error when calling the metaclass bases
+    unbound method contribute_to_class() must be called with TextField instance as first argument (got ModelBase instance instead)
+1 error found.
+</code></pre><h3 id="可能的原因-5"><a href="#可能的原因-5" class="headerlink" title="可能的原因"></a>可能的原因</h3><p>未正确声明模型字段，缺少字段类型名称后的括号：</p>
+<p>错误写法：</p>
+<pre><code>class Content(models.Model):
+    content = models.TextField
+</code></pre><p>正确写法：</p>
+<pre><code>class Content(models.Model):
+    content = models.TextField()
+</code></pre><h3 id="解决方法-13"><a href="#解决方法-13" class="headerlink" title="解决方法"></a>解决方法</h3><p>模型字段是特定 <code>Field</code> 类的<em>实例</em>，所以是需要括号的。</p>
+<h2 id="常见错误十五：使用静态服务时权限被拒绝"><a href="#常见错误十五：使用静态服务时权限被拒绝" class="headerlink" title="常见错误十五：使用静态服务时权限被拒绝"></a>常见错误十五：使用静态服务时权限被拒绝</h2><h3 id="可能的原因-6"><a href="#可能的原因-6" class="headerlink" title="可能的原因"></a>可能的原因</h3><p>The ADMIN_MEDIA_PREFIX is the same as MEDIA_URL in settings.py </p>
+<h3 id="解决方法-14"><a href="#解决方法-14" class="headerlink" title="解决方法"></a>解决方法</h3><p>Ensure they have different values - e.g. ADMIN_MEDIA_PREFIX = ‘admin-media’ and MEDIA_URL = ‘/media’</p>
+<h2 id="常见错误十六：默认值和调用"><a href="#常见错误十六：默认值和调用" class="headerlink" title="常见错误十六：默认值和调用"></a>常见错误十六：默认值和调用</h2><h3 id="现象-6"><a href="#现象-6" class="headerlink" title="现象"></a>现象</h3><p>You call a method to set a default value, such as random.randint(), but the value is the same for every new instance of your object.</p>
+<h3 id="可能的原因-7"><a href="#可能的原因-7" class="headerlink" title="可能的原因"></a>可能的原因</h3><p>每一个新的实例并没有调用 <code>random.randint()</code></p>
+<h3 id="解决方法-15"><a href="#解决方法-15" class="headerlink" title="解决方法"></a>解决方法</h3><p>使用 “lambda:” ，如：</p>
+<pre><code class="python">MyRandNum = models.CharField(max_length=4, default=lambda:random.randint(1000,9999))
+</code></pre>
+<h2 id="常见错误十七：页面无法找到"><a href="#常见错误十七：页面无法找到" class="headerlink" title="常见错误十七：页面无法找到"></a>常见错误十七：页面无法找到</h2><p>Using the URLconf defined in wikicamp.urls, Django tried these URL patterns, in this order:</p>
+<pre><code>    ^wikicamp/(?P&lt;page_name&gt;[^/+])/edit/$
+    ^wikicamp/(?P&lt;page_name&gt;[^/+])/save/$
+    ^wikicamp/(?P&lt;page_name&gt;[^/+])/$
+</code></pre><p>The current URL, , didn’t match any of these.</p>
+<h2 id="常见错误十八：空表单"><a href="#常见错误十八：空表单" class="headerlink" title="常见错误十八：空表单"></a>常见错误十八：空表单</h2><p>Be it a normal form , model form or class-based-view The page display a blank (empty) page </p>
+<h3 id="问题-7"><a href="#问题-7" class="headerlink" title="问题"></a>问题</h3><p>One possible reason might be you forgot to add <code>{% block content %}</code> <code>{% endblock %}</code> in your template file</p>
+<h3 id="解决方法-16"><a href="#解决方法-16" class="headerlink" title="解决方法"></a>解决方法</h3><p>Make sure that template used to display the page actually contains the tags <code>{% block content %}</code> <code>{% endblock %}</code> wrapping your form definition in the template file.</p>
+<h2 id="常见错误十九：SECRET-KEY-不可为空"><a href="#常见错误十九：SECRET-KEY-不可为空" class="headerlink" title="常见错误十九：SECRET_KEY 不可为空"></a>常见错误十九：<code>SECRET_KEY</code> 不可为空</h2><h3 id="现象-7"><a href="#现象-7" class="headerlink" title="现象"></a>现象</h3><p>You’re attempting to run the Django shell from your terminal (ie. python manage.py shell), for either the first time or after rebooting your system. Instead of a Django shell opening, you are presented with the following error.</p>
+<pre><code class="text">django.core.exceptions.ImproperlyConfigured: The SECRET_KEY setting must not be empty.
+</code></pre>
+<h3 id="可能的原因-8"><a href="#可能的原因-8" class="headerlink" title="可能的原因"></a>可能的原因</h3><p>A DJANGO_SETTINGS_MODULE has not been specified as an environment variable and therefore no settings file could be loaded as the shell attempts to open.</p>
+<h3 id="解决方法-17"><a href="#解决方法-17" class="headerlink" title="解决方法"></a>解决方法</h3><p>Add a DJANGO_SETTINGS_MODULE environment variable with the appropriate python module in your shell. </p>
+<pre><code class="bash">export DJANGO_SETTINGS_MODULE=&lt;projectname&gt;.settings
+</code></pre>
+<hr>
+<p>原文：<a href="https://code.djangoproject.com/wiki/NewbieMistakes" target="_blank" rel="noopener">https://code.djangoproject.com/wiki/NewbieMistakes</a></p>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>欧拉函数和证明 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2019-08-16-euler-function-sum-proof" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>欧拉函数和证明</h1>
+  
+
+      </header>
+      <div>
+      2019-08-16
+      
+        / 
+        
+          <span><a href="/tags/Math/">#Math</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+
+        </div>
+
+        <p>&nbsp;</p>
+<a id="more"></a>
+<p><strong>证：</strong> 设 $n$ 为正整数，则：$\sum_{d|n}\varphi(d) = n$</p>
+<p><strong>证明：</strong> 考虑有理数集</p>
+<p>$S = {\frac{r}{n}|r=1,2,\dots,n}$ </p>
+<p>将 $S$ 中的每个数化为既约分数，得：</p>
+<p>$S^* = {\frac{r/(r,n)}{n/(r,n)} = \frac{h}{k}|r=1,2,\dots,n}$</p>
+<p>显然，$S^*$ 中的 $n$ 个分数值仍然各不相同。</p>
+<p>$S^*$ 中的 $\frac{h}{k}$ 是既约分数，则有：</p>
+<p>$k|n, (h,k) = 1, h \leq k$</p>
+<p>反之，对于给定的 $n$ ，任一满足上述条件的分数 $\frac{h}{k}$ 在 $S^*$ 中。这是因为：</p>
+<p>$\frac{h \times \frac{n}{k}}{k \times \frac{n}{k}} = \frac{r}{n}, r \leq n$</p>
+<p>进一步，对于每个 $k|n$ ，满足时该条件的分数 $\frac{h}{k}$ 有 $\varphi{k}$ 个（因为与 $k$ 互素的 $h$ 值有 $\varphi{k}$ 个）。</p>
+<p>所以满足该条件的分数 $\frac{h}{k}$ 共有 $\sum_{d|n} \varphi{(d)}$ 个。</p>
+<p>而 $S^*$ 中有 $n$ 个分数，故：$\sum_{d|n}\varphi(d) = n$</p>
+
+
+        
+        <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  "HTML-CSS": {
+    preferredFont: "TeX",
+    availableFonts: ["STIX","TeX"],
+    linebreaks: { automatic:true },
+    EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+  },
+  tex2jax: {
+    inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+    processEscapes: true,
+    ignoreClass: "tex2jax_ignore|dno",
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  TeX: {
+    noUndefined: {
+      attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" }
+    },
+    Macros: { href: "{}" }
+  },
+  messageStyle: "none"
+});
+</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Queue(function() {
+  var all = MathJax.Hub.getAllJax(), i;
+  for(i=0; i < all.length; i += 1) {
+    all[i].SourceElement().parentNode.className += ' has-jax';
+  }
+});
+</script>
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>便携式 MySQL | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2020-12-15-portable-mysql" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>便携式 MySQL</h1>
+  
+
+      </header>
+      <div>
+      2020-12-15
+      
+        / 
+        
+          <span><a href="/tags/MySQL/">#MySQL</a></span>
+        
+          <span><a href="/tags/Hacker/">#Hacker</a></span>
+        
+          <span><a href="/tags/Windows/">#Windows</a></span>
+        
+          <span><a href="/tags/Linux/">#Linux</a></span>
+        
+          <span><a href="/tags/Development/">#Development</a></span>
+        
+          <span><a href="/tags/macOS/">#macOS</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-介绍"><span class="toc-text">1. 介绍</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-下载并安装"><span class="toc-text">2. 下载并安装</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-创建存放-MySQL-数据的文件夹"><span class="toc-text">3. 创建存放 MySQL 数据的文件夹</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-初始化数据库"><span class="toc-text">4. 初始化数据库</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-启动数据库"><span class="toc-text">5. 启动数据库</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-修改-root-密码"><span class="toc-text">6. 修改 root 密码</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-关闭服务器命令"><span class="toc-text">7. 关闭服务器命令</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#8-alias-小技巧"><span class="toc-text">8. alias 小技巧</span></a></li></ol>
+  </div>
+
+
+        </div>
+
+        <p>开发者日常就是需要面对各种各样的数据库，甚至有的开发者需要面对同样的产品不同版本的数据库，而且希望数据库软件不会影响到系统，如果是通过可执行文件进行安装的数据库软件，在安装多个版本的数据时候可能会出现一些版本冲突的情况，甚至是软件安装覆盖的问题。还有一个困扰就是我可能需要多个数据库实例，而且每个实例互不影响。那么本文的方法都是可以解决以上问题的。</p>
+<h1 id="1-介绍"><a href="#1-介绍" class="headerlink" title="1. 介绍"></a>1. 介绍</h1><p>那么什么是 “便携式 MySQL” 呢？其实本文笔者写笔记的时候用的是 “Portable MySQL” 的标题。但还是更喜欢这个标题吧。便携式的意思就是软件不会与系统有太多的依赖。比如我在A机器上运行了一个 MySQL，但是我现在想把数据库迁移到另一台机器上，那么便携式在这件事情上的优点就是<strong>我们能够直接复制对应的数据目录到新的机器上就可以直接恢复运行了。</strong>而且还有一个优点就是<strong>便携式 MySQL 能够很方便的进行安装、卸载、迁移。</strong>这些优点都是现在软件开发中有关效率与安全性非常重要的。</p>
+<h1 id="2-下载并安装"><a href="#2-下载并安装" class="headerlink" title="2. 下载并安装"></a>2. 下载并安装</h1><p>本文使用到的所有 MySQL 可执行文件都是可以在 MySQL 官网（<a href="https://dev.mysql.com/downloads/mysql/）进行下载的。" target="_blank" rel="noopener">https://dev.mysql.com/downloads/mysql/）进行下载的。</a></p>
+<p>那么笔者下载的是 mysql-8.0.22-macos10.15-x86_64.tar.gz ，下载后解压并将其放至 <code>/Users/ismdeep/Apps/mysql-8.0.22-macos10.15-x86_64</code></p>
+<h1 id="3-创建存放-MySQL-数据的文件夹"><a href="#3-创建存放-MySQL-数据的文件夹" class="headerlink" title="3. 创建存放 MySQL 数据的文件夹"></a>3. 创建存放 MySQL 数据的文件夹</h1><p>创建一个空文件夹 <code>/Users/ismdeep/Data/rawdata</code></p>
+<p>该文件夹将用来保存 MySQL 数据库的数据，如果需要进行迁移则在数据库关闭之后复制这个文件夹即可。那如果需要启动新的数据库实例，则需要新建另一个数据库文件夹并按照以下步骤进行初始化数据库即可。</p>
+<h1 id="4-初始化数据库"><a href="#4-初始化数据库" class="headerlink" title="4. 初始化数据库"></a>4. 初始化数据库</h1><p>首先对空白的文件夹进行数据库初始化。</p>
+<pre><code class="bash">mysqld --initialize \
+       --user=mysql \
+       --basedir=/Users/ismdeep/Apps/mysql-8.0.22-macos10.15-x86_64 \
+       --datadir=/Users/ismdeep/Data/rawdata
+</code></pre>
+<p>MySQL 8.0 默认使用的数据库密码是由 MySQL 自动随机生成的，这个密码会出现在以上命令执行的输出上。如果没有出现则会保存在数据文件夹中的后缀为 <code>.err</code> 的文件中。</p>
+<h1 id="5-启动数据库"><a href="#5-启动数据库" class="headerlink" title="5. 启动数据库"></a>5. 启动数据库</h1><pre><code>mysqld --basedir=/Users/ismdeep/Apps/mysql-8.0.22-macos10.15-x86_64 \
+       --datadir=/Users/ismdeep/Data/rawdata
+</code></pre><p><code>mysqld</code> 命令常用参数说明：</p>
+<ul>
+<li><code>--daemonize</code> 后台守护进程模式</li>
+<li><code>--bind-address=&lt;address&gt;</code> 绑定访问地址</li>
+</ul>
+<h1 id="6-修改-root-密码"><a href="#6-修改-root-密码" class="headerlink" title="6. 修改 root 密码"></a>6. 修改 root 密码</h1><p>在以上重新启动数据库之后首先要做的就是修改 root 密码。运行以下命令并输入上述所说随机初始化的密码。</p>
+<pre><code>$ mysql -uroot -p -h127.0.0.1
+Enter password:
+</code></pre><p>接下来修改密码，这里为了方便叙述就使用 <code>123456</code> 作为密码，当然笔者非常不建议大家这样用，因为这样的密码太过简单。</p>
+<pre><code>mysql&gt; alter user user() identified by &#39;123456&#39;;
+Query OK, 0 rows affected (0.00 sec)
+</code></pre><p>需要开启远程访问则增加以下命令（当然以上 <code>--bind-address</code> 参数也是需要设置的）：</p>
+<pre><code>CREATE USER &#39;root&#39;@&#39;%&#39; IDENTIFIED BY &#39;123456&#39;;
+GRANT ALL PRIVILEGES ON *.* TO &#39;root&#39;@&#39;%&#39;;
+</code></pre><h1 id="7-关闭服务器命令"><a href="#7-关闭服务器命令" class="headerlink" title="7. 关闭服务器命令"></a>7. 关闭服务器命令</h1><pre><code>mysqladmin -uroot -p123456 shutdown
+</code></pre><h1 id="8-alias-小技巧"><a href="#8-alias-小技巧" class="headerlink" title="8. alias 小技巧"></a>8. alias 小技巧</h1><p>笔者觉得以上启动服务器和关闭服务器命令太麻烦了。所以会使用以下两个 alias 来简化。</p>
+<pre><code>alias mysql-start=&quot;mysqld --daemonize --basedir=/Users/ismdeep/Apps/mysql-8.0.22-macos10.15-x86_64 --datadir=/Users/ismdeep/Data/rawdata&quot;
+alias mysql-stop=&quot;mysqladmin -uroot -pE0Lztvs238 shutdown&quot;
+</code></pre><p>这样启动服务器则使用 <code>mysql-start</code> ，关闭服务器则使用 <code>mysql-stop</code> 即可。</p>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>包管理器：安装魔法背后的逻辑 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2020-06-23-package-managers" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>包管理器：安装魔法背后的逻辑</h1>
+  
+
+      </header>
+      <div>
+      2020-06-23
+      
+        / 
+        
+          <span><a href="/tags/Development/">#Development</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#什么是包管理器？"><span class="toc-text">什么是包管理器？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#搜索"><span class="toc-text">搜索</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#安装"><span class="toc-text">安装</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#组织"><span class="toc-text">组织</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Gems"><span class="toc-text">Gems</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#帮助"><span class="toc-text">帮助</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#超级权限"><span class="toc-text">超级权限</span></a></li></ol>
+  </div>
+
+
+        </div>
+
+        <p>如果你想学画画，可能会有人直接给你纸和笔。他们不会花时间讨论纸和笔的来源，取而代之的是，他们会告诉你线条、形状和立体空间的信息。如果你是第一次编写 Python 程序，则有人可能会在你的电脑上运行以下命令：</p>
+<pre><code class="bash">$ apt install python3
+$ pip3 install ipython
+</code></pre>
+<p>然后他们会打开 iPython 并秀你一发基础的 Python 语法。</p>
+<p>包管理器经常被轻描淡写的一笔带过了。主要是因为编程大部分时候都是写代码，而不是安装代码。然而，编程也是在组织代码，并且有时候就是在安装代码。经过了多年在我的 Mac 上用 brew，gem 以及 npm 等安装及卸载包，我终于明白了包管理器是如何在我的 Ubuntu 虚拟机里工作的。对我来说，了解包管理器工作方式真的是太美妙了，我希望你也是如此。</p>
+<h4 id="什么是包管理器？"><a href="#什么是包管理器？" class="headerlink" title="什么是包管理器？"></a>什么是包管理器？</h4><p>程序包管理器跟踪计算机上安装了什么软件，并允许您轻松安装新软件，将软件升级到较新版本或删除以前安装的软件。 顾名思义，程序包管理器处理程序包：捆绑在一起的文件集合，可以成组安装和删除。 —— Apt 用户手册</p>
+<p>包管理器实际上有两种：</p>
+<ul>
+<li><strong>系统级包管理器</strong></li>
+<li><strong>特定语言包管理器</strong></li>
+</ul>
+<h4 id="搜索"><a href="#搜索" class="headerlink" title="搜索"></a>搜索</h4><h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><h4 id="组织"><a href="#组织" class="headerlink" title="组织"></a>组织</h4><h4 id="Gems"><a href="#Gems" class="headerlink" title="Gems"></a>Gems</h4><h4 id="帮助"><a href="#帮助" class="headerlink" title="帮助"></a>帮助</h4><h4 id="超级权限"><a href="#超级权限" class="headerlink" title="超级权限"></a>超级权限</h4><p>翻译自：<a href="https://nicoleorchard.com/blog/package-managers" target="_blank" rel="noopener">https://nicoleorchard.com/blog/package-managers</a></p>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

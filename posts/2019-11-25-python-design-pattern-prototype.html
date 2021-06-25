@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>Python 设计模式之原型模式 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2019-11-25-python-design-pattern-prototype" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>Python 设计模式之原型模式</h1>
+  
+
+      </header>
+      <div>
+      2019-11-25
+      
+        / 
+        
+          <span><a href="/tags/Java/">#Java</a></span>
+        
+          <span><a href="/tags/Python/">#Python</a></span>
+        
+          <span><a href="/tags/Design-Pattern/">#Design Pattern</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+
+        </div>
+
+        <p><strong>意图：</strong> 创建一些类的模型，比如说模版之类的东西。</p>
+<p><strong>适用性：</strong> 当类里面要创建的结构具有一定结构，但是内容会有所不同的时候。比如：电子账单、SMS 短信、Email等。</p>
+<a id="more"></a>
+<p><img src="https://upload.ismdeep.com/images/2020/08/07/b4f4874bc6d542b5fd0718cfaffe7673-8fb481.png" alt="prototype"></p>
+<pre><code class="python"># coding:utf-8
+
+
+class EventTemplate(object):
+    event_subject = &#39;&#39;
+    event_content = &#39;&#39;
+
+    def __init__(self, event_subject, event_content):
+        self.event_subject = event_subject
+        self.event_content = event_content
+
+
+class Mail(object):
+    receiver = &#39;&#39;
+    subject = &#39;&#39;
+    content = &#39;&#39;
+    tail = &#39;&#39;
+
+    def __init__(self, event_template: EventTemplate):
+        self.tail = event_template.event_content
+        self.subject = event_template.event_subject
+
+
+def send_mail(mail: Mail):
+    mail.content = &#39;%s,先生（女士）：你的信用卡账单...&#39; % mail.receiver
+    print(mail.receiver)
+    print(mail.subject)
+    print(mail.content)
+
+
+def main():
+    et = EventTemplate(&quot;9月份信用卡账单&quot;, &quot;国庆抽奖活动...&quot;)
+    mail = Mail(et)
+    mail.receiver = &#39;Del Cooper&#39;
+    send_mail(mail)
+
+
+if __name__ == &#39;__main__&#39;:
+    main()
+</code></pre>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

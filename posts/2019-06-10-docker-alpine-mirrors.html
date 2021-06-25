@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>Docker下Alpine镜像 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2019-06-10-docker-alpine-mirrors" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>Docker下Alpine镜像</h1>
+  
+
+      </header>
+      <div>
+      2019-06-10
+      
+        / 
+        
+          <span><a href="/tags/Docker/">#Docker</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+
+        </div>
+
+        <p>Alpine 系统跟 Ubuntu 一样也有包管理器，为 <code>apk</code> ，正常通过 <code>apk</code> 安装软件速度都会比较慢，原因你懂的。</p>
+<a id="more"></a>
+<p><code>Dockerfile</code> 如下：</p>
+<pre><code>FROM alpine
+
+MAINTAINER ismdeep ismdeep@protonmail.com
+
+RUN echo &quot;https://mirrors.aliyun.com/alpine/latest-stable/main/&quot; &gt; /etc/apk/repositories
+RUN apk --no-cache add python libsodium wget
+ENTRYPOINT [&quot;/sh&quot;]
+</code></pre><p>通过 <code>Docker</code> 构建如下：</p>
+<pre><code>&gt; docker build -t alphine-mirror .
+Sending build context to Docker daemon  2.048kB
+Step 1/5 : FROM alpine
+ ---&gt; 055936d39205
+Step 2/5 : MAINTAINER ismdeep ismdeep@protonmail.com
+ ---&gt; Running in 9fd23d8dd442
+Removing intermediate container 9fd23d8dd442
+ ---&gt; 1f692ecb9ecb
+Step 3/5 : RUN echo &quot;https://mirrors.aliyun.com/alpine/latest-stable/main/&quot; &gt; /etc/apk/repositories
+ ---&gt; Running in 7305f6170393
+Removing intermediate container 7305f6170393
+ ---&gt; 8036d7c7bcf6
+Step 4/5 : RUN apk --no-cache add python libsodium wget
+ ---&gt; Running in 10620e66ed0e
+fetch https://mirrors.aliyun.com/alpine/latest-stable/main/x86_64/APKINDEX.tar.gz
+(1/12) Installing libsodium (1.0.16-r0)
+(2/12) Installing libbz2 (1.0.6-r6)
+(3/12) Installing expat (2.2.6-r0)
+(4/12) Installing libffi (3.2.1-r6)
+(5/12) Installing gdbm (1.13-r1)
+(6/12) Installing ncurses-terminfo-base (6.1_p20190105-r0)
+(7/12) Installing ncurses-terminfo (6.1_p20190105-r0)
+(8/12) Installing ncurses-libs (6.1_p20190105-r0)
+(9/12) Installing readline (7.0.003-r1)
+(10/12) Installing sqlite-libs (3.28.0-r0)
+(11/12) Installing python2 (2.7.16-r1)
+(12/12) Installing wget (1.20.3-r0)
+Executing busybox-1.29.3-r10.trigger
+OK: 53 MiB in 26 packages
+Removing intermediate container 10620e66ed0e
+ ---&gt; 1d9aecf539f2
+Step 5/5 : ENTRYPOINT [&quot;/sh&quot;]
+ ---&gt; Running in 366c2b8bfa68
+Removing intermediate container 366c2b8bfa68
+ ---&gt; 41e3a76460bb
+Successfully built 41e3a76460bb
+Successfully tagged alphine-mirror:latest
+</code></pre>
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

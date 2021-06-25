@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>Python 设计模式之组合模式 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2019-11-25-python-design-pattern-composite" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>Python 设计模式之组合模式</h1>
+  
+
+      </header>
+      <div>
+      2019-11-25
+      
+        / 
+        
+          <span><a href="/tags/Java/">#Java</a></span>
+        
+          <span><a href="/tags/Python/">#Python</a></span>
+        
+          <span><a href="/tags/Design-Pattern/">#Design Pattern</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+
+        </div>
+
+        <p><strong>意图：</strong> 将对象组合成树形结构以表示“部分-整体”的层次结构。组合模式使得用户对单个对象和组合对象的使用具有一致性。</p>
+<p><strong>适用性：</strong> 你想表示对象的部分-整体层次结构。你希望用户忽略组合对象和单个对象的不同，用户将统一地使用组合结构中的所有对象。</p>
+<p><img src="https://upload.ismdeep.com/images/2020/08/07/5cec3fb8709516b6c345597a43d0f1a3-f0ffa7.jpg" alt="photo_2019-11-25_20-30-39"></p>
+<p>典型的 Composite 对象结构如下图表示：</p>
+<p><img src="https://upload.ismdeep.com/images/2020/08/07/ec89ece10201974dcc7f86e9ff490789-348d07.jpg" alt="photo_2019-11-25_20-32-29"></p>
+<pre><code class="python">&quot;&quot;&quot;
+应用组合模式的会员卡消费
+    那么我们就根据我们会员卡的消费，来模拟一下组合模式的实现吧。Let&#39;s go!
+    首先：
+        1. 我们的部件有，总店，分店，加盟店。
+        2. 我们的部件共有的行为是：刷会员卡
+        3. 部件之间的层次关系，也就是店面的层次关系是，总店下有分店、分店下可以拥有加盟店。
+有了我们这几个必要条件后，我的要求就是目前店面搞活动当我在总店刷卡后，就可以累积相当于在所有下级店面刷卡的积分总额，设计的代码如下：
+&quot;&quot;&quot;
+
+
+class Store(object):
+    &quot;&quot;&quot;店面基类&quot;&quot;&quot;
+
+    &quot;&quot;&quot;添加店面&quot;&quot;&quot;
+
+    def add(self, store):
+        pass
+
+    &quot;&quot;&quot;删除店面&quot;&quot;&quot;
+
+    def remove(self, store):
+        pass
+
+    &quot;&quot;&quot;消费&quot;&quot;&quot;
+
+    def pay_by_card(self):
+        pass
+
+
+class BranchStore(Store):
+    def __init__(self, name):
+        self.name = name
+        self.my_store_list = []
+
+    def pay_by_card(self):
+        print(&quot;店面[%s]的积分已累加进该会员卡&quot; % self.name)
+        for s in self.my_store_list:
+            s.pay_by_card()
+
+    # 添加店面
+    def add(self, store):
+        self.my_store_list.append(store)
+
+    # 删除店面
+    def remove(self, store):
+        self.my_store_list.remove(store)
+
+
+class JoinStore(Store):
+    def __init__(self, name):
+        self.name = name
+
+    def pay_by_card(self):
+        print(&quot;店面[%s]的积分已累加进该会员卡&quot; % self.name)
+
+    def add(self, store):
+        print(&quot;无添加子店权限&quot;)
+
+    def remove(self, store):
+        print(&quot;无删除子店权限&quot;)
+
+
+if __name__ == &#39;__main__&#39;:
+    store = BranchStore(&quot;朝阳总店&quot;)
+    branch = BranchStore(&quot;海滨分店&quot;)
+    store.add(branch)
+    store.pay_by_card()
+</code></pre>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

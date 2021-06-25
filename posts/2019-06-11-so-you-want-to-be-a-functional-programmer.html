@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>So you want to be a functional programmer | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2019-06-11-so-you-want-to-be-a-functional-programmer" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>So you want to be a functional programmer</h1>
+  
+
+      </header>
+      <div>
+      2019-06-11
+      
+        / 
+        
+          <span><a href="/tags/Hacker/">#Hacker</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#Learning-to-Drive"><span class="toc-text">Learning to Drive</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Your-First-Spaceship"><span class="toc-text">Your First Spaceship</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Forget-Everything-You-Know"><span class="toc-text">Forget Everything You Know</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Purity"><span class="toc-text">Purity</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Immutability"><span class="toc-text">Immutability</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Friendly-Reminder"><span class="toc-text">Friendly Reminder</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Refactoring"><span class="toc-text">Refactoring</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Higher-Order-Functions"><span class="toc-text">Higher-Order Functions</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Closures"><span class="toc-text">Closures</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Function-Composition"><span class="toc-text">Function Composition</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Point-Free-Notation"><span class="toc-text">Point-Free Notation</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Trouble-in-Paradise"><span class="toc-text">Trouble in Paradise</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Currying"><span class="toc-text">Currying</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Currying-and-Refactoring"><span class="toc-text">Currying and Refactoring</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Common-Functional-Functions"><span class="toc-text">Common Functional Functions</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Referential-Transparency"><span class="toc-text">Referential Transparency</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Execution-Order"><span class="toc-text">Execution Order</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Type-Annotations"><span class="toc-text">Type Annotations</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Now-What"><span class="toc-text">Now What?</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Functional-Javascript"><span class="toc-text">Functional Javascript</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Javascript-Shortcomings"><span class="toc-text">Javascript Shortcomings</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Elm"><span class="toc-text">Elm</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#The-Future"><span class="toc-text">The Future</span></a></li></ol>
+  </div>
+
+
+        </div>
+
+        <p>Taking that first step to understanding Functional Programming concepts is the most important and sometimes the most difficult step. But it doesn’t have to be. Not with the right perspective.</p>
+<h4 id="Learning-to-Drive"><a href="#Learning-to-Drive" class="headerlink" title="Learning to Drive"></a>Learning to Drive</h4><p>When we first learned to drive, we struggled. It sure looked easy when we saw other people doing it. But it turned out to be harder than we thought.</p>
+<p>We practiced in our parent’s car and we really didn’t venture out on the highway until we had mastered the streets in our own neighborhood.</p>
+<p>But through repeated practice and some panicky moments that our parents would like to forget, we learned to drive and we finally got our license.</p>
+<p>With our license in hand, we’d take the car out any chance we could. With each trip, we got better and better and our confidence went up. Then came the day when we had to drive someone else’s car or our car finally gave up the ghost and we had to buy a new one.</p>
+<p>What was it like that first time behind the wheel of a <strong>different car</strong>? Was it like the <strong>very first time</strong> behind the wheel? Not even close. The first time, it was all so foreign. We’ve been in a car before that, but only as a passenger. This time we were in the driver seat. The one with all the controls.</p>
+<p>But when we drove our second car, we simply asked ourselves a few simple questions like, where does the key go, where are the lights, how do you use the turn signals and how do you adjust the side mirrors.</p>
+<p>After that, it was pretty smooth sailing. But why was this time so easy compared to the first time?</p>
+<p>That’s because the new car was pretty much like the old car. It had all the same basic things that a car needs and they were pretty much in the same place.</p>
+<p>A few things were implemented differently and maybe it had a few additional features, but we didn’t use them the first time we drove or even the second. Eventually, we learned all the new features. At least the ones we cared about.</p>
+<p>Well, learning programming languages is sort of like this. The first is the hardest. But once you have one under your belt, subsequent ones are easier.</p>
+<p>When you first start a second language, you ask questions like, “How do I create a module? How do you search an array? What are the parameters of the substring function?”</p>
+<p>You’re confident that you can learn to drive this new language because it reminds you of your old language with maybe a few new things to hopefully make your life easier.</p>
+<h4 id="Your-First-Spaceship"><a href="#Your-First-Spaceship" class="headerlink" title="Your First Spaceship"></a>Your First Spaceship</h4><p>Whether you’ve been driving one car your whole life or dozens of cars, imagine that you’re about to get behind the wheel of a spaceship.</p>
+<p>If you were going to fly a spaceship, you wouldn’t expect your driving ability on the road to help you much. You’d be starting over from square zero. (<em>We are programmers after all. We count starting at zero.</em>)</p>
+<p>You would begin your training with the expectation that things are very different in space and that flying this contraption is very different than driving on the ground.</p>
+<p>Physics hasn’t changed. Just the way you navigate within that same Universe.</p>
+<p>And it’s the same with learning Functional Programming. You should expect that things will be very different. And that much of what you know about programming will <strong>not</strong> translate.</p>
+<p>Programming is thinking and Functional Programming will teach you to think very differently. So much so, that you’ll probably never go back to the old way of thinking.</p>
+<h4 id="Forget-Everything-You-Know"><a href="#Forget-Everything-You-Know" class="headerlink" title="Forget Everything You Know"></a>Forget Everything You Know</h4><p>People love saying this phrase, but it’s sort of true. <strong>Learning functional programming is like starting from scratch.</strong> Not completely, but effectively. There are lots of similar concepts but it’s best if you just expect that you have to <strong>relearn everything</strong>.</p>
+<p>With the right perspective you’ll have the right expectations and with the right expectations you won’t quit when things get hard.</p>
+<p>There are all kinds of things that you’re used to doing as a programmer that you cannot do any more with Functional Programming.</p>
+<p>Just like in your car, you used to backup to get out of the driveway. But in a spaceship, there is no reverse. Now you may think, “WHAT? NO REVERSE?! HOW THE HELL AM I SUPPOSED TO DRIVE WITHOUT REVERSE?!”</p>
+<p>Well, it turns out that you don’t need reverse in a spaceship because of its ability to maneuver in three dimensional space. Once you understand this, you’ll never miss reverse again. In fact, someday, you’ll think back at how limiting the car really was.</p>
+<blockquote>
+<p>Learning Functional Programming takes a while. So be patient.</p>
+</blockquote>
+<p>So let’s exit the cold world of Imperative Programming and take a gentle dip into the hot springs of Functional Programming.</p>
+<p>What follows in this multi-part article are Functional Programming Concepts that will help you before you dive into your first Functional Language. Or if you’ve already taken the plunge, this will help round out your understanding.</p>
+<p>Please don’t rush. Take your time reading from this point forward and take the time to understand the coding examples. You may even want to stop reading after each section to let the ideas sink in. Then return later to finish.</p>
+<p>The most important thing is that you <strong>understand</strong>.</p>
+<h4 id="Purity"><a href="#Purity" class="headerlink" title="Purity"></a>Purity</h4><p>When Functional Programmers talk of Purity, they are referring to Pure Functions.</p>
+<p>Pure Functions are very simple functions. They only operate on their input parameters.</p>
+<p>Here’s an example in Javascript of a Pure Function:</p>
+<pre><code>var z = 10;
+function add(x, y) {
+    return x + y;
+}
+</code></pre><p>Notice that the <strong>add</strong> function does NOT touch the <strong>z</strong> variable. It doesn’t read from <strong>z</strong> and it doesn’t write to <strong>z</strong>. It only reads <strong>x</strong> and <strong>y</strong>, its inputs, and returns the result of adding them together.</p>
+<p>That’s a pure function. If the <strong>add</strong> function did access <strong>z</strong>, it would no longer be pure.</p>
+<p>Here’s another function to consider:</p>
+<pre><code>function justTen() {
+    return 10;
+}
+</code></pre><p>If the function, <strong>justTen</strong>, is pure, then it can <em>only</em> return a constant. Why?</p>
+<p>Because we haven’t given it any inputs. And since, to be pure, it cannot access anything other than its own inputs, the only thing it can return is a constant.</p>
+<p>Since pure functions that take no parameters do no work, they aren’t very useful. It would be better if <strong>justTen</strong> was defined as a constant.</p>
+<blockquote>
+<p>Most <strong>useful</strong> Pure Functions must take at least one parameter.</p>
+</blockquote>
+<p>Consider this function:</p>
+<pre><code>function addNoReturn(x, y) {
+    var z = x + y
+}
+</code></pre><p>Notice how this function doesn’t return anything. It adds <strong>x</strong> and <strong>y</strong> and puts it into a variable <strong>z</strong> but doesn’t return it.</p>
+<p>It’s a pure function since it only deals with its inputs. It does add, but since it doesn’t return the results, it’s useless.</p>
+<blockquote>
+<p>All <strong>useful</strong> Pure Functions must return something.</p>
+</blockquote>
+<p>Let’s consider the first <strong>add</strong> function again:</p>
+<pre><code>function add(x, y) {
+    return x + y;
+}
+console.log(add(1, 2)); // prints 3
+console.log(add(1, 2)); // still prints 3
+console.log(add(1, 2)); // WILL ALWAYS print 3
+</code></pre><p>Notice that <strong>add(1, 2)</strong> is always <strong>3</strong>. Not a huge surprise but only because the function is pure. If the <strong>add</strong> function used some outside value, then you could <strong>never</strong> predict its behavior.</p>
+<blockquote>
+<p>Pure Functions will <strong>always</strong> produce the same output given the same inputs.</p>
+</blockquote>
+<p>Since Pure Functions cannot change any external variables, all of the following functions are <strong>impure</strong>:</p>
+<pre><code>writeFile(fileName);
+updateDatabaseTable(sqlCmd);
+sendAjaxRequest(ajaxRequest);
+openSocket(ipAddress);
+</code></pre><p>All of these function have what are called <strong>Side Effects</strong>. When you call them, they change files and database tables, send data to a server or call the OS to get a socket. They do more than just operate on their inputs and return outputs. Therefore, you can <em>never</em> predict what these functions will return.</p>
+<blockquote>
+<p>Pure functions have <strong>no</strong> side effects.</p>
+</blockquote>
+<p>In Imperative Programming Languages such as Javascript, Java, and C#, Side Effects are <strong>everywhere</strong>. This makes debugging very difficult because a variable can be changed <strong>anywhere</strong> in your program. So when you have a bug because a variable is changed to the wrong value at the wrong time, where do you look? Everywhere? That’s not good.</p>
+<p>At this point, you’re probably thinking, “HOW THE HELL DO I DO ANYTHING WITH <strong>ONLY</strong> PURE FUNCTIONS?!”</p>
+<p>In Functional Programming, you don’t just write Pure Functions.</p>
+<p>Functional Languages cannot eliminate Side Effects, they can only confine them. Since programs have to interface to the real world, some parts of every program must be impure. The goal is to minimize the amount of impure code and segregate it from the rest of our program.</p>
+<h4 id="Immutability"><a href="#Immutability" class="headerlink" title="Immutability"></a>Immutability</h4><p>Do you remember when you first saw the following bit of code:</p>
+<pre><code>var x = 1;
+x = x + 1;
+</code></pre><p>And whoever was teaching you told you to forget what you learned in math class? In math, <strong>x</strong> can never be equal to <strong>x + 1</strong>.</p>
+<p>But in Imperative Programming, it means, take the current value of <strong>x</strong> add <strong>1</strong> to it and put that result <em>back into</em> <strong>x</strong>.</p>
+<p>Well, in functional programming, <strong>x = x + 1</strong> is illegal. So you have to <strong>remember</strong> what you <strong>forgot</strong> in math… Sort of.</p>
+<blockquote>
+<p>There are <strong>no</strong> variables in Functional Programming.</p>
+</blockquote>
+<p>Stored values are still called variables because of history but they are constants, i.e. once <strong>x</strong> takes on a value, it’s that value for life.</p>
+<p>Don’t worry, <strong>x</strong> is usually a local variable so its life is usually short. But while it’s alive, it can never change.</p>
+<p>Here’s an example of constant variables in Elm, a Pure Functional Programming Language for Web Development:</p>
+<pre><code>addOneToSum y z =
+    let
+        x = 1
+    in
+        x + y + z
+</code></pre><p>If you’re not familiar with ML-Style syntax, let me explain. <strong>addOneToSum</strong> is a function that takes 2 parameters, <strong>y</strong> and <strong>z</strong>.</p>
+<p>Inside the <strong>let</strong> block, <strong>x</strong> is bound to the value of <strong>1</strong>, i.e. it’s equal to <strong>1</strong> for the rest of its life. Its life is over when the function exits or more accurately when the <strong>let</strong> block is evaluated.</p>
+<p>Inside the <strong>in</strong> block, the calculation can include values defined in the <strong>let</strong> block, viz. <strong>x</strong>. The result of the calculation <strong>x + y + z</strong> is returned or more accurately, <strong>1 + y + z</strong> is returned since <strong>x = 1</strong>.</p>
+<p>Once again, I can hear you ask “HOW THE HELL AM I SUPPOSED TO DO ANYTHING WITHOUT VARIABLES?!”</p>
+<p>Let’s think about when we want to modify variables. There are 2 general cases that come to mind: multi-valued changes (e.g. changing a single value of an object or record) and single-valued changes (e.g. loop counters).</p>
+<p>Functional Programming deals with changes to values in a record by making a copy of the record with the values changed. It does this efficiently without having to copy all parts of the record by using data structures that makes this possible.</p>
+<p>Functional programming solves the single-valued change in exactly the same way, by making a copy of it.</p>
+<p>Oh, yes and by <strong>not</strong> having loops.</p>
+<p>“WHAT NO VARIABLES AND NOW NO LOOPS?! I HATE YOU!!!”</p>
+<p>Hold on. It’s not like we can’t do loops (no pun intended), it’s just that there are no specific loop constructs like <strong>for</strong>, <strong>while</strong>, <strong>do</strong>, <strong>repeat</strong>, etc.</p>
+<blockquote>
+<p>Functional Programming uses recursion to do looping.</p>
+</blockquote>
+<p>Here are two ways you can do loops in Javascript:</p>
+<pre><code>// simple loop construct
+var acc = 0;
+for (var i = 1; i &lt;= 10; ++i)
+    acc += i;
+console.log(acc); // prints 55
+// without loop construct or variables (recursion)
+function sumRange(start, end, acc) {
+    if (start &gt; end)
+        return acc;
+    return sumRange(start + 1, end, acc + start)
+}
+console.log(sumRange(1, 10, 0)); // prints 55
+</code></pre><p>Notice how recursion, the functional approach, accomplishes the same as the <strong>for</strong> loop by calling itself with a <em>new</em> start (<strong>start + 1</strong>) and a <em>new</em> accumulator (<strong>acc + start</strong>). It doesn’t modify the old values. Instead it uses new values calculated from the old.</p>
+<p>Unfortunately, this is hard to see in Javascript even if you spend a little time studying it, for two reasons. One, the syntax of Javascript is noisy and two, you’re probably not used to thinking recursively.</p>
+<p>In Elm, it’s easier to read and, therefore, understand:</p>
+<pre><code>sumRange start end acc =
+    if start &gt; end then
+        acc
+    else
+        sumRange (start + 1) end (acc + start) 
+</code></pre><p>Here’s how it runs:</p>
+<pre><code>sumRange 1 10 0 =      -- sumRange (1 + 1)  10 (0 + 1)
+sumRange 2 10 1 =      -- sumRange (2 + 1)  10 (1 + 2)
+sumRange 3 10 3 =      -- sumRange (3 + 1)  10 (3 + 3)
+sumRange 4 10 6 =      -- sumRange (4 + 1)  10 (6 + 4)
+sumRange 5 10 10 =     -- sumRange (5 + 1)  10 (10 + 5)
+sumRange 6 10 15 =     -- sumRange (6 + 1)  10 (15 + 6)
+sumRange 7 10 21 =     -- sumRange (7 + 1)  10 (21 + 7)
+sumRange 8 10 28 =     -- sumRange (8 + 1)  10 (28 + 8)
+sumRange 9 10 36 =     -- sumRange (9 + 1)  10 (36 + 9)
+sumRange 10 10 45 =    -- sumRange (10 + 1) 10 (45 + 10)
+sumRange 11 10 55 =    -- 11 &gt; 10 =&gt; 55
+55
+</code></pre><p>You’re probably thinking that <strong>for</strong> loops are easier to understand. While that’s debatable and more likely an issue of <strong>familiarity</strong>, non-recursive loops require Mutability, which is bad.</p>
+<p>I haven’t entirely explained the benefits of Immutability here but check out the <strong>Global Mutable State</strong> section in <a href="https://medium.com/@cscalfani/why-programmers-need-limits-3d96e1a0a6db" target="_blank" rel="noopener">Why Programmers Need Limits</a> to learn more.</p>
+<p>One obvious benefit is that if you have access to a value in your program, you only have read access, which means that no one else can change that value. Even you. So no accidental mutations.</p>
+<p>Also, if your program is multi-threaded, then no other thread can pull the rug out from under you. That value is constant and if another thread wants to change it, it’ll have create a new value from the old one.</p>
+<p>Back in the mid 90s, I wrote a Game Engine for <a href="https://www.youtube.com/watch?v=uIOYSjBRORM" target="_blank" rel="noopener">Creature Crunch</a> and the biggest source of bugs was multithreading issues. I wish I knew about immutability back then. But back then I was more worried about the difference between a 2x or 4x speed CD-ROM drives on game performance.</p>
+<blockquote>
+<p>Immutability creates simpler and safer code.</p>
+</blockquote>
+<hr>
+<p>Taking that first step to understanding Functional Programming concepts is the most important and sometimes the most difficult step. But it doesn’t have to be. Not with the right perspective.</p>
+<p>Previous parts: <a href="https://medium.com/@cscalfani/so-you-want-to-be-a-functional-programmer-part-1-1f15e387e536" target="_blank" rel="noopener">Part 1</a></p>
+<h4 id="Friendly-Reminder"><a href="#Friendly-Reminder" class="headerlink" title="Friendly Reminder"></a>Friendly Reminder</h4><p>Please read through the code slowly. Make sure you understand it before moving on. Each section builds on top of the previous section.</p>
+<p>If you rush, you may miss some nuance that will be important later.</p>
+<h4 id="Refactoring"><a href="#Refactoring" class="headerlink" title="Refactoring"></a>Refactoring</h4><p>Let’s think about refactoring for a minute. Here’s some Javascript code:</p>
+<pre><code>function validateSsn(ssn) {
+    if (/^\d{3}-\d{2}-\d{4}$/.exec(ssn))
+        console.log(&#39;Valid SSN&#39;);
+    else
+        console.log(&#39;Invalid SSN&#39;);
+}
+function validatePhone(phone) {
+    if (/^\(\d{3}\)\d{3}-\d{4}$/.exec(phone))
+        console.log(&#39;Valid Phone Number&#39;);
+    else
+        console.log(&#39;Invalid Phone Number&#39;);
+}
+</code></pre><p>We’ve all written code like this before and over time, we start to recognize that these two functions are practically the same and only differ by a few things (shown in <strong>bold</strong>).</p>
+<p>Instead of copying <strong>validateSsn</strong> and pasting and editing to create <strong>validatePhone</strong>, we should create a single function and parameterize the things that we edited after pasting.</p>
+<p>In this example, we would parameterize the <strong>value</strong>, the <strong>regular expression</strong>and the <strong>message</strong> printed (at least the last part of the message printed).</p>
+<p>The refactored code:</p>
+<pre><code>function validateValue(value, regex, type) {
+    if (regex.exec(value))
+        console.log(&#39;Invalid &#39; + type);
+    else
+        console.log(&#39;Valid &#39; + type);
+}
+</code></pre><p>The parameters <strong>ssn</strong> and <strong>phone</strong> in the old code are now represented by <strong>value</strong>.</p>
+<p>The regular expressions <strong>/^\d{3}-\d{2}-\d{4}$/</strong> and <strong>/^(\d{3})\d{3}-\d{4}$/</strong> are represented by <strong>regex</strong>.</p>
+<p>And finally, the last part of the message <strong>‘SSN’</strong> and <strong>‘Phone Number’</strong> are represented by <strong>type</strong>.</p>
+<p>Having one function is much better than having two functions. Or worse three, four or ten functions. This keeps your code clean and maintainable.</p>
+<p>For example, if there’s a bug, you only have to fix it in one place versus searching through your whole codebase to find where this function MAY have been pasted and modified.</p>
+<p>But what happens when you have the following situation:</p>
+<pre><code>function validateAddress(address) {
+    if (parseAddress(address))
+        console.log(&#39;Valid Address&#39;);
+    else
+        console.log(&#39;Invalid Address&#39;);
+}
+function validateName(name) {
+    if (parseFullName(name))
+        console.log(&#39;Valid Name&#39;);
+    else
+        console.log(&#39;Invalid Name&#39;);
+}
+</code></pre><p>Here <strong>parseAddress</strong> and <strong>parseFullName</strong> are functions that take a <strong>string</strong> and return <strong>true</strong> if it parses.</p>
+<p>How do we refactor this?</p>
+<p>Well, we can use <strong>value</strong> for <strong>address</strong> and <strong>name,</strong> and <strong>type</strong> for <strong>‘Address’</strong> and<strong>‘Name’</strong> like we did before but there’s a function where our regular expression used to be.</p>
+<p>If only we could pass a function as a parameter…</p>
+<h4 id="Higher-Order-Functions"><a href="#Higher-Order-Functions" class="headerlink" title="Higher-Order Functions"></a>Higher-Order Functions</h4><p>Many languages do not support passing functions as parameters. Some do but they don’t make it easy.</p>
+<blockquote>
+<p>In Functional Programming, a function is a first-class citizen of the language. In other words, a function is just another value.</p>
+</blockquote>
+<p>Since functions are just values, we can pass them as parameters.</p>
+<p>Even though Javascript is not a Pure Functional language, you can do some functional operations with it. So here’s the last two functions refactored into a single function by passing the <strong>parsing function</strong> as a parameter called <strong>parseFunc</strong>:</p>
+<pre><code>function validateValueWithFunc(value, parseFunc, type) {
+    if (parseFunc(value))
+        console.log(&#39;Invalid &#39; + type);
+    else
+        console.log(&#39;Valid &#39; + type);
+}
+</code></pre><p>Our new function is called a <strong>Higher-order Function</strong>.</p>
+<blockquote>
+<p>Higher-order Functions either take functions as parameters, return functions or both.</p>
+</blockquote>
+<p>Now we can call our higher-order function for the four previous functions (this works in Javascript because <strong>Regex.exec</strong> returns a truthy value when a match is found):</p>
+<pre><code>validateValueWithFunc(&#39;123-45-6789&#39;, /^\d{3}-\d{2}-\d{4}$/.exec, &#39;SSN&#39;);
+validateValueWithFunc(&#39;(123)456-7890&#39;, /^\(\d{3}\)\d{3}-\d{4}$/.exec, &#39;Phone&#39;);
+validateValueWithFunc(&#39;123 Main St.&#39;, parseAddress, &#39;Address&#39;);
+validateValueWithFunc(&#39;Joe Mama&#39;, parseName, &#39;Name&#39;);
+</code></pre><p>This is so much better than having four nearly identical functions.</p>
+<p>But notice the regular expressions. They’re a bit verbose. Let’s clean up our a code by factoring them out:</p>
+<pre><code>var parseSsn = /^\d{3}-\d{2}-\d{4}$/.exec;
+var parsePhone = /^\(\d{3}\)\d{3}-\d{4}$/.exec;
+validateValueWithFunc(&#39;123-45-6789&#39;, parseSsn, &#39;SSN&#39;);
+validateValueWithFunc(&#39;(123)456-7890&#39;, parsePhone, &#39;Phone&#39;);
+validateValueWithFunc(&#39;123 Main St.&#39;, parseAddress, &#39;Address&#39;);
+validateValueWithFunc(&#39;Joe Mama&#39;, parseName, &#39;Name&#39;);
+</code></pre><p>That’s better. Now when we want to parse a phone number, we don’t have to copy and paste the regular expression.</p>
+<p>But imagine we have more regular expressions to parse, not just <strong>parseSsn</strong> and <strong>parsePhone</strong>. Each time we create a regular expression parser, we have to remember to add the <strong>.exec</strong> to the end. And trust me, this is easy to forget.</p>
+<p>We can guard against this by creating a high-order function that returns the <strong>exec</strong> function:</p>
+<pre><code>function makeRegexParser(regex) {
+    return regex.exec;
+}
+var parseSsn = makeRegexParser(/^\d{3}-\d{2}-\d{4}$/);
+var parsePhone = makeRegexParser(/^\(\d{3}\)\d{3}-\d{4}$/);
+validateValueWithFunc(&#39;123-45-6789&#39;, parseSsn, &#39;SSN&#39;);
+validateValueWithFunc(&#39;(123)456-7890&#39;, parsePhone, &#39;Phone&#39;);
+validateValueWithFunc(&#39;123 Main St.&#39;, parseAddress, &#39;Address&#39;);
+validateValueWithFunc(&#39;Joe Mama&#39;, parseName, &#39;Name&#39;);
+</code></pre><p>Here, <strong>makeRegexParser</strong> takes a regular expression and returns the <strong>exec</strong>function, which takes a string. <strong>validateValueWithFunc</strong> will pass the string, <strong>value</strong>, to the parse function, i.e. <strong>exec</strong>.</p>
+<p><strong>parseSsn</strong> and <strong>parsePhone</strong> are effectively the same as before, the regular expression’s <strong>exec</strong> function.</p>
+<p>Granted, this is a marginal improvement but is shown here to give an example of a high-order function that returns a function.</p>
+<p>However, you can imagine the benefits of making this change if <strong>makeRegexParser</strong> was much more complex.</p>
+<p>Here’s another example of a higher-order function that returns a function:</p>
+<pre><code>function makeAdder(constantValue) {
+    return function adder(value) {
+        return constantValue + value;
+    };
+}
+</code></pre><p>Here we have <strong>makeAdder</strong> that takes <strong>constantValue</strong> and returns <strong>adder</strong>, a function that will add that constant to any value it gets passed.</p>
+<p>Here’s how it can be used:</p>
+<pre><code>var add10 = makeAdder(10);
+console.log(add10(20)); // prints 30
+console.log(add10(30)); // prints 40
+console.log(add10(40)); // prints 50
+</code></pre><p>We create a function, <strong>add10</strong>, by passing the constant <strong>10</strong> to <strong>makeAdder</strong> which returns a function that will add <strong>10</strong> to everything.</p>
+<p>Notice that the function <strong>adder</strong> has access to <strong>constantValue</strong> even after <strong>makeAddr</strong> returns. That’s because <strong>constantValue</strong> was in its scope when <strong>adder</strong> was created.</p>
+<p>This behavior is very important because without it, functions that return functions wouldn’t be very useful. So it’s important we understand how they work and what this behavior is called.</p>
+<p>This behavior is called a <strong>Closure</strong>.</p>
+<h4 id="Closures"><a href="#Closures" class="headerlink" title="Closures"></a>Closures</h4><p>Here’s a contrived example of functions that use closures:</p>
+<pre><code>function grandParent(g1, g2) {
+    var g3 = 3;
+    return function parent(p1, p2) {
+        var p3 = 33;
+        return function child(c1, c2) {
+            var c3 = 333;
+            return g1 + g2 + g3 + p1 + p2 + p3 + c1 + c2 + c3;
+        };
+    };
+}
+</code></pre><p>In this example, <strong>child</strong> has access to its variables, the <strong>parent’s</strong> variables and the <strong>grandParent’s</strong> variables.</p>
+<p>The <strong>parent</strong> has access to its variables and <strong>grandParent’s</strong> variables.</p>
+<p>The <strong>grandParent</strong> only has access to its variables.</p>
+<p>(See pyramid above for clarification.)</p>
+<p>Here’s an example of its use:</p>
+<pre><code>var parentFunc = grandParent(1, 2); // returns parent()
+var childFunc = parentFunc(11, 22); // returns child()
+console.log(childFunc(111, 222)); // prints 738
+// 1 + 2 + 3 + 11 + 22 + 33 + 111 + 222 + 333 == 738
+</code></pre><p>Here, <strong>parentFunc</strong> keeps the <strong>parent’s</strong> scope alive since <strong>grandParent</strong> returns <strong>parent</strong>.</p>
+<p>Similarly, <strong>childFunc</strong> keeps the <strong>child’s</strong> scope alive since <strong>parentFunc,</strong> which is just <strong>parent,</strong> returns <strong>child</strong>.</p>
+<p>When a function is created, all of the variables in its scope <strong>at the time of creation</strong> are accessible to it for the lifetime of the function. A function exists as long as there still a reference to it. For example, <strong>child</strong>’s scope exists as long as <strong>childFunc</strong> still references it.</p>
+<blockquote>
+<p>A closure is a function’s scope that’s kept alive by a reference to that function.</p>
+</blockquote>
+<p>Note that in Javascript, closures are problematic since the variables are mutable, i.e. they can change values from the time they were <em>closed over</em> to the time the returned function is called.</p>
+<p>Thankfully, variables in Functional Languages are Immutable eliminating this common source of bugs and confusion.</p>
+<hr>
+<p>Taking that first step to understanding Functional Programming concepts is the most important and sometimes the most difficult step. But it doesn’t have to be. Not with the right perspective.</p>
+<p>Previous parts: <a href="https://medium.com/@cscalfani/so-you-want-to-be-a-functional-programmer-part-1-1f15e387e536" target="_blank" rel="noopener">Part 1</a>, <a href="https://medium.com/@cscalfani/so-you-want-to-be-a-functional-programmer-part-2-7005682cec4a" target="_blank" rel="noopener">Part 2</a></p>
+<h4 id="Function-Composition"><a href="#Function-Composition" class="headerlink" title="Function Composition"></a>Function Composition</h4><p>As programmers, we are lazy. We don’t want to build, test and deploy code that we’ve written over and over and over again.</p>
+<p>We’re always trying to figure out ways of doing the work once and how we can reuse it to do something else.</p>
+<p>Code reuse sounds great but is difficult to achieve. Make the code too specific and you can’t reuse it. Make it too general and it can be too difficult to use in the first place.</p>
+<p>So what we need is a balance between the two, a way to make smaller, reusable pieces that we can use as building blocks to construct more complex functionality.</p>
+<p>In Functional Programming, functions are our building blocks. We write them to do very specific tasks and then we put them together like Lego™ blocks.</p>
+<p>This is called <strong>Function Composition</strong>.</p>
+<p>So how does it work? Let’s start with two Javascript functions:</p>
+<pre><code>var add10 = function(value) {
+    return value + 10;
+};
+var mult5 = function(value) {
+    return value * 5;
+};
+</code></pre><p>This is too verbose so let’s rewrite it using <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions" target="_blank" rel="noopener"><strong>fat arrow</strong></a> notation:</p>
+<pre><code>var add10 = value =&gt; value + 10;
+var mult5 = value =&gt; value * 5;
+</code></pre><p>That’s better. Now let’s imagine that we also want to have a function that takes a value and adds 10 to it and then multiplies the result by 5. We <em>could</em>write:</p>
+<pre><code>var mult5AfterAdd10 = value =&gt; 5 * (value + 10)
+</code></pre><p>Even though this is a very simple example, we still don’t want to have to write this function from scratch. First, we could make a mistake like forget the parentheses.</p>
+<p>Second, we already have a function that adds 10 and another that multiplies by 5. We’re writing code that we’ve already written.</p>
+<p>So instead, let’s use <strong>add10</strong> and <strong>mult5</strong> to build our new function:</p>
+<pre><code>var mult5AfterAdd10 = value =&gt; mult5(add10(value));
+</code></pre><p>We just used existing functions to create <strong>mult5AfterAdd10</strong>, but there’s a better way.</p>
+<p>In math, <strong>f ∘ g</strong> is functional composition and is read <strong>“f composed with g”</strong> or, more commonly, <strong>“f after g”</strong>. So <strong>(f ∘ g)(x)</strong> is equivalent to calling <strong>f</strong> after calling <strong>g</strong> with <strong>x</strong> or simply, <strong>f(g(x))</strong>.</p>
+<p>In our example, we have <strong>mult5 ∘ add10</strong> or <strong>“mult5 after add10”</strong>, hence the name of our function, <strong>mult5AfterAdd10</strong>.</p>
+<p>And that’s exactly what we did. We called <strong>mult5</strong> after we called <strong>add10</strong> with <strong>value</strong> or simply, <strong>mult5(add10(value))</strong>.</p>
+<p>Since Javascript doesn’t do Function Composition natively, let’s look at Elm:</p>
+<pre><code>add10 value =
+    value + 10
+mult5 value =
+    value * 5
+mult5AfterAdd10 value =
+    (mult5 &lt;&lt; add10) value
+</code></pre><p>The <strong>&lt;&lt;</strong> infixed operator is how you <em>compose</em> functions in Elm. It gives us a visual sense of how the data is flowing. First, <strong>value</strong> is passed to <strong>add10</strong> then its results are passed to <strong>mult5</strong>.</p>
+<p>Note the parentheses in <strong>mult5AfterAdd10</strong>, i.e. <strong>(mult5 &lt;&lt; add10)</strong>. They are there to make sure that the functions are composed first before applying <strong>value</strong>.</p>
+<p>You can compose as many functions as you like this way:</p>
+<pre><code>f x =
+   (g &lt;&lt; h &lt;&lt; s &lt;&lt; r &lt;&lt; t) x
+</code></pre><p>Here <strong>x</strong> is passed to function <strong>t</strong> whose result is passed to <strong>r</strong> whose result is passed to <strong>s</strong> and so on. If you did something similar in Javascript it would look like <strong>g(h(s(r(t(x)))))</strong>, a parenthetical nightmare</p>
+<h4 id="Point-Free-Notation"><a href="#Point-Free-Notation" class="headerlink" title="Point-Free Notation"></a>Point-Free Notation</h4><p>There is a style of writing functions without having to specify the parameters called <strong>Point-Free Notation</strong>. At first, this style will seem odd but as you continue, you’ll grow to appreciate the brevity.</p>
+<p>In <strong>mult5AfterAdd10</strong>, you’ll notice that <strong>value</strong> is specified twice. Once in the parameter list and once when it’s used.</p>
+<pre><code>-- This is a function that expects 1 parameter
+mult5AfterAdd10 value =
+    (mult5 &lt;&lt; add10) value
+</code></pre><p>But this parameter is unnecessary since <strong>add10,</strong> the rightmost function in the composition, expects the same parameter. The following point-free version is equivalent:</p>
+<pre><code>-- This is also a function that expects 1 parameter
+mult5AfterAdd10 =
+    (mult5 &lt;&lt; add10)
+</code></pre><p>There are many benefits from using the point-free version.</p>
+<p>First, we don’t have to specify redundant parameters. And since we don’t have to specify them, we don’t have to think up names for all of them.</p>
+<p>Second, it’s easier to read and reason about since it’s less verbose. This example is simple, but imagine a function that took more parameters.</p>
+<h4 id="Trouble-in-Paradise"><a href="#Trouble-in-Paradise" class="headerlink" title="Trouble in Paradise"></a>Trouble in Paradise</h4><p>So far we’ve seen how Function Composition works and how we should specify our functions in Point-Free Notation for brevity, clarity and flexibility.</p>
+<p>Now, let’s try to use these ideas in a slightly different scenario and see how they fare. Imagine we replace <strong>add10</strong> with <strong>add</strong>:</p>
+<pre><code>add x y =
+    x + y
+mult5 value =
+    value * 5
+</code></pre><p>How do we write <strong>mult5After10</strong> with just these 2 functions?</p>
+<p>Think about it for a bit before reading on. No seriously. Think about. Try and do it.</p>
+<p>Okay, so if you actually spent time thinking about it, you may have come up with a solution like:</p>
+<pre><code>-- This is wrong !!!!
+mult5AfterAdd10 =
+    (mult5 &lt;&lt; add) 10 
+</code></pre><p>But this wouldn’t work. Why? Because <strong>add</strong> takes 2 parameters.</p>
+<p>If this isn’t obvious in Elm, try to write this in Javascript:</p>
+<pre><code>var mult5AfterAdd10 = mult5(add(10)); // this doesn&#39;t work
+</code></pre><p>This code is wrong but why?</p>
+<p>Because the <strong>add</strong> function is only getting 1 of its 2 parameters here then its <em>incorrect results</em> are passed to <strong>mult5</strong>. This will produce the wrong results.</p>
+<p>In fact, in Elm, the compiler won’t even let you write such mis-formed code (which is one of the great things about Elm).</p>
+<p>Let’s try again:</p>
+<pre><code>var mult5AfterAdd10 = y =&gt; mult5(add(10, y)); // not point-free
+</code></pre><p>This isn’t point-free but I could probably live with this. But now I’m no longer just combining functions. I’m writing a new function. Also, if this gets more complicated, e.g. if I want to compose <strong>mult5AfterAdd10</strong> with something else, I’m going to get into real trouble.</p>
+<p>So it would appear that Function Composition has limited usefulness since we cannot marry these two functions. That’s too bad since it’s so powerful.</p>
+<p>How could we solve this? What would we need to make this problem go away?</p>
+<p>Well, what would be really great is if we had some way of giving our <strong>add</strong>function only one of its parameters <em>ahead of time</em> and then it would get its second parameter <em>later</em> when <strong>mult5AfterAdd10</strong> is called.</p>
+<p>Turns out there is way and it’s called <strong>Currying</strong>.</p>
+<hr>
+<p>Taking that first step to understanding Functional Programming concepts is the most important and sometimes the most difficult step. But it doesn’t have to be. Not with the right perspective.</p>
+<p>Previous parts: <a href="https://medium.com/@cscalfani/so-you-want-to-be-a-functional-programmer-part-1-1f15e387e536" target="_blank" rel="noopener">Part 1</a>, <a href="https://medium.com/@cscalfani/so-you-want-to-be-a-functional-programmer-part-2-7005682cec4a" target="_blank" rel="noopener">Part 2</a>, <a href="https://medium.com/@cscalfani/so-you-want-to-be-a-functional-programmer-part-3-1b0fd14eb1a7" target="_blank" rel="noopener">Part 3</a></p>
+<h4 id="Currying"><a href="#Currying" class="headerlink" title="Currying"></a>Currying</h4><p>If you remember from <a href="https://medium.com/@cscalfani/so-you-want-to-be-a-functional-programmer-part-3-1b0fd14eb1a7" target="_blank" rel="noopener">Part 3</a>, the reason that we were having problems composing <strong>mult5</strong> and <strong>add</strong> (in ) is because <strong>mult5</strong> takes 1 parameter and <strong>add</strong>takes 2.</p>
+<p>We can solve this easily by just restricting all functions to take only 1 parameter.</p>
+<p>Trust me. It’s not as bad as it sounds.</p>
+<p>We simply write an add function that uses 2 parameters but only takes 1 parameter at a time. <strong>Curried</strong> functions allow us to do this.</p>
+<blockquote>
+<p>A Curried Function is a function that only takes a single parameter at a time.</p>
+</blockquote>
+<p>This will let us give <strong>add</strong> its first parameter before we compose it with <strong>mult5</strong>. Then when <strong>mult5AfterAdd10</strong> is called, <strong>add</strong> will get its second parameter.</p>
+<p>In Javascript, we can accomplish this by rewriting <strong>add</strong>:</p>
+<pre><code>var add = x =&gt; y =&gt; x + y
+</code></pre><p>This version of <strong>add</strong> is a function that takes one parameter now and then another one later.</p>
+<p>In detail, the <strong>add</strong> function takes a single parameter, <strong>x</strong>, and returns a <strong>function</strong>that takes a single parameter, <strong>y</strong>, which will ultimately return the <strong>result of adding x and y</strong>.</p>
+<p>Now we can use this version of <strong>add</strong> to build a working version of <strong>mult5AfterAdd10</strong>:</p>
+<pre><code>var compose = (f, g) =&gt; x =&gt; f(g(x));
+var mult5AfterAdd10 = compose(mult5, add(10));
+</code></pre><p>The compose function takes 2 parameters, <strong>f</strong> and <strong>g</strong>. Then it returns a function that takes 1 parameter, <strong>x</strong>, which when called will apply <strong>f after g</strong> to <strong>x</strong>.</p>
+<p>So what did we do exactly? Well, we converted our plain old <strong>add</strong> function into a curried version. This made <strong>add</strong> more flexible since the first parameter, 10, can be passed to it up front and the final parameter will be passed when <strong>mult5AfterAdd10</strong> is called.</p>
+<p>At this point, you may be wondering how to rewrite the add function in Elm. Turns out, you don’t have to. In Elm and other Functional Languages, all functions are curried automatically.</p>
+<p>So the <strong>add</strong> function looks the same:</p>
+<pre><code>add x y =
+    x + y
+</code></pre><p>This is how <strong>mult5AfterAdd10</strong> should have been written back in <a href="https://medium.com/@cscalfani/so-you-want-to-be-a-functional-programmer-part-3-1b0fd14eb1a7" target="_blank" rel="noopener">Part 3</a>:</p>
+<pre><code>mult5AfterAdd10 =
+    (mult5 &lt;&lt; add 10)
+</code></pre><p>Syntactically speaking, Elm beats Imperative Languages like Javascript because it’s been optimized for Functional things like currying and composition.</p>
+<h4 id="Currying-and-Refactoring"><a href="#Currying-and-Refactoring" class="headerlink" title="Currying and Refactoring"></a>Currying and Refactoring</h4><p>Another time currying shines is during refactoring when you create a generalized version of a function with lots of parameters and then use it to create specialized versions with fewer parameters.</p>
+<p>For example, when we have the following functions that put brackets and double brackets around strings:</p>
+<pre><code>bracket str =
+    &quot;{&quot; ++ str ++ &quot;}&quot;
+doubleBracket str =
+    &quot;{{" ++ str ++ "}}&quot;
+</code></pre><p>Here’s how we’d use it:</p>
+<pre><code>bracketedJoe =
+    bracket &quot;Joe&quot;
+doubleBracketedJoe =
+    doubleBracket &quot;Joe&quot;
+</code></pre><p>We can generalize <strong>bracket</strong> and <strong>doubleBracket</strong>:</p>
+<pre><code>generalBracket prefix str suffix =
+    prefix ++ str ++ suffix
+</code></pre><p>But now every time we use <strong>generalBracket</strong> we have to pass in the brackets:</p>
+<pre><code>bracketedJoe =
+    generalBracket &quot;{&quot; &quot;Joe&quot; &quot;}&quot;
+doubleBracketedJoe =
+    generalBracket &quot;{{" "Joe" "}}&quot;
+</code></pre><p>What we really want is the best of both worlds.</p>
+<p>If we reorder the parameters of <strong>generalBracket</strong>, we can create <strong>bracket</strong> and <strong>doubleBracket</strong> by leveraging the fact that functions are curried:</p>
+<pre><code>generalBracket prefix suffix str =
+    prefix ++ str ++ suffix
+bracket =
+    generalBracket &quot;{&quot; &quot;}&quot;
+doubleBracket =
+    generalBracket &quot;{{" "}}&quot;
+</code></pre><p>Notice that by putting the parameters that were most likely to be static first, i.e. <strong>prefix</strong> and <strong>suffix,</strong> and putting the parameters that were most likely to change last, i.e. <strong>str</strong>, we can easily create specialized versions of <strong>generalBracket</strong>.</p>
+<blockquote>
+<p>Parameter order is important to fully leverage currying.</p>
+</blockquote>
+<p>Also, notice that <strong>bracket</strong> and <strong>doubleBracket</strong> are written in point-free notation, i.e. the <strong>str</strong> parameter is implied. Both <strong>bracket</strong> and <strong>doubleBracket</strong>are functions waiting for their final parameter.</p>
+<p>Now we can use it just like before:</p>
+<pre><code>bracketedJoe =
+    bracket &quot;Joe&quot;
+doubleBracketedJoe =
+    doubleBracket &quot;Joe&quot;
+</code></pre><p>But this time we’re using a generalized curried function, <strong>generalBracket</strong>.</p>
+<h4 id="Common-Functional-Functions"><a href="#Common-Functional-Functions" class="headerlink" title="Common Functional Functions"></a>Common Functional Functions</h4><p>Let’s look at 3 common functions that are used in Functional Languages.</p>
+<p>But first, let’s look at the following Javascript code:</p>
+<pre><code>for (var i = 0; i &lt; something.length; ++i) {
+    // do stuff
+}
+</code></pre><p>There’s one major thing wrong with this code. It’s not a bug. The problem is that this code is boilerplate code, i.e. code that is written over and over again.</p>
+<p>If you code in Imperative Languages like Java, C#, Javascript, PHP, Python, etc., you’ll find yourself writing this boilerplate code more than any other.</p>
+<p>That’s what’s wrong with it.</p>
+<p>So let’s kill it. Let’s put it in a function (or a couple of functions) and never write a for-loop again. Well, almost never; at least until we move to a Functional Language.</p>
+<p>Let’s start with modifying an array called <strong>things</strong>:</p>
+<pre><code>var things = [1, 2, 3, 4];
+for (var i = 0; i &lt; things.length; ++i) {
+    things[i] = things[i] * 10; // MUTATION ALERT !!!!
+}
+console.log(things); // [10, 20, 30, 40]
+</code></pre><p>UGH!! Mutability!</p>
+<p>Let’s try that again. This time we won’t mutate <strong>things</strong>:</p>
+<pre><code>var things = [1, 2, 3, 4];
+var newThings = [];
+for (var i = 0; i &lt; things.length; ++i) {
+    newThings[i] = things[i] * 10;
+}
+console.log(newThings); // [10, 20, 30, 40]
+</code></pre><p>Okay, so we didn’t mutate <strong>things</strong> but technically we mutated <strong>newThings</strong>. For now, we’re going to overlook this. We are in Javascript after all. Once we move to a Functional Language, we won’t be able to mutate.</p>
+<p>The point here is to understand how these functions work and help us to reduce noise in our code.</p>
+<p>Let’s take this code and put it in a function. We’re going to call our first common function <strong>map</strong> since it maps each value in the old array to new values in the new array:</p>
+<pre><code>var map = (f, array) =&gt; {
+    var newArray = [];
+    for (var i = 0; i &lt; array.length; ++i) {
+        newArray[i] = f(array[i]);
+    }
+    return newArray;
+};
+</code></pre><p>Notice the function, <strong>f</strong>, is passed in so that our <strong>map</strong> function can do anything we want to each item of the <strong>array</strong>.</p>
+<p>Now we can call rewrite our previous code to use <strong>map</strong>:</p>
+<pre><code>var things = [1, 2, 3, 4];
+var newThings = map(v =&gt; v * 10, things);
+</code></pre><p>Look ma. No for-loops. And much easier to read and therefore reason about.</p>
+<p>Well, technically, there are for-loops in the <strong>map</strong> function. But at least we don’t have to write that boilerplate code anymore.</p>
+<p>Now let’s write another common function to <strong>filter</strong> things from an array:</p>
+<pre><code>var filter = (pred, array) =&gt; {
+    var newArray = [];
+for (var i = 0; i &lt; array.length; ++i) {
+        if (pred(array[i]))
+            newArray[newArray.length] = array[i];
+    }
+    return newArray;
+};
+</code></pre><p>Notice how the predicate function, <strong>pred</strong>, returns TRUE if we keep the item or FALSE if we toss it.</p>
+<p>Here’s how to use <strong>filter</strong> to filter odd numbers:</p>
+<pre><code>var isOdd = x =&gt; x % 2 !== 0;
+var numbers = [1, 2, 3, 4, 5];
+var oddNumbers = filter(isOdd, numbers);
+console.log(oddNumbers); // [1, 3, 5]
+</code></pre><p>Using our new <strong>filter</strong> function is so much simpler than hand-coding it with a for-loop.</p>
+<p>The final common function is called <strong>reduce</strong>. Typically, it’s used to take a list and reduce it to a single value but it can actually do so much more.</p>
+<p>This function is usually called <strong>fold</strong> in Functional Languages.</p>
+<pre><code>var reduce = (f, start, array) =&gt; {
+    var acc = start;
+    for (var i = 0; i &lt; array.length; ++i)
+        acc = f(array[i], acc); // f() takes 2 parameters
+    return acc;
+});
+</code></pre><p>The <strong>reduce</strong> function takes a reduction function, <strong>f</strong>, an initial <strong>start</strong> value and an <strong>array</strong>.</p>
+<p>Notice that the reduction function, <strong>f</strong>, takes 2 parameters, the current item of the <strong>array</strong>, and the accumulator, <strong>acc</strong>. It will use these parameters to produce a new accumulator each iteration. The accumulator from the final iteration is returned.</p>
+<p>An example will help us understand how it works:</p>
+<pre><code>var add = (x, y) =&gt; x + y;
+var values = [1, 2, 3, 4, 5];
+var sumOfValues = reduce(add, 0, values);
+console.log(sumOfValues); // 15
+</code></pre><p>Notice that the <strong>add</strong> function takes 2 parameters and adds them. Our <strong>reduce</strong>function expects a function that takes 2 parameters so they work well together.</p>
+<p>We start with a <strong>start</strong> value of zero and pass in our array, <strong>values</strong>, to be summed. Inside the <strong>reduce</strong> function, the sum is accumulated as it iterates over <strong>values</strong>. The final accumulated value is returned as <strong>sumOfValues</strong>.</p>
+<p>Each of these functions, <strong>map</strong>, <strong>filter</strong> and <strong>reduce</strong> let us do common manipulation operations on arrays without having to write boilerplate for-loops.</p>
+<p>But in Functional Languages, they are even more useful since there are no loop constructs just recursion. Iteration functions aren’t just extremely helpful. They’re necessary.</p>
+<hr>
+<p>Taking that first step to understanding Functional Programming concepts is the most important and sometimes the most difficult step. But it doesn’t have to be. Not with the right perspective.</p>
+<p>Previous parts: <a href="https://medium.com/@cscalfani/so-you-want-to-be-a-functional-programmer-part-1-1f15e387e536" target="_blank" rel="noopener">Part 1</a>, <a href="https://medium.com/@cscalfani/so-you-want-to-be-a-functional-programmer-part-2-7005682cec4a" target="_blank" rel="noopener">Part 2</a>, <a href="https://medium.com/@cscalfani/so-you-want-to-be-a-functional-programmer-part-3-1b0fd14eb1a7" target="_blank" rel="noopener">Part 3</a>, <a href="https://medium.com/@cscalfani/so-you-want-to-be-a-functional-programmer-part-4-18fbe3ea9e49" target="_blank" rel="noopener">Part 4</a></p>
+<h4 id="Referential-Transparency"><a href="#Referential-Transparency" class="headerlink" title="Referential Transparency"></a>Referential Transparency</h4><p><strong>Referential Transparency</strong> is a fancy term to describe that a pure function can safely be replaced by its expression. An example will help illustrate this.</p>
+<p>In Algebra when you had the following formula:</p>
+<pre><code>y = x + 10
+</code></pre><p>And were told:</p>
+<pre><code>x = 3
+</code></pre><p>You could substituted <strong>x</strong> back into the equation to get:</p>
+<pre><code>y = 3 + 10
+</code></pre><p>Notice that the equation is still valid. We can do the same kind of substitution with pure functions.</p>
+<p>Here’s a function in Elm that puts single quotes around the supplied string:</p>
+<pre><code>quote str =
+    &quot;&#39;&quot; ++ str ++ &quot;&#39;&quot;
+</code></pre><p>And here’s some code that uses it:</p>
+<pre><code>findError key =
+    &quot;Unable to find &quot; ++ (quote key)
+</code></pre><p>Here <strong>findError</strong> builds an error message when a search for <strong>key</strong> is unsuccessful.</p>
+<p>Since the <strong>quote</strong> function is pure, we can simply replace the function call in <strong>findError</strong> with the body of the <strong>quote</strong> function (which is just an expression):</p>
+<pre><code>findError key =
+   &quot;Unable to find &quot; ++ (&quot;&#39;&quot; ++ str ++ &quot;&#39;&quot;)
+</code></pre><p>This is what I call <strong>Reverse Refactoring</strong> (which makes more sense to me), a process that can be used by programmers or programs (e.g. compilers and test programs) to reason about code.</p>
+<p>This can be especially helpful when reasoning about recursive functions.</p>
+<h4 id="Execution-Order"><a href="#Execution-Order" class="headerlink" title="Execution Order"></a>Execution Order</h4><p>Most programs are single-threaded, i.e. one and only one piece of code is being executed at a time. Even if you have a multithreaded program, most of the threads are blocked waiting for I/O to complete, e.g. file, network, etc.</p>
+<p>This is one reason why we naturally think in terms of ordered steps when we write code:</p>
+<pre><code>1. Get out the bread
+2. Put 2 slices into the toaster
+3. Select darkness
+4. Push down the lever
+5. Wait for toast to pop up
+6. Remove toast
+7. Get out the butter
+8. Get a butter knife
+9. Butter toast
+</code></pre><p>In this example, there are two independent operations: getting butter and toasting bread. They only become interdependent at step 9.</p>
+<p>We could do steps 7 and 8 concurrently with steps 1 through 6 since they are independent from one another.</p>
+<p>But the minute we do this, things get complicated:</p>
+<pre><code>Thread 1
+--------
+1. Get out the bread
+2. Put 2 slices into the toaster
+3. Select darkness
+4. Push down the lever
+5. Wait for toast to pop up
+6. Remove toast
+Thread 2
+--------
+1. Get out the butter
+2. Get a butter knife
+3. Wait for Thread 1 to complete
+4. Butter toast
+</code></pre><p>What happens to Thread 2 if Thread 1 fails? What is the mechanism to coordinate both threads? Who owns the toast: Thread 1, Thread 2 or both?</p>
+<p>It’s easier to not think about these complexities and leave our program single threaded.</p>
+<p>But when it’s worth squeezing out every possible efficiency of our program, then we must take on the monumental effort to write multithreading software.</p>
+<p>However, there are 2 main problems with multithreading. First, multithreaded programs are difficult to write, read, reason about, test and debug.</p>
+<p>Second, some languages, e.g. Javascript, don’t support multithreading and those that do, support it badly.</p>
+<p>But what if order didn’t matter and everything was executed in parallel?</p>
+<p>While this sounds crazy, it’s not as chaotic as it sounds. Let’s look at some Elm code to illustrate this:</p>
+<pre><code>buildMessage message value =
+    let
+        upperMessage =
+            String.toUpper message
+        quotedValue =
+            &quot;&#39;&quot; ++ value ++ &quot;&#39;&quot;
+    in
+        upperMessage ++ &quot;: &quot; ++ quotedValue
+</code></pre><p>Here <strong>buildMessage</strong> takes <strong>message</strong> and <strong>value</strong> then produces an uppercased <strong>message,</strong> a colon and <strong>value</strong> in single quotes.</p>
+<p>Notice how <strong>upperMessage</strong> and <strong>quotedValue</strong> are independent. How do we know this?</p>
+<p>There are 2 things that must be true for independence. First, they must be pure functions. This is important because they must not be affected by the execution of the other.</p>
+<p>If they were not pure, then we could never know that they’re independent. In that case, we’d have to rely on the order that they were called in the program to determine their execution order. This is how all Imperative Languages work.</p>
+<p>The second thing that must be true for independence is that the output of one function is not used as the input of the other. If this was the case, then we’d have to wait for one to finish before starting the second.</p>
+<p>In this case, <strong>upperMessage</strong> and <strong>quotedValue</strong> are both pure and neither requires the output of the other.</p>
+<p>Therefore, these 2 functions can be executed in ANY ORDER.</p>
+<p>The compiler can make this determination without any help from the programmer. This is only possible in a Pure Functional Language because it’s very difficult, if not impossible, to determine the ramifications of side-effects.</p>
+<blockquote>
+<p>The order of execution in a Pure Functional Language can be determined by the compiler.</p>
+</blockquote>
+<p>This is extremely advantageous considering that CPUs are not getting faster. Instead, manufactures are adding more and more cores. This means that code can execute in parallel at the hardware level.</p>
+<p>Unfortunately, with Imperative Languages, we cannot take full advantage of these cores except at a very coarse level. But to do so requires drastically changing the architecture of our programs.</p>
+<p>With Pure Functional Languages, we have the potential to take advantage of the CPU cores at a fine grained level automatically without changing a single line of code.</p>
+<h4 id="Type-Annotations"><a href="#Type-Annotations" class="headerlink" title="Type Annotations"></a>Type Annotations</h4><p>In Statically Typed Languages, types are defined inline. Here’s some Java code to illustrate:</p>
+<pre><code>public static String quote(String str) {
+    return &quot;&#39;&quot; + str + &quot;&#39;&quot;;
+}
+</code></pre><p>Notice how the typing is inline with the function definition. It gets even worse when you have generics:</p>
+<pre><code>private final Map&lt;Integer, String&gt; getPerson(Map&lt;String, String&gt; people, Integer personId) {
+   // ...
+}
+</code></pre><p>I’ve bolded the types which makes them stand out but they still interfere with the function definition. You have to read it carefully to find the names of the variables.</p>
+<p>With Dynamically Typed Languages, this is not a problem. In Javascript, we can write code like:</p>
+<pre><code>var getPerson = function(people, personId) {
+    // ...
+};
+</code></pre><p>This is so much easier to read without all of that nasty type information getting in the way. The only problem is that we give up the safety of typing. We could easily pass in these parameters backwards, i.e. a <em>Number</em> for <strong>people</strong>and an <em>Object</em> for <strong>personId</strong>.</p>
+<p>We wouldn’t find out until the program executed, which could be months after we put it into production. This would not be the case in Java since it wouldn’t compile.</p>
+<p>But what if we could have the best of both worlds. The syntactical simplicity of Javascript with the safety of Java.</p>
+<p>It turns out that we can. Here’s a function in Elm with Type Annotations:</p>
+<pre><code>add : Int -&gt; Int -&gt; Int
+add x y =
+    x + y
+</code></pre><p>Notice how the type information is on a separate line. This separation makes a world of difference.</p>
+<p>Now you may think that the type annotation has a typo. I know I did when I first saw it. I thought that the first <strong>-&gt;</strong> should be a comma. But there’s no typo.</p>
+<p>When you see it with the implied parentheses it makes a bit more sense:</p>
+<pre><code>add : Int -&gt; (Int -&gt; Int)
+</code></pre><p>This says that <strong>add</strong> is a function that takes a <em>single</em> parameter of type <strong>Int</strong> and returns a function that takes a <em>single</em> parameter <strong>Int</strong> and returns an <strong>Int</strong>.</p>
+<p>Here’s another type annotation with the implied parentheses shown:</p>
+<pre><code>doSomething : String -&gt; (Int -&gt; (String -&gt; String))
+doSomething prefix value suffix =
+    prefix ++ (toString value) ++ suffix
+</code></pre><p>This says that <strong>doSomething</strong> is a function that takes a <em>single</em> parameter of type <strong>String</strong> and returns a function that takes a <em>single</em> parameter of type <strong>Int</strong> and returns a function that takes a single parameter of type <strong>String</strong> and returns a <strong>String</strong>.</p>
+<p>Notice how everything takes a <em>single</em> parameter. That’s because every function is curried in Elm.</p>
+<p>Since parentheses are always implied to the right, they are not necessary. So we can simply write:</p>
+<pre><code>doSomething : String -&gt; Int -&gt; String -&gt; String
+</code></pre><p>Parentheses are necessary when we pass functions as parameters. Without them, the type annotation would be ambiguous. For example:</p>
+<pre><code>takes2Params : Int -&gt; Int -&gt; String
+takes2Params num1 num2 =
+    -- do something
+</code></pre><p>is very different from:</p>
+<pre><code>takes1Param : (Int -&gt; Int) -&gt; String
+takes1Param f =
+    -- do something
+</code></pre><p><strong>takes2Param</strong> is a function that requires 2 parameters, an <strong>Int</strong> and another <strong>Int</strong>. Whereas, <strong>takes1Param</strong> requires 1 parameters a function that takes an <strong>Int</strong> and another <strong>Int</strong>.</p>
+<p>Here’s the type annotation for <strong>map</strong>:</p>
+<pre><code>map : (a -&gt; b) -&gt; List a -&gt; List b
+map f list =
+    // ...
+</code></pre><p>Here parentheses are required because <strong>f</strong> is of type <strong>(a -&gt; b)</strong>, i.e. a function that takes a single parameter of type <strong>a</strong> and returns something of type <strong>b</strong>.</p>
+<p>Here type <strong>a</strong> is any type. When a type is uppercased, it’s an explicit type, e.g. <strong>String</strong>. When a type is lowercased, it can be any type. Here <strong>a</strong> can be <strong>String</strong>but it could also be <strong>Int</strong>.</p>
+<p>If you see <strong>(a -&gt; a)</strong> then that says that the input type and the output type MUST be the same. It doesn’t matter what they are but they must match.</p>
+<p>But in the case of <strong>map</strong>, we have <strong>(a -&gt; b)</strong>. That means that it CAN return a different type but it COULD also return the same type.</p>
+<p>But once the type for <strong>a</strong> is determined, <strong>a</strong> must be that type for the whole signature. For example, if <strong>a</strong> is <strong>Int</strong> and <strong>b</strong> is <strong>String</strong> then the signature is equivalent to:</p>
+<pre><code>(Int -&gt; String) -&gt; List Int -&gt; List String
+</code></pre><p>Here all of the <strong>a</strong>’s have been replaced with <strong>Int</strong> and all of the <strong>b</strong>’s have been replaced with <strong>String</strong>.</p>
+<p>The <strong>List Int</strong> type means that a list contains <strong>Int</strong>s and <strong>List String</strong> means that a list contains <strong>String</strong>s. If you’ve used generics in Java or other languages then this concept should be familiar.</p>
+<hr>
+<p>Taking that first step to understanding Functional Programming concepts is the most important and sometimes the most difficult step. But it doesn’t have to be. Not with the right perspective.</p>
+<p>Previous parts: <a href="https://medium.com/@cscalfani/so-you-want-to-be-a-functional-programmer-part-1-1f15e387e536" target="_blank" rel="noopener">Part 1</a>, <a href="https://medium.com/@cscalfani/so-you-want-to-be-a-functional-programmer-part-2-7005682cec4a" target="_blank" rel="noopener">Part 2</a>, <a href="https://medium.com/@cscalfani/so-you-want-to-be-a-functional-programmer-part-3-1b0fd14eb1a7" target="_blank" rel="noopener">Part 3</a>, <a href="https://medium.com/@cscalfani/so-you-want-to-be-a-functional-programmer-part-4-18fbe3ea9e49" target="_blank" rel="noopener">Part 4</a>, <a href="https://medium.com/@cscalfani/so-you-want-to-be-a-functional-programmer-part-5-c70adc9cf56a" target="_blank" rel="noopener">Part 5</a></p>
+<h4 id="Now-What"><a href="#Now-What" class="headerlink" title="Now What?"></a>Now What?</h4><p>Now that you’ve learned all this great new stuff, you’re probably thinking, “Now what? How can I use this in my everyday programming?”</p>
+<p>It depends. If you can program in a Pure Functional Language like Elm or Haskell, then you can leverage all of these ideas. And these languages make it easy to do so.</p>
+<p>If you can only program in an Imperative Language like Javascript, as many of us must, then you can still use a lot of what you’ve learned but there will be a great deal more discipline required.</p>
+<h4 id="Functional-Javascript"><a href="#Functional-Javascript" class="headerlink" title="Functional Javascript"></a>Functional Javascript</h4><p>Javascript has many features that let you program in a more functional manner. It’s not pure but you can get some immutability in the language and even more with libraries.</p>
+<p>It’s not ideal, but if you have to use it, then why not gain some of the benefits of a Functional Language?</p>
+<p><strong>Immutability</strong></p>
+<p>The first thing to consider is immutability. In ES2015, or ES6 as it was called, there is a new keyword called <strong>const</strong>. This means that once a variable is set, it cannot be reset:</p>
+<pre><code>const a = 1;
+a = 2; // this will throw a TypeError in Chrome, Firefox or Node
+       // but not in Safari (circa 10/2016)
+</code></pre><p>Here <strong>a</strong> is defined to be a constant and therefore cannot be changed once set. This is why <strong>a = 2</strong> throws an exception (except for Safari).</p>
+<p>The problem with <strong>const</strong> in Javascript is that it doesn’t go far enough. The following example illustrates its limits:</p>
+<pre><code>const a = {
+    x: 1,
+    y: 2
+};
+a.x = 2; // NO EXCEPTION!
+a = {}; // this will throw a TypeError
+</code></pre><p>Notice how <strong>a.x = 2</strong> does NOT throw an exception. The only thing that’s immutable with the <strong>const</strong> keyword is the variable <strong>a</strong>. Anything that <strong>a</strong> points to can be mutated.</p>
+<p>This is terribly disappointing because it would have made Javascript so much better.</p>
+<p>So how do we get immutability in Javascript?</p>
+<p>Unfortunately, we can only do so via a library called <a href="https://facebook.github.io/immutable-js/" target="_blank" rel="noopener">Immutable.js</a>. This may give us better immutability but sadly, it does so in a way that makes our code look more like Java than Javascript.</p>
+<p><strong>Currying and Composition</strong></p>
+<p>Earlier in this series, we learned how to write functions that are curried. Here’s a more complex example:</p>
+<pre><code>const f = a =&gt; b =&gt; c =&gt; d =&gt; a + b + c + d
+</code></pre><p>Notice that we had to write the currying part by hand.</p>
+<p>And to call <strong>f,</strong> we have to write:</p>
+<pre><code>console.log(f(1)(2)(3)(4)); // prints 10
+</code></pre><p>But that’s enough parentheses to make a Lisp programmer cry.</p>
+<p>There are many libraries which make this process easier. My favorite one is <a href="http://ramdajs.com/" target="_blank" rel="noopener">Ramda</a>.</p>
+<p>Using Ramda we can now write:</p>
+<pre><code>const f = R.curry((a, b, c, d) =&gt; a + b + c + d);
+console.log(f(1, 2, 3, 4)); // prints 10
+console.log(f(1, 2)(3, 4)); // also prints 10
+console.log(f(1)(2)(3, 4)); // also prints 10
+</code></pre><p>The function definition isn’t much better but we’ve eliminated the need for all those parenthesis. Notice that we can apply as many or as few parameters as we want each time we invoke <strong>f</strong>.</p>
+<p>By using Ramda, we can rewrite the <strong>mult5AfterAdd10</strong> function from <a href="https://medium.com/@cscalfani/so-you-want-to-be-a-functional-programmer-part-3-1b0fd14eb1a7" target="_blank" rel="noopener">Part 3</a>and <a href="https://medium.com/@cscalfani/so-you-want-to-be-a-functional-programmer-part-4-18fbe3ea9e49" target="_blank" rel="noopener">Part 4</a>:</p>
+<pre><code>const add = R.curry((x, y) =&gt; x + y);
+const mult5 = value =&gt; value * 5;
+const mult5AfterAdd10 = R.compose(mult5, add(10));
+</code></pre><p>It turns out that Ramda has a lot of helper functions for doing these sorts of things, e.g. <strong>R.add</strong> and <strong>R.multiply</strong>, which means we can write less code:</p>
+<pre><code>const mult5AfterAdd10 = R.compose(R.multiply(5), R.add(10));
+</code></pre><p><strong>Map, Filter and Reduce</strong></p>
+<p>Ramda also has its own versions of <strong>map</strong>, <strong>filter</strong> and <strong>reduce</strong>. Although these functions exist in <strong>Array.prototype</strong> in vanilla Javascript, Ramda’s versions are curried:</p>
+<pre><code>const isOdd = R.flip(R.modulo)(2);
+const onlyOdd = R.filter(isOdd);
+const isEven = R.complement(isOdd);
+const onlyEven = R.filter(isEven);
+const numbers = [1, 2, 3, 4, 5, 6, 7, 8];
+console.log(onlyEven(numbers)); // prints [2, 4, 6, 8]
+console.log(onlyOdd(numbers)); // prints [1, 3, 5, 7]
+</code></pre><p><strong>R.modulo</strong> takes 2 parameters. The first is the <strong>dividend</strong> (what’s being divided) and the second is the <strong>divisor</strong> (what we’re dividing by).</p>
+<p>The <strong>isOdd</strong> function is just the remainder of dividing by 2. A remainder of 0 is <strong>falsy</strong>, not odd, and a remainder of 1 is <strong>truthy</strong>, odd. We flipped the first and second parameters of <strong>modulo</strong> so that we could specify 2 as the divisor.</p>
+<p>The <strong>isEven</strong> function is just the <strong>complement</strong> of <strong>isOdd</strong>.</p>
+<p>The <strong>onlyOdd</strong> function is the <strong>filter</strong> function with the <strong>predicate</strong> (a function that returns a boolean) of <strong>isOdd</strong>. It’s waiting for the list of numbers, its final parameter, before it executes.</p>
+<p>The <strong>onlyEven</strong> function is a <strong>filter</strong> that uses <strong>isEven</strong> as its predicate.</p>
+<p>When we pass <strong>numbers</strong> to <strong>onlyEven</strong> and <strong>onlyOdd,</strong> <strong>isEven</strong> and <strong>isOdd</strong> get their final parameters and can finally execute returning the numbers we’d expect.</p>
+<h4 id="Javascript-Shortcomings"><a href="#Javascript-Shortcomings" class="headerlink" title="Javascript Shortcomings"></a>Javascript Shortcomings</h4><p>With all of the libraries and language enhancements that have gotten Javascript this far, it still suffers from the fact that it’s an Imperative Language that’s trying to be all things to all people.</p>
+<p>Most front end developers are stuck using Javascript in the browser because it’s been the only choice for so long. But many developers are now moving away from writing Javascript directly.</p>
+<p>Instead, they are writing in a different language and compiling, or more accurately, transpiling to Javascript.</p>
+<p>CoffeeScript was one of the first of these languages. And now, Typescript has been adopted by Angular 2. Babel can also be considered a transpiler for Javascript.</p>
+<p>More and more people are taking this approach in production.</p>
+<p>But these languages started with Javascript and only made it slightly better. Why not go all the way and transpile to Javascript from a Pure Functional Language?</p>
+<h4 id="Elm"><a href="#Elm" class="headerlink" title="Elm"></a>Elm</h4><p>In this series, we’ve looked at Elm to help understand Functional Programming.</p>
+<p><strong>But what is Elm? And how can I use it?</strong></p>
+<p>Elm is a Pure Functional Language that compiles to Javascript so you can use it to create Web Applications using <a href="https://guide.elm-lang.org/architecture/" target="_blank" rel="noopener">The Elm Architecture</a>, aka TEA (this architecture inspired the developers of Redux).</p>
+<p>Elm programs do NOT have any Runtime Errors.</p>
+<p>Elm is being used in production at companies such as <a href="https://www.noredink.com/" target="_blank" rel="noopener">NoRedInk</a>, where Evan Czapliki the creator of Elm now works (he previously worked for <a href="https://prezi.com/" target="_blank" rel="noopener">Prezi</a>).</p>
+<p>See this talk, <a href="https://www.youtube.com/watch?v=R2FtMbb-nLs" target="_blank" rel="noopener">6 Months of Elm in Production</a>, by Richard Feldman from NoRedInk and Elm evangelist for more information.</p>
+<p><strong>Do I have to replace all of my Javascript with Elm?</strong></p>
+<p>No. You can incrementally replace parts. See this blog entry, <a href="http://elm-lang.org/blog/how-to-use-elm-at-work" target="_blank" rel="noopener">How to use Elm at Work</a>, to learn more.</p>
+<p><strong>Why learn Elm?</strong></p>
+<ol>
+<li>Programming in a Pure Functional Language is both limiting and freeing. It limits what you can do (mostly by keeping you from shooting yourself in the foot) but at the same time it frees you from bugs and bad design decisions since all Elm programs follow The Elm Architecture, a Functionally Reactive Model.</li>
+<li>Functional Programming will make you a better programmer. The ideas in this article are only the tip of the iceberg. You really need to see them in practice to really appreciate how your programs will shrink in size and grow in stability.</li>
+<li>Javascript was initially built in 10 days and then patched for the last two decades to become a somewhat functional, somewhat object-oriented and a fully imperative programming language.<br> Elm was designed using what has been learned in the last 30 years of work in the Haskell community, which draws from decades of work in mathematics and computer science.<br> The Elm Architecture (TEA) was designed and refined over the years and is a result of Evan’s thesis in Functional Reactive Programming. Watch <a href="https://www.youtube.com/watch?v=Agu6jipKfYw" target="_blank" rel="noopener">Controlling Time and Space</a> to appreciate the level of thinking that went into the formulation of this design.</li>
+<li>Elm is designed for front-end web developers. It’s aimed at making their lives easier. Watch <a href="https://www.youtube.com/watch?v=oYk8CKH7OhE" target="_blank" rel="noopener">Let’s Be Mainstream</a> to better understand this goal.</li>
+</ol>
+<h4 id="The-Future"><a href="#The-Future" class="headerlink" title="The Future"></a>The Future</h4><p>It’s impossible to know what the future will hold, but we can make some educated guesses. Here are some of mine:</p>
+<blockquote>
+<p>There will be a clear move toward languages that compile to Javascript.</p>
+</blockquote>
+<blockquote>
+<p>Functional Programming ideas that have been around for over 40 years will be rediscovered to solve our current software complexity problems.</p>
+</blockquote>
+<blockquote>
+<p>The state of hardware, e.g. gigabytes of cheap memory and fast processors, will make functional techniques viable.</p>
+</blockquote>
+<blockquote>
+<p>CPUs will not get faster but the number of cores will continue to increase.</p>
+</blockquote>
+<blockquote>
+<p>Mutable state will be recognized as one of the biggest problems in complex systems.</p>
+</blockquote>
+<p>I wrote this series of articles because I believe that Functional Programming is the future and because I struggled over the last couple of years to learn it (I’m still learning).</p>
+<p>My goal is to help others learn these concepts easier and faster than I did and to help others become better programmers so that they can have more marketable careers in the future.</p>
+<p>Even if my prediction that Elm will be a huge language in the future is wrong, I can say with certainty that Functional Programming and Elm will be on the trajectory to whatever the future holds.</p>
+<p>I hope that after reading this series, you feel more confident in your abilities and your understanding of these concepts.</p>
+<p>I wish you luck in your future endeavors.</p>
+<hr>
+<p>Repost from <a href="https://medium.com/@cscalfani" target="_blank" rel="noopener">https://medium.com/@cscalfani</a></p>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

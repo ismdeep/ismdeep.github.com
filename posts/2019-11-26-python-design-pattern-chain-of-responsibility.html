@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>Python 设计模式之责任链模式 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2019-11-26-python-design-pattern-chain-of-responsibility" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>Python 设计模式之责任链模式</h1>
+  
+
+      </header>
+      <div>
+      2019-11-26
+      
+        / 
+        
+          <span><a href="/tags/Java/">#Java</a></span>
+        
+          <span><a href="/tags/Python/">#Python</a></span>
+        
+          <span><a href="/tags/Design-Pattern/">#Design Pattern</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+
+        </div>
+
+        <p><strong>意图：</strong> 使多个对象都有机会处理请求，从而避免请求的发送者与接收者之间的耦合关系。将这些对象连成一条链，并沿着这条链传递该请求，直到有一个对象处理它为止。</p>
+<p><strong>适用性：</strong> 1. 有多个的对象可以处理一个请求，哪个对象处理该请求运行时候自动确定。 2. 你想在不明确指定接收者的情况下，向多个对象中的一个提交一个请求。 3. 可处理一个请求的对象集合应被动态指定。</p>
+<p><img src="https://upload.ismdeep.com/images/2020/08/07/44cac38e6b5f8b3f539690ad942da2e2-f531ed.jpg" alt="photo_2019-11-26_16-37-24"></p>
+<pre><code class="python"># -*- coding: utf-8 -*-
+
+
+class BaseHandler(object):
+    &#39;&#39;&#39;处理基类&#39;&#39;&#39;
+
+    def successor(self, successor):
+        # 与下一个责任者关联
+        self._successor = successor
+
+
+class RequestHandlerL1(BaseHandler):
+    &#39;&#39;&#39;第一次请求处理者&#39;&#39;&#39;
+    name = &#39;Teamleader&#39;
+
+    def handle(self, request):
+        if request &lt; 500:
+            print(&quot;审批者[%s],请求金额[%s],审批结果[审批通过]&quot; % (self.name, request))
+        else:
+            print(&quot;\033[31;1m[%s]无权审批,交给下一个审批者\033[0m&quot; % self.name)
+            self._successor.handle(request)
+
+
+class RequestHandlerL2(BaseHandler):
+    &#39;&#39;&#39;第二级请求处理者&#39;&#39;&#39;
+    name = &quot;DeptManager&quot;
+
+    def handle(self, request):
+        if request &lt; 5000:
+            print(&quot;审批者[%s],请求金额[%s],审批结果[审批通过]&quot; % (self.name, request))
+        else:
+            print(&quot;\033[31;1m[%s]无权审批,交给下一个审批者\033[0m&quot; % self.name)
+            self._successor.handle(request)
+
+
+class RequestHandlerL3(BaseHandler):
+    &#39;&#39;&#39;第三级请求处理者&#39;&#39;&#39;
+    name = &quot;CEO&quot;
+
+    def handle(self, request):
+        if request &lt; 10000:
+            print(&quot;审批者[%s],请求金额[%s],审批结果[审批通过]&quot; % (self.name, request))
+        else:
+            print(&quot;\033[31;1m[%s]要太多钱了,不批\033[0m&quot; % self.name)
+            # self._successor.handle(request)
+
+
+class RequestAPI(object):
+    h1 = RequestHandlerL1()
+    h2 = RequestHandlerL2()
+    h3 = RequestHandlerL3()
+
+    h1.successor(h2)
+    h2.successor(h3)
+
+    def __init__(self, name, amount):
+        self.name = name
+        self.amount = amount
+
+    def handle(self):
+        &#39;&#39;&#39;统一请求接口&#39;&#39;&#39;
+        self.h1.handle(self.amount)
+
+
+if __name__ == &quot;__main__&quot;:
+    r1 = RequestAPI(&quot;Alex&quot;, 30000)
+    r1.handle()
+    print(r1.__dict__)
+</code></pre>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

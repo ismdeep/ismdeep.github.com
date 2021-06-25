@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>2015 ACM-ICPC 上海邀请赛 – B题 – hdu – 5237 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2015-08-20-2015-ACM-ICPC-Aisa-Shanghai-Invitation-Contest-B-hdu-5237" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>2015 ACM-ICPC 上海邀请赛 – B题 – hdu – 5237</h1>
+  
+
+      </header>
+      <div>
+      2015-08-20
+      
+        / 
+        
+          <span><a href="/tags/ACM-ICPC/">#ACM-ICPC</a></span>
+        
+          <span><a href="/tags/Cryptography/">#Cryptography</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+
+        </div>
+
+        <p>Problem Description<br>Mike does not want others to view his messages, so he find a encode method Base64.<br>Here is an example of the note in Chinese Passport.</p>
+<p>The Ministry of Foreign Affairs of the People’s Republic of China requests all civil and military authorities of foreign countries to allow the bearer of this passport to pass freely and afford assistance in case of need.</p>
+<p>When encoded by $\texttt{Base64}$, it looks as follows</p>
+<p>VGhlIE1pbmlzdHJ5IG9mIEZvcmVpZ24gQWZmYWlycyBvZiB0aGUgUGVvcGxlJ3MgUmVwdWJsaWMgb2Yg<br>Q2hpbmEgcmVxdWVzdHMgYWxsIGNpdmlsIGFuZCBtaWxpdGFyeSBhdXRob3JpdGllcyBvZiBmb3JlaWdu<br>IGNvdW50cmllcyB0byBhbGxvdyB0aGUgYmVhcmVyIG9mIHRoaXMgcGFzc3BvcnQgdG8gcGFzcyBmcmVl<br>bHkgYW5kIGFmZm9yZCBhc3Npc3RhbmNlIGluIGNhc2Ugb2YgbmVlZC4=</p>
+<p>In the above text, the encoded result of $\texttt{The}$ is $\texttt{VGhl}$. Encoded in ASCII, the characters $\texttt{T}$ , $\texttt{h}$, and $\texttt{e}$ are stored as the bytes 84, 104, and 101, which are the 8-bit binary values 01010100, 01101000, and 01100101. These three values are joined together into a 24-bit string, producing 010101000110100001100101.<br>Groups of 6 bits (6 bits have a maximum of 26=64 different binary values) are converted into individual numbers from left to right (in this case, there are four numbers in a 24-bit string), which are then converted into their corresponding Base64 encoded characters. The Base64 index table is</p>
+<p>0123456789012345678901234567890123456789012345678901234567890123<br>ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/</p>
+<p>In the above example, the string 010101000110100001100101 is divided into four parts 010101, 000110, 100001 and 100101, and converted into integers 21,6,33 and 37. Then we find them in the table, and get V, G, h, l.</p>
+<p>When the number of bytes to encode is not divisible by three (that is, if there are only one or two bytes of input for the last 24-bit block), then the following action is performed:</p>
+<p>Add extra bytes with value zero so there are three bytes, and perform the conversion to base64. If there was only one significant input byte, only the first two base64 digits are picked (12 bits), and if there were two significant input bytes, the first three base64 digits are picked (18 bits). ‘=’ characters are added to make the last block contain four base64 characters.</p>
+<p>As a result, when the last group contains one bytes, the four least significant bits of the final 6-bit block are set to zero; and when the last group contains two bytes, the two least significant bits of the final 6-bit block are set to zero.</p>
+<p>For example, base64(A) = QQ==, base64(AA) = QUE=.</p>
+<p>Now, Mike want you to help him encode a string for k times. Can you help him?</p>
+<p>For example, when we encode A for two times, we will get base64(base64(A)) = UVE9PQ==.</p>
+<p>Input<br>The first line contains an integer T(T≤20) denoting the number of test cases.<br>In the following T lines, each line contains a case. In each case, there is a number k(1≤k≤5) and a string s. s only contains characters whose ASCII value are from 33 to 126(all visible characters). The length of s is no larger than 100.</p>
+<p>Output<br>For each test case, output Case #t:, to represent this is t-th case. And then output the encoded string.</p>
+<p>Sample Input</p>
+<pre><code>2
+1 Mike
+4 Mike
+</code></pre><p>Sample Output</p>
+<pre><code>Case #1: TWlrZQ==
+Case #2: Vmtaa2MyTnNjRkpRVkRBOQ==
+</code></pre><p>Source<br>The 2015 ACM-ICPC China Shanghai Metropolitan Programming Contest</p>
+<pre><code>#include &lt;iostream&gt;
+#include &lt;string.h&gt;
+#include &lt;string&gt;
+#include &lt;cstring&gt;
+
+using namespace std;
+
+string table = &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/&quot;;
+
+string base64encode(string str) {
+    int cnt = str.length() / 3;
+    if (str.length() % 3 != 0) cnt++;
+    cnt *= 24;
+    bool *bin = new bool[cnt];
+
+
+    for (int i = 0; i &lt; cnt; i++) {
+        bin[i] = 0;
+    }
+    memset(bin, 0, sizeof(bin));
+
+    for (int i = 0; i &lt; str.length(); i++) {
+        int tmp = str[i];
+        int top_index = (i + 1) * 8 - 1;
+        for (int j = 0; j &lt; 8; j++) {
+            bin[top_index] = tmp % 2;
+            tmp /= 2;
+            top_index--;
+        }
+    }
+    string ans = &quot;&quot;;
+    for (int i = 0; i &lt; cnt; i = i) {
+        int tmp = 0;
+        tmp *= 2;
+        tmp += bin[i];
+        i++;
+        tmp *= 2;
+        tmp += bin[i];
+        i++;
+        tmp *= 2;
+        tmp += bin[i];
+        i++;
+        tmp *= 2;
+        tmp += bin[i];
+        i++;
+        tmp *= 2;
+        tmp += bin[i];
+        i++;
+        tmp *= 2;
+        tmp += bin[i];
+        i++;
+        ans += table[tmp];
+    }
+    if (str.length() % 3 == 1) {
+        ans[ans.length() - 1] = &#39;=&#39;;
+        ans[ans.length() - 2] = &#39;=&#39;;
+    }
+    if (str.length() % 3 == 2) {
+        ans[ans.length() - 1] = &#39;=&#39;;
+    }
+    return ans;
+}
+
+int main() {
+    int t;
+    cin &gt;&gt; t;
+    for (int tt = 1; tt &lt;= t; tt++) {
+        int n;
+        string str;
+        cin &gt;&gt; n &gt;&gt; str;
+        while (n--) {
+            str = base64encode(str);
+        }
+        cout &lt;&lt; &quot;Case #&quot; &lt;&lt; tt &lt;&lt; &quot;: &quot; &lt;&lt; str &lt;&lt; endl;
+    }
+    return 0;
+}
+</code></pre>
+
+        
+        <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  "HTML-CSS": {
+    preferredFont: "TeX",
+    availableFonts: ["STIX","TeX"],
+    linebreaks: { automatic:true },
+    EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+  },
+  tex2jax: {
+    inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+    processEscapes: true,
+    ignoreClass: "tex2jax_ignore|dno",
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  TeX: {
+    noUndefined: {
+      attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" }
+    },
+    Macros: { href: "{}" }
+  },
+  messageStyle: "none"
+});
+</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Queue(function() {
+  var all = MathJax.Hub.getAllJax(), i;
+  for(i=0; i < all.length; i += 1) {
+    all[i].SourceElement().parentNode.className += ' has-jax';
+  }
+});
+</script>
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

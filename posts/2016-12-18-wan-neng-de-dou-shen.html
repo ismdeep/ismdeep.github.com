@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>万能的豆神(题解) | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2016-12-18-wan-neng-de-dou-shen" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>万能的豆神(题解)</h1>
+  
+
+      </header>
+      <div>
+      2016-12-18
+      
+        / 
+        
+          <span><a href="/tags/ACM-ICPC/">#ACM-ICPC</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+
+        </div>
+
+        <p>在每次放进去的时候直接和前一个进行比较，然后拿最小值作为放进去的即可。比如放进去的是5 4 6 3，那么从杯底到杯口的数值应该是5 4 4 3，以后每一次删除就只要删除一个即可。</p>
+<pre><code class="C++">#include &lt;iostream&gt;
+using namespace std;
+
+int a[3000000];
+int flag_ = -1;
+
+int main (){
+    int n, value;
+    cin &gt;&gt; n;
+    char ch;
+    while (n--){
+        cin &gt;&gt; ch;
+        if (&#39;+&#39; == ch){
+            cin &gt;&gt; value;
+            flag_++;
+            if (0 == flag_){
+                a[flag_] = value;
+            }else{
+                a[flag_] = min(a[flag_-1], value);
+            }
+            cout &lt;&lt; a[flag_] &lt;&lt; endl;
+        }else{
+            if (flag_ &gt;= 0){
+                flag_--;
+            }
+            if (flag_ &gt;= 0){
+                cout &lt;&lt; a[flag_] &lt;&lt; endl;
+            }else{
+                cout &lt;&lt; &quot;-1&quot; &lt;&lt; endl;
+            }
+        }
+    }
+    return 0;
+}
+</code></pre>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

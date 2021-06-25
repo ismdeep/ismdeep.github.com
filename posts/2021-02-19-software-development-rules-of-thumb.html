@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>软件开发经验之谈 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2021-02-19-software-development-rules-of-thumb" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>软件开发经验之谈</h1>
+  
+
+      </header>
+      <div>
+      2021-02-19
+      
+        / 
+        
+          <span><a href="/tags/Development/">#Development</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-命名：传达意图（而非实现细节）"><span class="toc-text">1. 命名：传达意图（而非实现细节）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-类和函数应该只做一件事情，而且只做一件事情。"><span class="toc-text">2. 类和函数应该只做一件事情，而且只做一件事情。</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-K-I-S-S-你不需要它"><span class="toc-text">3. K.I.S.S / 你不需要它</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-解耦，解耦，解耦"><span class="toc-text">4. 解耦，解耦，解耦</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-单一代码库，多种环境"><span class="toc-text">5. 单一代码库，多种环境</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-总结"><span class="toc-text">6. 总结</span></a></li></ol>
+  </div>
+
+
+        </div>
+
+        <p>在我的软件开发生涯中，我形成了一些个人的经验法则，这些经验法则可以帮助我更好地编写代码，写出可读性和可维护更强的代码。</p>
+<p>但首先，什么是经验法则？对我来说，它是我采用的一个原则，当我一次又一次地应用它时，它积极地帮助我实现我的目标。这些目标可能不同：从代码质量，到软件架构，但每次都是与代码的可维护性有关。</p>
+<p>让我们直接开始吧。</p>
+<h1 id="1-命名：传达意图（而非实现细节）"><a href="#1-命名：传达意图（而非实现细节）" class="headerlink" title="1. 命名：传达意图（而非实现细节）"></a>1. 命名：传达意图（而非实现细节）</h1><p>这是我遵循的一个核心经验法则，它总是会带来更好的代码。几乎在所有情况下，当我们写代码时，我们都会处理业务逻辑。这个业务逻辑处理的是我们要实现的核心问题，所以代码应该始终反映这一点。</p>
+<p>当我们给一个变量命名时，应该反映出它所代表的内容，而不是说它是一个列表或者是其中有一些什么数据类型。</p>
+<p>在写一个业务逻辑块的时候，你希望下一个最终从事这个工作的人能够弄清楚问题的核心。当一个需求进来的时候，它肯定会要求一些业务逻辑的实现或变更，使用的是其数据域的特定术语。</p>
+<p>当我们写出这个逻辑的时候，用同样的语言进行转写和改编，就会容易很多。</p>
+<p>对于一个在同一个项目（或项目的一部分）上工作的团队来说，领域语言是所有成员共享的，而具体的实现术语可能会有所不同，并造成混乱。有的人会喜欢<em>array</em>，有的人会喜欢<em>list</em>，有的人会喜欢<em>vector</em>，有的人会喜欢<em>iterable</em>。但是当你谈到业务逻辑时，一组集合对大家的意义是一样的。</p>
+<p>所以，这样写</p>
+<pre><code>collection_ids = [1, 2, 3, 4]
+</code></pre><p>总是比这样写更好</p>
+<pre><code>list_of_ints = [1, 2, 3, 4]
+</code></pre><p>同样的原则也适用于类、方法和函数的命名。一个类的目的应该尽可能的明显，应该不惜一切代价避免包含数据或处理器的命名。</p>
+<h1 id="2-类和函数应该只做一件事情，而且只做一件事情。"><a href="#2-类和函数应该只做一件事情，而且只做一件事情。" class="headerlink" title="2. 类和函数应该只做一件事情，而且只做一件事情。"></a>2. 类和函数应该只做一件事情，而且只做一件事情。</h1><p>虽然这是一个从大学一年级就开始思考的面向对象编程的流行概念，但我看到外面有太多的课，什么都做。这还是比有一个巨大的文件，里面只有互相调用的函数，而且每次都互相传递同样的3-4个参数要好，但这不是一个足够好的方法。</p>
+<p>当一个类/函数只有一个责任时，它的可测试性更强，可以更容易重构，在某些情况下，还可以重用。这些都会提高代码库的整体代码质量，进而提高开发速度。</p>
+<p>举个简单的例子，像下面这样的类就做得太多了。</p>
+<pre><code class="python">class FileExporter:
+
+  def to_xml(self, ...):
+    ...
+
+  def to_json(self, ...):
+    ...
+
+  def to_xlsx(self, ...):
+    ...
+</code></pre>
+<p>最好为我们要做的每一个操作以单独的类。</p>
+<pre><code class="python">class XmlExporter:
+    def export(self):
+        pass
+
+class JsonExporter:
+    def export(self):
+        pass
+
+class XlsxExporter:
+    def export(self):
+        pass
+</code></pre>
+<p>This way, we can test each functionality independently, and we can differentiate easier between them. Some the exporter will require/support extra configuration the others will not: the <code>ExcelExporter</code> would allow formatting, exporting to multiple sheets, data validation, etc… while the <code>XmlExporter</code> would allow specifying the <code>xmlns</code>, a thing that is very specific to the implemented file format.</p>
+<p>这样一来，我们就可以独立地测试每一个功能，而且我们可以更容易地区分它们。有些导出器需要/支持额外的配置，而其他的则不需要：<code>ExcelExporter</code> 允许格式化，导出到多个工作表，数据验证等……而 <code>XmlExporter</code> 允许指定 <code>xmlns</code> ，这是一个非常具体的实现文件格式的东西。</p>
+<h1 id="3-K-I-S-S-你不需要它"><a href="#3-K-I-S-S-你不需要它" class="headerlink" title="3. K.I.S.S / 你不需要它"></a>3. K.I.S.S / 你不需要它</h1><p>另外两个非常流行的 OOP 原则，我喜欢为了简单而合并成一个规则，就是 K.I.S.S. 和 Y.A.G.N.I.</p>
+<p>归根结底就是避免过早的优化，一次次重构，直到你得到完美的抽象（提示：完美的抽象并不存在），实现功能只是为了以防将来需要。</p>
+<p>每次写代码的时候，你的首要任务是用足够好的代码实现功能。完美的代码是不存在的，所以你必须满足于下一个最好的东西：足够好。你仍然必须生产出质量好的代码，但纠结于变量和类的命名不应该是你的主要优先事项。</p>
+<p>代码总是可以在以后进行重构，但功能才是最重要的，因为代码是用来解决问题的。</p>
+<h1 id="4-解耦，解耦，解耦"><a href="#4-解耦，解耦，解耦" class="headerlink" title="4. 解耦，解耦，解耦"></a>4. 解耦，解耦，解耦</h1><p>让事情尽可能的解耦，是一个人能做出的最好的实现决策。这将使你更容易重构，在需要的时候可以换掉不同的功能，测试所有的东西，而不需要过多的嘲讽和头疼。</p>
+<p>我发现，一个好的设计模式可以帮助你解耦组件，就是适配器模式。虽然它不应该被滥用，但它对于并行开发两个独立的组件，然后用一个额外的轻量级层与适配器集成它们，使它们的输入/输出兼容是很有用的。</p>
+<h1 id="5-单一代码库，多种环境"><a href="#5-单一代码库，多种环境" class="headerlink" title="5. 单一代码库，多种环境"></a>5. 单一代码库，多种环境</h1><p>虽然这是现在的常识，但一些老的架构和部署策略仍然在代码库层面对环境进行了区分。</p>
+<p>每个环境的代码库应该始终是相同的，因为这样可以更容易地将生产错误复制到开发环境的本地。环境负责为每个环境提供配置，并对生产、暂存和开发进行区分。</p>
+<p>我个人比较喜欢通过环境变量来配置项目，但也有其他方法可以达到同样的效果：配置文件、集中参数存储等。</p>
+<h1 id="6-总结"><a href="#6-总结" class="headerlink" title="6. 总结"></a>6. 总结</h1><p>我不认为有什么结论可以拿来总结的，因为毕竟这篇文章只是我个人的一些原则。希望你能喜欢！</p>
+<p>Repost from: <a href="https://vladcalin.ro/blog/2021-01-30-software-development-rules-of-thumb" target="_blank" rel="noopener">https://vladcalin.ro/blog/2021-01-30-software-development-rules-of-thumb</a></p>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

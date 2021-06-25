@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>Java DES简单实现 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2015-08-20-simple-des-demo-in-java" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>Java DES简单实现</h1>
+  
+
+      </header>
+      <div>
+      2015-08-20
+      
+        / 
+        
+          <span><a href="/tags/Cryptography/">#Cryptography</a></span>
+        
+          <span><a href="/tags/Algorithm/">#Algorithm</a></span>
+        
+          <span><a href="/tags/Java/">#Java</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+
+        </div>
+
+        <p>&nbsp;<br><a id="more"></a></p>
+<pre><code class="java">package com.lemox.security;
+
+import java.security.SecureRandom;
+import javax.crypto.spec.DESKeySpec;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.SecretKey;
+import javax.crypto.Cipher;
+
+/**
+ * DES加密介绍 DES是一种对称加密算法，所谓对称加密算法即：加密和解密使用相同密钥的算法。DES加密算法出自IBM的研究，
+ * 后来被美国政府正式采用，之后开始广泛流传，但是近些年使用越来越少，因为DES使用56位密钥，以现代计算能力，
+ * 24小时内即可被破解。虽然如此，在某些简单应用中，我们还是可以使用DES加密算法，本文简单讲解DES的JAVA实现 。
+ * 注意：DES加密和解密过程中，密钥长度都必须是8的倍数
+ */
+public class DES
+{
+    public DES()
+    {
+    }
+
+    // 测试
+    public static void main(String args[])
+    {
+        // 待加密内容
+        String str = &quot;测试内容&quot;;
+        // 密码，长度要是8的倍数
+        String password = &quot;958802882010913257074332531189842634785729877354946875887501857953775777216308447887369944730603446620061641196057412243405946910023589270273686087290124712345600&quot;;
+        byte[] result = DES.encrypt(str.getBytes(), password);
+        System.out.println(&quot;加密后：&quot; + new String(result));
+        // 直接将如上内容解密
+        try
+        {
+            byte[] decryResult = DES.decrypt(result, password);
+            System.out.println(&quot;解密后：&quot; + new String(decryResult));
+        } catch (Exception e1)
+        {
+            e1.printStackTrace();
+        }
+    }
+
+    /**
+     * 加密
+     * 
+     * @param datasource
+     *            byte[]
+     * @param password
+     *            String
+     * @return byte[]
+     */
+    public static byte[] encrypt(byte[] datasource, String password)
+    {
+        try
+        {
+            SecureRandom random = new SecureRandom();
+            DESKeySpec desKey = new DESKeySpec(password.getBytes());
+            // 创建一个密匙工厂，然后用它把DESKeySpec转换成
+            SecretKeyFactory keyFactory = SecretKeyFactory.getInstance(&quot;DES&quot;);
+            SecretKey securekey = keyFactory.generateSecret(desKey);
+            // Cipher对象实际完成加密操作
+            Cipher cipher = Cipher.getInstance(&quot;DES&quot;);
+            // 用密匙初始化Cipher对象
+            cipher.init(Cipher.ENCRYPT_MODE, securekey, random);
+            // 现在，获取数据并加密
+            // 正式执行加密操作
+            return cipher.doFinal(datasource);
+        } catch (Throwable e)
+        {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 解密
+     * 
+     * @param src
+     *            byte[]
+     * @param password
+     *            String
+     * @return byte[]
+     * @throws Exception
+     */
+    public static byte[] decrypt(byte[] src, String password) throws Exception
+    {
+        // DES算法要求有一个可信任的随机数源
+        SecureRandom random = new SecureRandom();
+        // 创建一个DESKeySpec对象
+        DESKeySpec desKey = new DESKeySpec(password.getBytes());
+        // 创建一个密匙工厂
+        SecretKeyFactory keyFactory = SecretKeyFactory.getInstance(&quot;DES&quot;);
+        // 将DESKeySpec对象转换成SecretKey对象
+        SecretKey securekey = keyFactory.generateSecret(desKey);
+        // Cipher对象实际完成解密操作
+        Cipher cipher = Cipher.getInstance(&quot;DES&quot;);
+        // 用密匙初始化Cipher对象
+        cipher.init(Cipher.DECRYPT_MODE, securekey, random);
+        // 真正开始解密操作
+        return cipher.doFinal(src);
+    }
+}
+</code></pre>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

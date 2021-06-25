@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>素数筛选算法 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2016-05-19-prime-filter-algorithm" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>素数筛选算法</h1>
+  
+
+      </header>
+      <div>
+      2016-05-19
+      
+        / 
+        
+          <span><a href="/tags/ACM-ICPC/">#ACM-ICPC</a></span>
+        
+          <span><a href="/tags/Number-Theory/">#Number Theory</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+
+        </div>
+
+        <p>一个快速的筛选从0到一个数字之前所有素数的方法，思路比较简单：先把所有数字都标记为素数，然后从2开始一直到n，当这个数字i的标记为素数，就把 i <em> i, i </em> (i+1), i * (i+2), … , 全部标记为非素数即可。</p>
+<pre><code class="c">#include &lt;iostream&gt;
+using namespace std;
+
+// max number
+#define MAXN 1024
+
+int main () {
+    bool is_prime[MAXN+1];
+    for (int i = 0; i &lt;= MAXN; i++){
+        is_prime[i] = true;
+    }
+    is_prime[0] = false;
+    is_prime[1] = false;
+    for (int i = 2; i &lt;= MAXN; i++){
+        if (is_prime[i]){
+            for (int j = i * i; j &lt;= MAXN; j += i){
+                is_prime[j] = false;
+            }
+        }
+    }
+    // done for judge all number wether it is a prime.
+    // ----------------------------------------------
+    // output all prime number between 0-MAXN
+    for (int i = 0; i &lt;= MAXN; i++){
+        if(is_prime[i]){
+            printf(&quot;%d &quot;, i);
+        }
+    }
+    printf(&quot;\n&quot;);
+    return 0;
+}
+
+</code></pre>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>C语言中创建动态数组 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2019-01-28-creating-dynamic-array-in-c" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>C语言中创建动态数组</h1>
+  
+
+      </header>
+      <div>
+      2019-01-28
+      
+        / 
+        
+          <span><a href="/tags/ACM-ICPC/">#ACM-ICPC</a></span>
+        
+          <span><a href="/tags/C/">#C</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+
+        </div>
+
+        <p>还是先上代码吧。</p>
+<a id="more"></a>
+<pre><code class="c">//
+// Created by ismdeep on 2019-01-28.
+//
+
+#ifndef ISMDEEP_ARRAY_H
+#define ISMDEEP_ARRAY_H
+
+#include &lt;stdint.h&gt;
+
+void * create_1d_arr(size_t size, size_t sizeof_item) {
+    void * arr = malloc(sizeof_item * size);
+    return arr;
+}
+
+void ** create_2d_arr(size_t rows, size_t cols, size_t sizeof_item) {
+    void ** arr = (void **)malloc(sizeof(size_t) * rows);
+    for (size_t row_id = 0; row_id &lt; rows; ++row_id) {
+        arr[row_id] = malloc(sizeof_item * cols);
+    }
+    return arr;
+}
+
+
+#endif //ISMDEEP_ARRAY_H
+</code></pre>
+<p>另附上CLion下查看动态数组的方法</p>
+<pre><code class="text">(uint64_t (*)[10])arr
+(uint64_t (**)[10][10])arr2
+</code></pre>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

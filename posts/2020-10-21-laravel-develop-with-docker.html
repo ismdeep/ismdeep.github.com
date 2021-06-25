@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>Docker 下 Laravel 项目开发 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2020-10-21-laravel-develop-with-docker" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>Docker 下 Laravel 项目开发</h1>
+  
+
+      </header>
+      <div>
+      2020-10-21
+      
+        / 
+        
+          <span><a href="/tags/Hacker/">#Hacker</a></span>
+        
+          <span><a href="/tags/Development/">#Development</a></span>
+        
+          <span><a href="/tags/macOS/">#macOS</a></span>
+        
+          <span><a href="/tags/Docker/">#Docker</a></span>
+        
+          <span><a href="/tags/PHP/">#PHP</a></span>
+        
+          <span><a href="/tags/Laravel/">#Laravel</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-说明"><span class="toc-text">1. 说明</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-构建-Ubuntu-LNMP-镜像"><span class="toc-text">2. 构建 Ubuntu-LNMP 镜像</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-运行-Ubuntu-LNMP-容器"><span class="toc-text">3. 运行 Ubuntu-LNMP 容器</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-PHP-命令说明"><span class="toc-text">4. PHP 命令说明</span></a></li></ol>
+  </div>
+
+
+        </div>
+
+        <p>在开始这篇文章之前，我觉得有必要先交代一下笔者所使用的开发环境。电脑是一台 MacBook Pro. 我相信很多从事 PHP 项目开发的小伙伴都有过这样的一些问题，自己电脑上很难配置出于生产环境一样的运行环境。比如，生产环境用的是 Linux 系统，而自己电脑上又是 macOS 系统，而且我发现 macOS 环境下想要安装 PHP 扩展也是一件非常麻烦的事情，这其中当然也有部分原因是得益于咱们特有的局域网环境问题。当然，笔者也不推荐在 macOS 环境下用 Homebrew 安装的 PHP 运行环境。<strong>这里推荐大家使用 Docker 环境来运行咱们的 PHP 项目。</strong></p>
+<p>使用 Docker 来运行 PHP 项目考虑是有原因的：</p>
+<ul>
+<li>Docker 中咱们可以使用 Linux 的系统，基本上可以跟生产服务器所使用的环境一样了。</li>
+<li>Docker 中可以配置多种环境，无论是老版本的 PHP 5.x 还是最新的 PHP 7.4 都是可以根据需要自行安装的。</li>
+<li>Linux 下 PHP 环境更加简单，社区文档更加丰富，所有操作起来会更加简单，避免踩上很多无用的坑。</li>
+</ul>
+<h1 id="1-说明"><a href="#1-说明" class="headerlink" title="1. 说明"></a>1. 说明</h1><p>本文将讲述创建一个博客网站的过程。</p>
+<p>项目名称：<code>blog</code></p>
+<p>测试域名：<code>blog.local</code></p>
+<p>操作系统：<code>Ubuntu 18.04</code></p>
+<p>PHP 版本：<code>PHP 7.2</code></p>
+<p>数据库：<code>MySQL</code></p>
+<p>数据库名称：<code>db_blog</code></p>
+<p>数据库用户名：<code>db_blog</code></p>
+<p>数据库密码：<code>saJXUFS9</code></p>
+<h1 id="2-构建-Ubuntu-LNMP-镜像"><a href="#2-构建-Ubuntu-LNMP-镜像" class="headerlink" title="2. 构建 Ubuntu-LNMP 镜像"></a>2. 构建 Ubuntu-LNMP 镜像</h1><p>镜像构建文件见： <a href="https://github.com/ismdeep/dockerfile/tree/master/ubuntu-lnmp" target="_blank" rel="noopener">https://github.com/ismdeep/dockerfile/tree/master/ubuntu-lnmp</a></p>
+<pre><code class="bash">git clone https://github.com/ismdeep/dockerfile.git
+cd dockerfile/ubuntu-lnmp
+docker build -t ubuntu-lnmp .
+</code></pre>
+<h1 id="3-运行-Ubuntu-LNMP-容器"><a href="#3-运行-Ubuntu-LNMP-容器" class="headerlink" title="3. 运行 Ubuntu-LNMP 容器"></a>3. 运行 Ubuntu-LNMP 容器</h1><ol>
+<li><p>首先创建一个空的文件夹 <code>blog</code> ，本文使用目录为 <code>/Users/ismdeep/Data/blog</code></p>
+</li>
+<li><p>运行容器：</p>
+<pre><code class="bash"> docker run --name blog \
+ -v /Users/ismdeep/Data/blog:/var/www/blog \
+ -p 80:80 \
+ -p 3306:3306 \
+ -d ubuntu-lnmp
+</code></pre>
+</li>
+<li><p>进入 Docker 容器并初始化项目。</p>
+<pre><code class="bash"> docker exec -it blog bash
+ cd /var/www
+ composer create-project --prefer-dist laravel/laravel blog
+</code></pre>
+</li>
+<li><p>配置 Nginx</p>
+<p> Nginx 配置目录在 <code>/etc/nginx/sited-enabled</code></p>
+<p> Nginx 配置如下</p>
+<pre><code> server {
+     listen 80;
+     root /var/www/blog/public;
+     index index.php;
+     server_name blog.local;
+
+     location / {
+         try_files $uri $uri/ /index.php?$query_string;
+     }
+     location ~\.php$ {
+         include snippets/fastcgi-php.conf;
+         fastcgi_pass unix:/var/run/php/php7.2-fpm.sock;
+     }
+
+     location ~/\.ht {
+         deny all;
+     }
+ }
+</code></pre></li>
+<li><p>配置 MySQL 数据库</p>
+<p> 为了能够通过 PhpStorm 等开发软件能够连接 MySQL 数据库，我们需要将 <code>/etc/mysql/mysql.conf.d/mysqld.cnf</code> 文件中 <code>bind-address          = 127.0.0.1</code> 注释起来。并重启数据库。重启方法嘛，直接重启 Docker 不就成了？</p>
+</li>
+<li><p>创建数据库及用户</p>
+<p> 在 Docker 容器中，运行以下命令，即可进入 MySQL.</p>
+<pre><code> mysql -uroot -p
+</code></pre><pre><code> create database db_blog default character set utf8mb4 collate utf8mb4_unicode_ci;
+ CREATE USER &#39;db_blog&#39;@&#39;%&#39; IDENTIFIED WITH mysql_native_password BY &#39;saJXUFS9&#39;;
+ grant all privileges on db_blog.* to &#39;db_blog&#39;@&#39;%&#39;;
+ flush privileges;
+</code></pre></li>
+<li><p>将项目使用的 MySQL 配置信息写入项目的 <code>.env</code> 文件中</p>
+<p> <img src="https://upload.ismdeep.com/images/2020/10/21/5bfd9f6a9dd374121f8fb10f2619ebe1-177048.png" alt="image-20201021114119538"></p>
+</li>
+</ol>
+<h1 id="4-PHP-命令说明"><a href="#4-PHP-命令说明" class="headerlink" title="4. PHP 命令说明"></a>4. PHP 命令说明</h1><p>对于项目开发过程中所需要使用的 <code>php artisan</code> 的命令，当然我们需要去 Docker 容器中执行了。</p>
+<pre><code class="php">php artisan migrate
+</code></pre>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

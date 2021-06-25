@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>Ubuntu Server 18.04 设置静态 IP | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2019-11-19-setting-up-ip-on-ubuntu-server-18-04" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>Ubuntu Server 18.04 设置静态 IP</h1>
+  
+
+      </header>
+      <div>
+      2019-11-19
+      
+        / 
+        
+          <span><a href="/tags/Ubuntu/">#Ubuntu</a></span>
+        
+          <span><a href="/tags/Linux/">#Linux</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#0x00-简介"><span class="toc-text">0x00 简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0x01-静态-IP-设置步骤"><span class="toc-text">0x01 静态 IP 设置步骤</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0x02-动态-IP-设置步骤"><span class="toc-text">0x02 动态 IP 设置步骤</span></a></li></ol>
+  </div>
+
+
+        </div>
+
+        <p>&nbsp;</p>
+<a id="more"></a>
+<h3 id="0x00-简介"><a href="#0x00-简介" class="headerlink" title="0x00 简介"></a>0x00 简介</h3><p><strong>netplan</strong> 是 <strong>Ubuntu</strong> 在 17.10 版本中引入的一种新的命令行网络配置程序，用于在 Ubuntu 系统中轻松管理和配置网络设置。它允许用户使用 YAML 抽象语法来配置网络接口。它可与 NetworkManager 和 systemd-networkd 网络守护程序一起作为内核的接口。</p>
+<p>它读取 <code>/etc/netplan/*.yaml</code> 中描述的网络配置，并且可以将所有网络接口的配置存储在这些文件中。</p>
+<h3 id="0x01-静态-IP-设置步骤"><a href="#0x01-静态-IP-设置步骤" class="headerlink" title="0x01 静态 IP 设置步骤"></a>0x01 静态 IP 设置步骤</h3><ol>
+<li><p>列出 Ubuntu 上的所有活动网络接口</p>
+<p> 首先来查看 Ubuntu 上有哪些可以配置的网络接口。可以通过 <code>ifconfig</code> 命令来列出系统中所有连接的网络接口</p>
+<pre><code class="bash"> ismdeep@ubuntu:~$ ifconfig
+ enp0s3: flags=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt;  mtu 1500
+         inet 192.168.56.103  netmask 255.255.255.0  broadcast 192.168.56.255
+         inet6 fe80::a00:27ff:fe7c:4250  prefixlen 64  scopeid 0x20&lt;link&gt;
+         ether 08:00:27:7c:42:50  txqueuelen 1000  (Ethernet)
+         RX packets 361  bytes 32651 (32.6 KB)
+         RX errors 0  dropped 0  overruns 0  frame 0
+         TX packets 240  bytes 30363 (30.3 KB)
+         TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+ lo: flags=73&lt;UP,LOOPBACK,RUNNING&gt;  mtu 65536
+         inet 127.0.0.1  netmask 255.0.0.0
+         inet6 ::1  prefixlen 128  scopeid 0x10&lt;host&gt;
+         loop  txqueuelen 1000  (Local Loopback)
+         RX packets 1840  bytes 131056 (131.0 KB)
+         RX errors 0  dropped 0  overruns 0  frame 0
+         TX packets 1840  bytes 131056 (131.0 KB)
+         TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+</code></pre>
+<p> 这里可以看到系统中有两个网络接口：<code>enp0s3</code> 是以太网接口，<code>lo</code> 是环回接口。</p>
+</li>
+<li><p>Ubuntu 设置静态 IP 地址</p>
+<p> 在这个例子中，我们将以 <code>enp0s3</code> 以太网接口配置一个静态 IP。</p>
+<p> 如果在 <code>/etc/netplan</code> 目录中没有 yaml 文件的话，则需要通过命令来生成这些配置文件。</p>
+<pre><code class="bash"> ismdeep@ubuntu:~$ sudo netplan generate
+</code></pre>
+<p> 接下来可以通过以下命令查看 <code>/etc/netplan</code> 中有哪些配置文件。</p>
+<pre><code class="bash"> ismdeep@ubuntu:~$ ls -l /etc/netplan/
+ total 4
+ -rw-r--r-- 1 root root 383 Nov 19 11:14 50-cloud-init.yaml
+</code></pre>
+<p> 接下来通过 vim 或者其他编辑器进行编辑 yaml 文件。</p>
+<pre><code> # This is the network config written by &#39;subiquity&#39;
+ network:
+   ethernets:
+     enp0s3:
+       addresses: []
+       dhcp4: true
+       optional: true
+   version: 2
+
+ network:
+   ethernets:
+     enp0s8:
+       addresses:
+       - 192.168.56.101/24
+       dhcp4: no
+       optional: true
+   version: 2
+</code></pre><p> 说明：</p>
+<ul>
+<li><code>enp0s3</code> : 网络接口名称</li>
+<li><code>dhcp4</code> : 接收 IPv4 接口的 DHCP 属性</li>
+<li><code>dhcp6</code> : 接收 IPv6 接口的 DHCP 属性</li>
+<li><code>addresses</code> : 接口的静态地址序列</li>
+<li><code>gateway4</code> : 默认网关的 IPv4 地址</li>
+<li><p><code>nameservers</code> : DNS 服务器地址，以英文逗号( , )分隔。</p>
+<p><strong>注：多个网卡时请配置一个 <code>gateway4</code> 表示流量从哪个网卡出去。如果有 NAT DHCP 的网卡，则将这个放在最前。</strong></p>
+</li>
+</ul>
+</li>
+<li><p>使之生效</p>
+<p> 在编辑完配置文件后，通过以下命令使配置生效。</p>
+<pre><code> ismdeep@ubuntu:~$ sudo netplan apply
+</code></pre></li>
+</ol>
+<h3 id="0x02-动态-IP-设置步骤"><a href="#0x02-动态-IP-设置步骤" class="headerlink" title="0x02 动态 IP 设置步骤"></a>0x02 动态 IP 设置步骤</h3><ol>
+<li><p>要将 <code>enp0s3</code> 以太网接口配置为通过 DHCP 动态IP，只需使用以下配置即可</p>
+<pre><code> network:
+     ethernets:
+         enp0s3:
+             dhcp4: true
+             dhcp6: true
+     version: 2
+</code></pre></li>
+<li><p>使之生效</p>
+<pre><code> ismdeep@ubuntu:~$ sudo netplan apply
+</code></pre></li>
+</ol>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

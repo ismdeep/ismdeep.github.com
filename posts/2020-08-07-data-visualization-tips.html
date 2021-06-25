@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>数据可视化技巧 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2020-08-07-data-visualization-tips" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>数据可视化技巧</h1>
+  
+
+      </header>
+      <div>
+      2020-08-07
+      
+        / 
+        
+          <span><a href="/tags/Development/">#Development</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#现在的事实"><span class="toc-text">现在的事实</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#从无到有"><span class="toc-text">从无到有</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Distorted-reality"><span class="toc-text">Distorted reality</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Ditch-the-pie"><span class="toc-text">Ditch the pie</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Size-matters"><span class="toc-text">Size matters</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Less-is-more"><span class="toc-text">Less is more</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Alberto-Cairo-Visual-and-data-journalist"><span class="toc-text">Alberto Cairo- Visual and data journalist</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Over-the-rainbow"><span class="toc-text">Over the rainbow</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Spare-the-ink"><span class="toc-text">Spare the ink</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#A-dimension-too-far"><span class="toc-text">A dimension too far</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Stick-to-the-point"><span class="toc-text">Stick to the point</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Keep-it-simple"><span class="toc-text">Keep it simple</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Avoid-mysteries"><span class="toc-text">Avoid mysteries</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#A-tale-of-two-stories"><span class="toc-text">A tale of two stories</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Stand-on-the-right"><span class="toc-text">Stand on the right</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Back-to-basics"><span class="toc-text">Back to basics</span></a></li></ol></li></ol>
+  </div>
+
+
+        </div>
+
+        <p>在数据真正重要的时候，我们都希望创建有效的图表。但是，数据可视化很少在学校教授，也没有在职场培训中介绍。我们大多数人在学习过程中会学习，因此我们经常做出选择或犯错，使读者感到困惑。</p>
+<p>从过度复杂化或过度修饰的图表到传达完全不正确的信息，可以轻松避免常见的设计陷阱。我们总结了以下几点，来帮您创建更简单的图表，有效地理解数据的含义。</p>
+<p><img src="https://upload.ismdeep.com/images/2020/08/07/46797f4a8c86d5cfe8d73e5497dec98d-a34b7f.png" alt="img"></p>
+<h2 id="现在的事实"><a href="#现在的事实" class="headerlink" title="现在的事实"></a>现在的事实</h2><p>研究人员在 2014 年的一项研究《科学蒙蔽》(<a href="http://journals.sagepub.com/doi/abs/10.1177/0963662514549688" target="_blank" rel="noopener">Blinded with science</a>.) 中发现：“只要涉及图表，大多数人都会相信您所说的一切。” 鉴于图表的说服力，重要的是我们必须正确使用它们，并将观众的最大兴趣放在设计的核心。图表可以通过多种不同方式意外传达错误信息，歪曲事实或使数据难以快速的解释意义。</p>
+<blockquote>
+<p>许多图表都具有复杂且智能的基础信息，但却无法传达预期的信息。</p>
+<p><a href="http://donawong.com/" target="_blank" rel="noopener">Dona M. Wong</a> —— 数据可视化专家</p>
+</blockquote>
+<h3 id="从无到有"><a href="#从无到有" class="headerlink" title="从无到有"></a>从无到有</h3><p><em>条形图非常适合进行比较。Bar charts are great for comparisons. To judge their end points, the bars should begin at a zero baseline.</em></p>
+<p><img src="https://upload.ismdeep.com/images/2020/08/07/a150707fc194e6cb7c58ed567f341449-6a1c41.png" alt="Start from nothing"></p>
+<p>For people to draw meaningful conclusions from a bar graph, the bars have to be presented in full. To do this, you need to start your vertical axis at zero.</p>
+<p>Bar charts are generally easy to read because they “ask” our eyes to do a simple thing: compare the relative heights of the bars. But if we show just the tips of the bars to exaggerate differences in the data, our audience loses the ability to make useful visual comparisons.</p>
+<p>“Truncation equals misrepresentation,” writes <a href="http://donawong.com/" target="_blank" rel="noopener">Dona M. Wong</a>. So people are either misled and take away the wrong message, or end up having to read the numbers, which defeats the purpose of the chart.</p>
+<h3 id="Distorted-reality"><a href="#Distorted-reality" class="headerlink" title="Distorted reality"></a>Distorted reality</h3><p><em>Line charts often show a trend. Stretching the height of the graph can create fake drama, while stretching the width can underplay it.</em></p>
+<p><img src="https://upload.ismdeep.com/images/2020/08/07/15c6a6d77b724ae9d0028db2ce7bbe7c-ccc871.png" alt="Distorted reality"></p>
+<p>Similar to a stretched or squished photo, a chart’s dimensions — or its aspect ratio — can change the image that we’re presenting. But while you usually can’t get away with a wrong aspect ratio in a photo, a distorted one in a chart can easily go unnoticed. Whether this results in an overblown or understated message, it just misleads your audience.</p>
+<p>“There is no single rule to follow in terms of how high or wide to make the graph, but a useful notion involves ‘banking to 45°,’ whereby the average slope angle across your chart heads towards 45°,” writes data visualization specialist <a href="http://www.visualisingdata.com/book/" target="_blank" rel="noopener">Andy Kirk</a>. This is probably impractical to measure, but judging by eye tends to do the trick.</p>
+<h3 id="Ditch-the-pie"><a href="#Ditch-the-pie" class="headerlink" title="Ditch the pie"></a>Ditch the pie</h3><p><em>Pie charts seem friendly, but in reality they’re hard to read. In most cases, you can find a better alternative.</em></p>
+<p><img src="https://upload.ismdeep.com/images/2020/08/07/9c0ec6a5323e1fc694b9a0d747c34a87-9b6b6c.png" alt="Ditch the pie"></p>
+<p>Pie charts are part of the larger family of area graphs, which are all difficult to interpret. Nevertheless, pie charts are widely used and abused in almost every professional and educational setting.</p>
+<p>The reason why pie charts are best avoided is straightforward: our brains can’t make accurate estimates or comparisons of angles. If the slices are fairly close in size, it’s difficult — if not impossible — to tell which is bigger, and when they’re not close in size, the best you can do is determine that one is bigger than the other, but you can’t judge by how much, explains data visualization expert <a href="http://www.storytellingwithdata.com/books/" target="_blank" rel="noopener">Cole Nussbaumer Knaflic</a>.</p>
+<p>Delivering precise numbers with a pie chart requires a lot of effort, such as relying on direct slice labels that might not fit, or legends that make our eyes jump back and forth between the pie and the legend.</p>
+<h3 id="Size-matters"><a href="#Size-matters" class="headerlink" title="Size matters"></a>Size matters</h3><p><em>It’s harder to compare areas or volumes than lengths. To avoid people getting the wrong impression, use them as a last resort.</em></p>
+<p><img src="https://upload.ismdeep.com/images/2020/08/07/08cb2a240fa746a25adfa785f3370a5b-feec45.png" alt="Size matters"></p>
+<p>When we’re asked to judge and compare two dimensions at once, for example, two circles, we rarely make accurate estimates. We usually underestimate the size of the bigger circles and overestimate the size of the smaller ones. This happens because we instinctively judge the lengths or widths of the shapes and not their areas.</p>
+<p>“The geometric accuracy of the size calculations is paramount,” writes <a href="http://www.visualisingdata.com/book/" target="_blank" rel="noopener">Andy Kirk</a>. When building or reading a proportional shape chart, it’s useful to remember a simple rule: when we double the height of a circle we actually quadruple — not double — its area. And just bear in mind, if you decide to make your circles appear as 3D spheres, you’re no longer representing area but volume.</p>
+<h2 id="Less-is-more"><a href="#Less-is-more" class="headerlink" title="Less is more"></a>Less is more</h2><p>“Perfection is achieved not when there is nothing more to add, but when there is nothing left to take away,” said French writer Antoine de Saint-Exupery.</p>
+<p>A common mistake we all make with charts is overdressing them with unnecessary elements. The usual suspects are excess color, graphical clutter and abuse of special effects. Displaying too many decimal places in our values is another one to watch out for. Details like these won’t impress anyone, but decluttering your charts will.</p>
+<blockquote>
+<p>Charts are not just mere illustrations, they are not just drawings, they carry meaning.</p>
+<h5 id="Alberto-Cairo-Visual-and-data-journalist"><a href="#Alberto-Cairo-Visual-and-data-journalist" class="headerlink" title="Alberto Cairo- Visual and data journalist"></a><a href="https://www.urban.org/events/alberto-cairo-misleading-data-and-visualizations" target="_blank" rel="noopener">Alberto Cairo</a>- Visual and data journalist</h5></blockquote>
+<h3 id="Over-the-rainbow"><a href="#Over-the-rainbow" class="headerlink" title="Over the rainbow"></a>Over the rainbow</h3><p><em>Use color to communicate information and not for decoration. Too many colors can confuse and disorient.</em></p>
+<p><img src="https://upload.ismdeep.com/images/2020/08/07/a1423dc6ee78f7c2e9f49d7e5ad83bf6-f9b5c3.png" alt="Over the rainbow"></p>
+<p>When designing a graph, color can be both your friend and your enemy. Depending on how we use it, it can either gracefully highlight data and show a change, or create visual overload and confuse the audience.</p>
+<p>“When any color appears as a contrast to the norm, our eyes pay attention, and our brains attempt to assign meaning to that difference,” writes data visualization expert <a href="http://www.stephen-few.com/idd.php" target="_blank" rel="noopener">Stephen Few</a>. Too many meanings, or colors, just blur your message and throw people off-track.</p>
+<p>Also, using different colored elements, like bars or lines, may be illegible for colorblind readers. For this reason, you can either vary the intensities or add a symbol or number to make it clear for these readers.</p>
+<p>“Admit colors into charts gracefully, as you would receive in-laws into your home,” says <a href="http://donawong.com/" target="_blank" rel="noopener">Dona M. Wong</a>.</p>
+<h3 id="Spare-the-ink"><a href="#Spare-the-ink" class="headerlink" title="Spare the ink"></a>Spare the ink</h3><p><em>Background, borders, shading, dark grid lines and needless labels are your enemies. Banish them to draw attention to the data.</em></p>
+<p><img src="https://upload.ismdeep.com/images/2020/08/07/b9e0a98be3e3810d86b5d01d8d33ca47-bdde97.png" alt="Spare the ink"></p>
+<p>To get this point across, American statistician, Edward Tufte, in one of his most <a href="https://www.edwardtufte.com/tufte/books_vdqi" target="_blank" rel="noopener">influential books</a>, coined the term ‘chartjunk’: “The interior decoration of graphics generates a lot of ink that does not tell the viewer anything new. The purpose of decoration varies — to make the graphic appear more scientific and precise, to enliven the display, to give the designer an opportunity to exercise artistic skills. Regardless of its cause, it is all non-data-ink or redundant data-ink, and it is often chartjunk.”</p>
+<p>The simple solution is to use the least amount of ink to communicate your message, and remove anything that’s distracting. This way, you’ll make your data and your graph stand out. As <a href="http://www.thefunctionalart.com/p/the-truthful-art-book.html" target="_blank" rel="noopener">Alberto Cairo</a> says: “white space isn’t empty space.”</p>
+<h3 id="A-dimension-too-far"><a href="#A-dimension-too-far" class="headerlink" title="A dimension too far"></a>A dimension too far</h3><p><em>Unless you’re actually plotting the third dimension, don’t use 3D. It skews the data and makes comparisons harder.</em></p>
+<p><img src="https://upload.ismdeep.com/images/2020/08/07/74cdce65a777c0ed836bba736518e0eb-875906.png" alt="A dimension too far"></p>
+<p>Most data visualization experts agree that use of 3D special effects is, at best, an unnecessary and, at worst, a disorienting and confusing element. It “distorts the viewer’s ability to read values within any degree of acceptable accuracy,” writes <a href="http://www.visualisingdata.com/book/" target="_blank" rel="noopener">Andy Kirk</a>.</p>
+<p>There’s something very appealing about fancy 3D charts. However, in most cases, the third dimension — or depth — is purely decorative, and makes it difficult for people to process the data. In a 3D chart, the back part looks smaller in relation to the front, or is even hidden by it, which makes judgments of values and comparisons almost impossible. Also, people don’t know which point on the 3D shape to measure against the axis scale.</p>
+<p>3D charts, in most circumstances, are just a waste of time and effort for both you and your audience.</p>
+<h3 id="Stick-to-the-point"><a href="#Stick-to-the-point" class="headerlink" title="Stick to the point"></a>Stick to the point</h3><p><em>Extra decimal places look impressive and imply accuracy, but they’re often pointless. So, take a step back and round numbers off before plotting.</em></p>
+<p><img src="https://upload.ismdeep.com/images/2020/08/07/3db63408df01590d2d5fc9a73b6d10c0-bbfe5a.png" alt="Stick to the point"></p>
+<p>Overstating the numerical precision of your data by showing too many decimal places can make your chart seem accurate, but this specificity is just misleading. Even when you don’t exaggerate the precision of your data, and your numbers are genuinely accurate, overloading your audience with such detail is often useless.</p>
+<p>“Selecting the appropriate level of precision for numbers boils down to a single design practice: the level of precision should not exceed the level needed to serve your communication objectives and the needs of your readers,” writes <a href="http://www.stephen-few.com/smtn.php" target="_blank" rel="noopener">Stephen Few</a>.</p>
+<p>Just remember, when using less precision than is available, it’s important you keep your audience in the loop.</p>
+<h2 id="Keep-it-simple"><a href="#Keep-it-simple" class="headerlink" title="Keep it simple"></a>Keep it simple</h2><p>Charts are all about making data accessible to a broad audience. This doesn’t mean you need to over-simplify or dumb things down — just be direct and get your point across without overcomplicating things.</p>
+<p>People tend to question their intelligence and blame themselves when they have difficulty interpreting a graph. But in most cases, it’s not people’s fault, it’s the design’s.</p>
+<blockquote>
+<p>It’s relatively easy to take something simple and make it complicated. It’s much harder to take something complex and present it in a way that is accessible to your audience. Aim for straightforward.</p>
+<p><a href="http://www.storytellingwithdata.com/books/" target="_blank" rel="noopener">Cole Nussbaumer Knaflic</a> - Data visualization expert</p>
+</blockquote>
+<h3 id="Avoid-mysteries"><a href="#Avoid-mysteries" class="headerlink" title="Avoid mysteries"></a>Avoid mysteries</h3><p><em>Text is your friend. Thoughtful use of labels means no one’s in the dark. Every chart and every axis need at least a title.</em></p>
+<p><img src="https://upload.ismdeep.com/images/2020/08/07/750974dd80d1e5f478a38a43b2dc47e5-808d23.png" alt="Avoid mysteries"></p>
+<p>Annotation is the most straightforward, but often the most neglected, step in making a graph accessible. Adding the right text, that’s brief and relevant, helps people use their brainpower to understand the data rather than figure out the chart.</p>
+<p>“Text plays a number of roles in communicating with data: use it to label, introduce, explain, reinforce, highlight, recommend and tell a story,” suggests <a href="http://www.storytellingwithdata.com/books/" target="_blank" rel="noopener">Cole Nussbaumer Knaflic</a>.</p>
+<p>The basic types of labeling include chart titles, axis titles, axis labels or scales, which appear around the graph, plus data labels that mark specifics inside the chart. Units of measurement and data sources are frequently overlooked, but they also play a key role in removing the guesswork when people interpret your graph. Just remember, words are there to help, not to hijack the attention from the data.</p>
+<h3 id="A-tale-of-two-stories"><a href="#A-tale-of-two-stories" class="headerlink" title="A tale of two stories"></a>A tale of two stories</h3><p><em>Charting two sets of data with one scale on the left and another on the right can be confusing, and suggests a relationship that may not exist.</em></p>
+<p><img src="https://upload.ismdeep.com/images/2020/08/07/9dca960ce96c5f9adade75e5ba6a4649-985a14.png" alt="A tale of two stories"></p>
+<p>It’s relatively easy and sometimes helpful to plot multiple sets of data using a common horizontal axis if all the data is expressed with the same unit of measure. But if they use different units, you’ll need to add a secondary vertical axis on the right of the chart.</p>
+<p>This display requires time and effort from the audience to decode and understand which data should be read against which axis. But even if they solve this puzzle, they’re tempted to compare the magnitudes of values between the two sets of data, which is meaningless given that the scales and units of the data are different, says <a href="http://www.stephen-few.com/smtn.php" target="_blank" rel="noopener">Stephen Few</a>.</p>
+<p>As a general rule, try to avoid squeezing too much data in a small space. To tell an elaborate story, it’s better to use two or more charts.</p>
+<h3 id="Stand-on-the-right"><a href="#Stand-on-the-right" class="headerlink" title="Stand on the right"></a>Stand on the right</h3><p><em>Tables are good for looking up individual numbers. But, to help people scan and compare them, align whole numbers flush right.</em></p>
+<p><img src="https://upload.ismdeep.com/images/2020/08/07/a907799dc5a3830624abab69a6f0b27e-fe2fca.png" alt="Stand on the right"></p>
+<p>For a table to do its job, it has to show information in a way that makes spotting numbers, and row-to-row comparisons, easy. If we align numbers to the left or center, this defeats the purpose and forces people to jump back and forth between values, making comparisons of magnitudes difficult.</p>
+<p>Aligning numbers to the right holds true for both whole and decimal values. For values with decimal digits, <a href="http://www.stephen-few.com/smtn.php" target="_blank" rel="noopener">Stephen Few</a> suggests aligning both the decimal point and the final digit to the right. He explains that “this can be accomplished by expressing each value using the same number of decimal digits, even when they are zeroes.”</p>
+<p>Also, adding thousands separators — like commas, dots, or spaces — to break the numbers up into smaller chunks, can help people store values in working memory and easily spot differences between the numbers.</p>
+<h3 id="Back-to-basics"><a href="#Back-to-basics" class="headerlink" title="Back to basics"></a>Back to basics</h3><p><em>With charts, simpler is always better. To keep things even clearer, when you have one or two values, just show the numbers.</em></p>
+<p><img src="https://upload.ismdeep.com/images/2020/08/07/9af499dc0a49ac425ddcfa5e3f7bc1e3-8055dc.png" alt="Back to basics"></p>
+<p>We often ask ourselves: what kind of graph should I use? Most data visualization experts agree that it’s always better to use graphic forms that people are familiar with. Bars, lines, tables, or just a number, in most cases, are the most efficient ways to show your data to the world, with the minimal amount of effort and space used.</p>
+<p>“The fact that you have some numbers does not mean that you need a graph,” underlines <a href="http://www.storytellingwithdata.com/books/" target="_blank" rel="noopener">Cole Nussbaumer Knaflic</a>. When we try to present just one or two numbers on a chart, the medium steals the attention from the data. Showing the number directly is much simpler and truly impactful.</p>
+<hr>
+<p>原文：<a href="https://www.geckoboard.com/best-practice/data-visualization-tips/" target="_blank" rel="noopener">https://www.geckoboard.com/best-practice/data-visualization-tips/</a></p>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

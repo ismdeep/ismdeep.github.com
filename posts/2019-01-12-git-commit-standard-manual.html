@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>git commit 规范指南 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2019-01-12-git-commit-standard-manual" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>git commit 规范指南</h1>
+  
+
+      </header>
+      <div>
+      2019-01-12
+      
+        / 
+        
+          <span><a href="/tags/Hacker/">#Hacker</a></span>
+        
+          <span><a href="/tags/Development/">#Development</a></span>
+        
+          <span><a href="/tags/Git/">#Git</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Commit-message-的格式"><span class="toc-text">Commit message 的格式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Header"><span class="toc-text">Header</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#type"><span class="toc-text">type</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#scope"><span class="toc-text">scope</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#subject"><span class="toc-text">subject</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Body"><span class="toc-text">Body</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Footer"><span class="toc-text">Footer</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#不兼容变动"><span class="toc-text">不兼容变动</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#关闭-Issue"><span class="toc-text">关闭 Issue</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Revert"><span class="toc-text">Revert</span></a></li></ol></li></ol></li></ol>
+  </div>
+
+
+        </div>
+
+        <p>Git 每次提交代码，都要写 Commit message（提交说明），否则就不允许提交。但是，一般来说，commit message 应该清晰明了，说明本次提交的目的。</p>
+<p>目前，社区有多种 Commit message 的写法规范。本文介绍<a href="https://docs.google.com/document/d/1QrDFcIiPjSLDn3EL15IJygNPiHORgU1_OOAqWjiDU5Y/edit#heading=h.greljkmo14y0" target="_blank" rel="noopener">Angular 规范</a>是目前使用最广的写法，比较合理和系统化，并且有配套的工具。前前端框架<a href="https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md#toc10" target="_blank" rel="noopener">Angular.js</a>采用的就是该规范。</p>
+<h3 id="Commit-message-的格式"><a href="#Commit-message-的格式" class="headerlink" title="Commit message 的格式"></a>Commit message 的格式</h3><p>每次提交，Commit message 都包括三个部分：header，body 和 footer。</p>
+<pre><code class="xml">&lt;type&gt;(&lt;scope&gt;): &lt;subject&gt;
+&lt;BLANK LINE&gt;
+&lt;body&gt;
+&lt;BLANK LINE&gt;
+&lt;footer&gt;
+</code></pre>
+<p>其中，header 是必需的，body 和 footer 可以省略。<br>不管是哪一个部分，任何一行都不得超过72个字符（或100个字符）。这是为了避免自动换行影响美观。</p>
+<h4 id="Header"><a href="#Header" class="headerlink" title="Header"></a>Header</h4><p>Header部分只有一行，包括三个字段：<code>type</code>（必需）、<code>scope</code>（可选）和<code>subject</code>（必需）。</p>
+<h5 id="type"><a href="#type" class="headerlink" title="type"></a>type</h5><p>用于说明 commit 的类别，只允许使用下面7个标识。</p>
+<ul>
+<li>feat：新功能（feature）</li>
+<li>fix：修补bug</li>
+<li>docs：文档（documentation）</li>
+<li>style： 格式（不影响代码运行的变动）</li>
+<li>refactor：重构（即不是新增功能，也不是修改bug的代码变动）</li>
+<li>test：增加测试</li>
+<li>chore：构建过程或辅助工具的变动</li>
+</ul>
+<p>如果type为feat和fix，则该 commit 将肯定出现在 Change log 之中。其他情况（docs、chore、style、refactor、test）由你决定，要不要放入 Change log，建议是不要。</p>
+<h5 id="scope"><a href="#scope" class="headerlink" title="scope"></a>scope</h5><p>scope用于说明 commit 影响的范围，比如数据层、控制层、视图层等等，视项目不同而不同。</p>
+<p>例如在<code>Angular</code>，可以是<code>$location</code>, <code>$browser</code>, <code>$compile</code>, <code>$rootScope</code>, <code>ngHref</code>, <code>ngClick</code>, <code>ngView</code>等。</p>
+<p>如果你的修改影响了不止一个<code>scope</code>，你可以使用<code>*</code>代替。</p>
+<h5 id="subject"><a href="#subject" class="headerlink" title="subject"></a>subject</h5><p><code>subject</code>是 commit 目的的简短描述，不超过50个字符。</p>
+<p>其他注意事项：</p>
+<ul>
+<li><p>以动词开头，使用第一人称现在时，比如change，而不是changed或changes</p>
+</li>
+<li><p>第一个字母小写</p>
+</li>
+<li><p>结尾不加句号（.）</p>
+</li>
+</ul>
+<h4 id="Body"><a href="#Body" class="headerlink" title="Body"></a>Body</h4><p>Body 部分是对本次 commit 的详细描述，可以分成多行。下面是一个范例。</p>
+<pre><code>More detailed explanatory text, if necessary.  Wrap it to 
+about 72 characters or so. 
+
+Further paragraphs come after blank lines.
+
+- Bullet points are okay, too
+- Use a hanging indent
+</code></pre><p>有两个注意点:</p>
+<ul>
+<li>使用第一人称现在时，比如使用change而不是changed或changes。</li>
+<li>永远别忘了第2行是空行</li>
+<li>应该说明代码变动的动机，以及与以前行为的对比。</li>
+</ul>
+<h4 id="Footer"><a href="#Footer" class="headerlink" title="Footer"></a>Footer</h4><p>Footer 部分只用于以下两种情况：</p>
+<h5 id="不兼容变动"><a href="#不兼容变动" class="headerlink" title="不兼容变动"></a>不兼容变动</h5><p>如果当前代码与上一个版本不兼容，则 Footer 部分以BREAKING CHANGE开头，后面是对变动的描述、以及变动理由和迁移方法。</p>
+<pre><code>BREAKING CHANGE: isolate scope bindings definition has changed.
+
+    To migrate the code follow the example below:
+
+    Before:
+
+    scope: {
+      myAttr: &#39;attribute&#39;,
+    }
+
+    After:
+
+    scope: {
+      myAttr: &#39;@&#39;,
+    }
+
+    The removed `inject` wasn&#39;t generaly useful for directives so there should be no code using it.
+</code></pre><h5 id="关闭-Issue"><a href="#关闭-Issue" class="headerlink" title="关闭 Issue"></a>关闭 Issue</h5><p>如果当前 commit 针对某个issue，那么可以在 Footer 部分关闭这个 issue 。</p>
+<pre><code>Closes #234
+</code></pre><h5 id="Revert"><a href="#Revert" class="headerlink" title="Revert"></a>Revert</h5><p>还有一种特殊情况，如果当前 commit 用于撤销以前的 commit，则必须以revert:开头，后面跟着被撤销 Commit 的 Header。</p>
+<pre><code>revert: feat(pencil): add &#39;graphiteWidth&#39; option
+
+This reverts commit 667ecc1654a317a13331b17617d973392f415f02.
+</code></pre><p>Body部分的格式是固定的，必须写成<code>This reverts commit &amp;lt;hash&gt;</code>.，其中的hash是被撤销 commit 的 SHA 标识符。</p>
+<p>如果当前 commit 与被撤销的 commit，在同一个发布（release）里面，那么它们都不会出现在 Change log 里面。如果两者在不同的发布，那么当前 commit，会出现在 Change log 的Reverts小标题下面。</p>
+<p>repost from: <a href="https://segmentfault.com/a/1190000009048911" target="_blank" rel="noopener">https://segmentfault.com/a/1190000009048911</a></p>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

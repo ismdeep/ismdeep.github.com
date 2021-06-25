@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>操作系统中进程打开文件(进程)数量的限制问题 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2019-04-16-the-limit-problem-of-process-open-file-in-operating-system" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>操作系统中进程打开文件(进程)数量的限制问题</h1>
+  
+
+      </header>
+      <div>
+      2019-04-16
+      
+        / 
+        
+          <span><a href="/tags/C/">#C</a></span>
+        
+          <span><a href="/tags/Linux/">#Linux</a></span>
+        
+          <span><a href="/tags/macOS/">#macOS</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+
+        </div>
+
+        <p>前段时间写了一个测试程序，每次都在第430个测试用例左右就会出现异常，然后程序终止。一开始还以为是使用的内存没有释放导致系统内存占用过多而出现问题。在一通调试（比如老老实实写一下释放内存的代码）之后，发现还是没有什么作用。最后干脆把测试的核心功能代码（也就是我要测试的真正功能代码）删掉，只保留了用于控制测试的代码，最后发现我把打开文件的代码关掉之后，就没有出现问题了。一看，惊了，每次打开的文件没有关闭操作。</p>
+<pre><code class="c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+int main() {
+    for (int i = 0; i &lt; 20000; ++i) {
+        printf(&quot;%d\n&quot;, i);
+        FILE *f = fopen(&quot;/data/in.txt&quot;, &quot;w&quot;);
+        fprintf(f, &quot;%d\n&quot;, i);
+    }
+    return 0;
+}
+</code></pre>
+<pre><code class="text">0
+1
+2
+...
+...
+...
+4858
+4859
+4860
+4861
+[1]    24575 segmentation fault  cmake-build-debug/open_file_limits_test
+</code></pre>
+<p>而加上 <code>fclose(f);</code> 问题就解决了。</p>
+<pre><code class="c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+int main() {
+    for (int i = 0; i &lt; 20000; ++i) {
+        printf(&quot;%d\n&quot;, i);
+        FILE *f = fopen(&quot;/data/in.txt&quot;, &quot;w&quot;);
+        fprintf(f, &quot;%d\n&quot;, i);
+        fclose(f);
+    }
+    return 0;
+}
+</code></pre>
+<p>当然，事情到这里并没有结束，为什么之前我测试的时候是430左右，这里却是4861呢？因为这里是打开了文件，而之前写的是打开进程管道。</p>
+<pre><code class="c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+
+int main() {
+    for (int i = 0; i &lt; 20000; ++i) {
+        char *cmd = (char *) malloc(sizeof(char) * 65535);
+        memset(cmd, 0, sizeof(char) * 65535);
+        sprintf(cmd, &quot;python3 -c \&quot;print(1 == 1)\&quot;&quot;);
+        FILE *f = popen(cmd, &quot;r+&quot;);
+        char *res = (char *) malloc(sizeof(char) * 1024);
+        memset(res, 0, sizeof(char) * 1024);
+        fscanf(f, &quot;%s&quot;, res);
+        printf(&quot;%d =&gt; %s\n&quot;, i, res);
+    }
+    return 0;
+}
+</code></pre>
+<pre><code class="text">0 =&gt; True
+1 =&gt; True
+2 =&gt; True
+...
+...
+...
+525 =&gt; True
+526 =&gt; True
+527 =&gt; True
+528 =&gt; True
+529 =&gt; True
+530 =&gt; True
+531 =&gt; True
+[1]    38030 segmentation fault  cmake-build-debug/open_file_limits_test
+</code></pre>
+<p>而且这里如果要关闭这个文件不能使用 <code>fclose(f)&#39;</code> 不然在运行第二个开始都读取不了数据。</p>
+<pre><code class="text">&gt; cmake-build-debug/open_file_limits_test
+0 =&gt; True
+1 =&gt;
+2 =&gt;
+3 =&gt;
+4 =&gt;
+5 =&gt;
+</code></pre>
+<p>这里应该使用 <code>pclose(f);</code> ，当然动态分配的内存需要释放掉。</p>
+<pre><code class="c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+
+int main() {
+    for (int i = 0; i &lt; 20000; ++i) {
+        char *cmd = (char *) malloc(sizeof(char) * 65535);
+        memset(cmd, 0, sizeof(char) * 65535);
+        sprintf(cmd, &quot;python3 -c \&quot;print(1 == 1)\&quot;&quot;);
+        FILE *f = popen(cmd, &quot;r+&quot;);
+        char *res = (char *) malloc(sizeof(char) * 1024);
+        memset(res, 0, sizeof(char) * 1024);
+        fscanf(f, &quot;%s&quot;, res);
+        printf(&quot;%d =&gt; %s\n&quot;, i, res);
+        pclose(f);
+        free(cmd);
+        free(res);
+    }
+    return 0;
+}
+</code></pre>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

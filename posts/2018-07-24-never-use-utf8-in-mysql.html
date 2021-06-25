@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>永远不要在 MySQL 中使用utf8 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2018-07-24-never-use-utf8-in-mysql" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>永远不要在 MySQL 中使用utf8</h1>
+  
+
+      </header>
+      <div>
+      2018-07-24
+      
+        / 
+        
+          <span><a href="/tags/MySQL/">#MySQL</a></span>
+        
+          <span><a href="/tags/Hacker/">#Hacker</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#什么是编码？什么是-UTF-8？"><span class="toc-text">什么是编码？什么是 UTF-8？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MySQL-简史"><span class="toc-text">MySQL 简史</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#为什么这件事情会让人如此抓狂"><span class="toc-text">为什么这件事情会让人如此抓狂</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#写在最后"><span class="toc-text">写在最后</span></a></li></ol>
+  </div>
+
+
+        </div>
+
+        <p>本文出自极客邦「聊聊架构」公众号的编译。我自己当年也被这个问题坑过，当时并没有如此详细的分析文章。我觉得有责任再次分享一下，让更多人知道这个事情。程序员不帮助程序员，还能指望谁呢？</p>
+<p>最近我遇到了一个 bug，我试着通过 Rails 在以「utf8」编码的 MariaDB 中保存一个 UTF-8 字符串，然后出现了一个离奇的错误：</p>
+<pre><code>Incorrect string value: ‘\xF0\x9F\x98\x83 &lt;…’ for column ‘summary’ at row 1
+</code></pre><p>我用的是 UTF-8 编码的客户端，服务器也是 UTF-8 编码的，数据库也是，就连要保存的这个字符串「 &lt;…」也是合法的 UTF-8。</p>
+<p>问题的症结在于，MySQL 的「utf8」实际上不是真正的 UTF-8。</p>
+<p>「utf8」只支持每个字符最多三个字节，而真正的 UTF-8 是每个字符最多四个字节。MySQL 一直没有修复这个 bug，他们在 2010 年发布了一个叫作「utf8mb4」的字符集，绕过了这个问题。当然，他们并没有对新的字符集广而告之（可能是因为这个 bug 让他们觉得很尴尬），以致于现在网络上仍然在建议开发者使用「utf8」，但这些建议都是错误的。</p>
+<p>简单概括如下：</p>
+<p>1、MySQL 的「utf8mb4」是真正的「UTF-8」。</p>
+<p>2、MySQL 的「utf8」是一种「专属的编码」，它能够编码的 Unicode 字符并不多。</p>
+<p>我要在这里澄清一下：所有在使用「utf8」的 MySQL 和 MariaDB 用户都应该改用「utf8mb4」，永远都不要再使用「utf8」。</p>
+<h3 id="什么是编码？什么是-UTF-8？"><a href="#什么是编码？什么是-UTF-8？" class="headerlink" title="什么是编码？什么是 UTF-8？"></a>什么是编码？什么是 UTF-8？</h3><p>我们都知道，计算机使用 0 和 1 来存储文本。比如字符「C」被存成「01000011」，那么计算机在显示这个字符时需要经过两个步骤：</p>
+<p>1、计算机读取「01000011」，得到数字 67，因为 67 被编码成「01000011」。</p>
+<p>2、计算机在 Unicode 字符集中查找 67，找到了「C」。</p>
+<p>同样的：</p>
+<p>1、我的电脑将「C」映射成 Unicode 字符集中的 67。</p>
+<p>2、我的电脑将 67 编码成「01000011」，并发送给 Web 服务器。</p>
+<p>几乎所有的网络应用都使用了 Unicode 字符集，因为没有理由使用其他字符集。</p>
+<p>Unicode 字符集包含了上百万个字符。最简单的编码是 UTF-32，每个字符使用 32 位。这样做最简单，因为一直以来，计算机将 32 位视为数字，而计算机最在行的就是处理数字。但问题是，这样太浪费空间了。</p>
+<p>UTF-8 可以节省空间，在 UTF-8 中，字符「C」只需要 8 位，一些不常用的字符，比如「」需要 32 位。其他的字符可能使用 16 位或 24 位。一篇类似本文这样的文章，如果使用 UTF-8 编码，占用的空间只有 UTF-32 的四分之一左右。</p>
+<p>MySQL 的「utf8」字符集与其他程序不兼容，它所谓的字符集，可能真的是一坨……</p>
+<h3 id="MySQL-简史"><a href="#MySQL-简史" class="headerlink" title="MySQL 简史"></a>MySQL 简史</h3><p>为什么 MySQL 开发者会让「utf8」失效？我们或许可以从提交日志中寻找答案。</p>
+<p>MySQL 从 4.1 版本开始支持 UTF-8，也就是 2003 年，而今天使用的 UTF-8 标准（RFC 3629）是随后才出现的。<br>旧版的 UTF-8 标准（RFC 2279）最多支持每个字符 6 个字节。2002 年 3 月 28 日，MySQL 开发者在第一个 MySQL 4.1 预览版中使用了 RFC 2279。</p>
+<p>同年 9 月，他们对 MySQL 源代码进行了一次调整：「UTF8 现在最多只支持 3 个字节的序列」。是谁提交了这些代码？他为什么要这样做？这个问题不得而知。在迁移到 Git 后（MySQL 最开始使用的是 BitKeeper），MySQL 代码库中的很多提交者的名字都丢失了。2003 年 9 月的邮件列表中也找不到可以解释这一变更的线索。</p>
+<p>不过我可以试着猜测一下。</p>
+<p>2002 年，MySQL 做出了一个决定：如果用户可以保证数据表的每一行都使用相同的字节数，那么 MySQL 就可以在性能方面来一个大提升。为此，用户需要将文本列定义为「CHAR」，每个「CHAR」列总是拥有相同数量的字符。如果插入的字符少于定义的数量，MySQL 就会在后面填充空格，如果插入的字符超过了定义的数量，后面超出部分会被截断。</p>
+<p>MySQL 开发者在最开始尝试 UTF-8 时使用了每个字符 6 个字节，CHAR(1) 使用 6 个字节，CHAR(2) 使用 12 个字节，并以此类推。</p>
+<p>应该说，他们最初的行为才是正确的，可惜这一版本一直没有发布。但是文档上却这么写了，而且广为流传，所有了解 UTF-8 的人都认同文档里写的东西。不过很显然，MySQL 开发者或厂商担心会有用户做这两件事：</p>
+<p>1 使用 CHAR 定义列（在现在看来，CHAR 已经是老古董了，但在那时，在 MySQL 中使用 CHAR 会更快，不过从 2005 年以后就不是这样子了）。<br>2 将 CHAR 列的编码设置为「utf8」。</p>
+<p>我的猜测是 MySQL 开发者本来想帮助那些希望在空间和速度上双赢的用户，但他们搞砸了「utf8」编码。</p>
+<p>所以结果就是没有赢家。那些希望在空间和速度上双赢的用户，当他们在使用「utf8」的 CHAR 列时，实际上使用的空间比预期的更大，速度也比预期的慢。而想要正确性的用户，当他们使用「utf8」编码时，却无法保存像「」这样的字符。</p>
+<p>在这个不合法的字符集发布了之后，MySQL 就无法修复它，因为这样需要要求所有用户重新构建他们的数据库。最终，MySQL 在 2010 年重新发布了「utf8mb4」来支持真正的 UTF-8。</p>
+<h3 id="为什么这件事情会让人如此抓狂"><a href="#为什么这件事情会让人如此抓狂" class="headerlink" title="为什么这件事情会让人如此抓狂"></a>为什么这件事情会让人如此抓狂</h3><p>因为这个问题，我整整抓狂了一个礼拜。我被「utf8」愚弄了，花了很多时间才找到这个 bug。但我一定不是唯一的一个，网络上几乎所有的文章都把「utf8」当成是真正的 UTF-8。「utf8」只能算是个专有的字符集，它给我们带来了新问题，却一直没有得到解决。</p>
+<h3 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h3><p>如果你在使用 MySQL 或 MariaDB，不要用「utf8」编码，改用「utf8mb4」。这里提供了一个指南用于将现有数据库的字符编码从「utf8」转成「utf8mb4」：</p>
+<p><a href="https://mathiasbynens.be/notes/mysql-utf8mb4#utf8-to-utf8mb4" target="_blank" rel="noopener">https://mathiasbynens.be/notes/mysql-utf8mb4#utf8-to-utf8mb4</a></p>
+<p>这篇文章的英文原文：<br><a href="https://medium.com/@adamhooper/in-mysql-never-use-utf8-use-utf8mb4-11761243e434" target="_blank" rel="noopener">https://medium.com/@adamhooper/in-mysql-never-use-utf8-use-utf8mb4-11761243e434</a></p>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

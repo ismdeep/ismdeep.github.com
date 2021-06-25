@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>大整数加法 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2018-04-18-bigint-addition" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>大整数加法</h1>
+  
+
+      </header>
+      <div>
+      2018-04-18
+      
+        / 
+        
+          <span><a href="/tags/ACM-ICPC/">#ACM-ICPC</a></span>
+        
+          <span><a href="/tags/Common-Lisp/">#Common Lisp</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+
+        </div>
+
+        <p>&nbsp;<br><a id="more"></a></p>
+<pre><code class="cpp">#include &lt;iostream&gt;
+#include &lt;cstdio&gt;
+#include &lt;string&gt;
+using namespace std;
+
+
+int main() {
+    // 1. 开始程序，输入两个字符串
+    string str1, str2;
+    cin &gt;&gt; str1 &gt;&gt; str2;
+
+    // 2. 初始化一个数组，并每个元素初始化为0
+    int a[1000];
+    for (int i = 0; i &lt; 1000; ++i) a[i] = 0;
+
+    // 3. 把str1的每一位从最后开始拿（依次为str[str1.length()-1],str[str1.length()-2],...,str1[0]}），依次累加到a[0],a[1],a[2]...,a[str1.length()-1]
+    for (int i = 0; i &lt; str1.length(); ++i) {
+        a[i] += ( str1[str1.length()-i-1] - &#39;0&#39; ); // 把对应位置字符拿出来，然后-&#39;0&#39;则是字符对应的数字
+    }
+    // 4. 把str2的每一个从最后开始拿，同3操作。
+    for (int i = 0; i &lt;str2.length(); ++i) {
+        a[i] += ( str2[str2.length()-i-1] - &#39;0&#39; );
+    }
+
+    // 5. 从最低位，也就是0下标开始对数组a进行整理（也是就我们加法的时候所谓的进位。）
+    for (int i = 0; i &lt; 999; ++i) {
+        int tmp = a[i] / 10; // 拿出除去个位的部分，如：a[i] = 23;则tmp为2,进位操作的时候3保留下来，2,加到高位去。
+        a[i+1] += tmp; // 进位操作
+        a[i] %= 10;
+    }
+
+    // 6. 寻找最高位不为零的位置。当所有数字都为0时，high会为-1，则需要将high赋值为0
+    int high = 999;
+    while (0 == a[high]) --high;
+    high = high &gt; 0 ? high : 0; // 不想用if-else来操作。
+
+    // 7. 从最高位开始输出
+    for (int i = high; i &gt;= 0; --i) cout &lt;&lt; a[i];
+    cout &lt;&lt; endl;
+    return 0;
+}
+
+</code></pre>
+<p>Common Lisp代码</p>
+<pre><code class="lisp">(let ((a (read)) (b (read)))
+    (format t &quot;~D~%&quot; (+ a b)))
+</code></pre>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

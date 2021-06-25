@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>Docker 中的 Trojan 客户端 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2020-06-23-trojan-client-on-docker" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>Docker 中的 Trojan 客户端</h1>
+  
+
+      </header>
+      <div>
+      2020-06-23
+      
+        / 
+        
+          <span><a href="/tags/Hacker/">#Hacker</a></span>
+        
+          <span><a href="/tags/Docker/">#Docker</a></span>
+        
+          <span><a href="/tags/Proxy/">#Proxy</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+
+        </div>
+
+        <p>本文主要讲述如何通过 Docker 运行一个 Trojan 客户端，而并不介绍 Trojan 服务器端如何搭建。</p>
+<p>这里笔者用的是 GitHub 上开源的 trojan 项目 <a href="https://github.com/trojan-gfw/trojan" target="_blank" rel="noopener">https://github.com/trojan-gfw/trojan</a></p>
+<ol>
+<li><p>通过 git 将项目下载到本地</p>
+<pre><code class="bash">git clone https://github.com/trojan-gfw/trojan.git
+</code></pre>
+</li>
+<li><p>修改项目中 Dockerfile</p>
+<p>这一步对于使用大陆局域网的用户来说是非常重要的。将下面这行代码添加至 Dockerfile 中 <code>FROM alpine:3.11</code> 的下一行</p>
+<pre><code class="bash">RUN sed -i &#39;s/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g&#39; /etc/apk/repositories
+</code></pre>
+<p>大致如下：</p>
+<pre><code class="text">FROM alpine:3.11
+
+RUN sed -i &#39;s/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g&#39; /etc/apk/repositories
+
+COPY . trojan
+...
+</code></pre>
+</li>
+<li><p>构建 Docker 镜像</p>
+<p>通过 cd 命令切换目录至 Dockerfile 文件所在目录，然后</p>
+<pre><code class="bash">docker build -t trojan .
+</code></pre>
+</li>
+<li><p>查看 Docker 镜像是否存在</p>
+<pre><code class="bash">docker images
+</code></pre>
+<pre><code class="bash">$ docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+trojan              latest              44d7a749e0bf        2 days ago          11.5MB
+mongo               latest              2b2cc1f48aed        6 days ago          388MB
+redis               latest              235592615444        12 days ago         104MB
+mysql               5.6                 8de95e6026c3        2 weeks ago         302MB
+mysql               5.7                 9cfcce23593a        2 weeks ago         448MB
+mysql               8.0                 be0dbf01a0f3        2 weeks ago         541MB
+alpine              latest              a24bb4013296        3 weeks ago         5.57MB
+ubuntu-lnmp         latest              8dcf6426c958        5 weeks ago         892MB
+ubuntu              latest              1d622ef86b13        2 months ago        73.9MB
+ubuntu              18.04               c3c304cb4f22        2 months ago        64.2MB
+alpine              3.11                f70734b6a266        2 months ago        5.61MB
+nginx               latest              602e111c06b6        2 months ago        127MB
+</code></pre>
+</li>
+<li><p>准备你的 Trojan 配置文件</p>
+<p>创建一个单独的目录用来存放 Trojan 配置文件，如笔者使用 <code>/Users/ismdeep/Data/trojan-config</code> 作为 Trojan 配置文件目录，然后将配置文件命名为 <code>config.json</code> 放入此文件夹。配置文件格式大致如下</p>
+<pre><code class="json">{
+    &quot;run_type&quot;: &quot;client&quot;,
+    &quot;local_addr&quot;: &quot;0.0.0.0&quot;,
+    &quot;local_port&quot;: 1080,
+    &quot;remote_addr&quot;: &quot;&quot;,
+    &quot;remote_port&quot;: 443,
+    &quot;password&quot;: [
+        &quot;&quot;
+    ],
+    &quot;log_level&quot;: 1,
+    &quot;ssl&quot;: {
+        &quot;verify&quot;: true,
+        &quot;verify_hostname&quot;: true,
+        &quot;cert&quot;: &quot;&quot;,
+        &quot;cipher&quot;: &quot;ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES128-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA:AES128-SHA:AES256-SHA:DES-CBC3-SHA&quot;,
+        &quot;cipher_tls13&quot;: &quot;TLS_AES_128_GCM_SHA256:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_256_GCM_SHA384&quot;,
+        &quot;sni&quot;: &quot;&quot;,
+        &quot;alpn&quot;: [
+            &quot;h2&quot;,
+            &quot;http/1.1&quot;
+        ],
+        &quot;reuse_session&quot;: true,
+        &quot;session_ticket&quot;: false,
+        &quot;curves&quot;: &quot;&quot;
+    },
+    &quot;tcp&quot;: {
+        &quot;no_delay&quot;: true,
+        &quot;keep_alive&quot;: true,
+        &quot;reuse_port&quot;: false,
+        &quot;fast_open&quot;: false,
+        &quot;fast_open_qlen&quot;: 20
+    }
+}
+</code></pre>
+</li>
+</ol>
+<ol start="6">
+<li><p>创建 Docker 容器并运行</p>
+<pre><code class="bash">docker run --name trojan -v /Users/ismdeep/Data/trojan-config:/config -p 1080:1080 -d trojan
+</code></pre>
+</li>
+</ol>
+<ol start="7">
+<li><p>启动 &amp; 停止</p>
+<pre><code class="bash"># 启动
+docker start trojan
+
+# 停止
+docker stop trojan
+</code></pre>
+</li>
+</ol>
+<ol start="8">
+<li><p>总结</p>
+<p>这部分操作还是比较简单的，你只需要一点 Docker 基本操作知识即可。</p>
+</li>
+</ol>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

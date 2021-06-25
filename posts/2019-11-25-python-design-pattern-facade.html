@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>Python 设计模式之外观模式 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2019-11-25-python-design-pattern-facade" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>Python 设计模式之外观模式</h1>
+  
+
+      </header>
+      <div>
+      2019-11-25
+      
+        / 
+        
+          <span><a href="/tags/Java/">#Java</a></span>
+        
+          <span><a href="/tags/Python/">#Python</a></span>
+        
+          <span><a href="/tags/Design-Pattern/">#Design Pattern</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+
+        </div>
+
+        <p><strong>意图：</strong> 为子系统中的一组接口提供一个一致的界面，外观模式定义了一个高层接口，这个接口使得这一子系统更加容易使用。</p>
+<p><strong>适用性：</strong> 当你要为一个复杂子系统提供一个简单接口时。子系统往往因为不断演化而变得越来越复杂。大多数模式使用时都会产生更多更小的类。这使得子系统更具可重用性，也更容易对子系统进行定制，但这也给那些不需要定制子系统的用户带来一些使用上的困难。Facade 可以提供一个简单的缺省视图，这一视图对大多数用户来说已经足够，而那些需要更多的可定制性的用户可以越过 Facade 层。</p>
+<p>客户程序于抽象类的实现部分之间存在着很大的依赖性。引入 Facade 将这个子系统的客户以及其他的子系统分离，可以提高子系统的独立性和可移植性。</p>
+<p>当你需要构建一个层次结构的子系统时，使用 Facade 模式定义子系统中每层的入口点。如果子系统之间是相互依赖的，你可以让它们仅通过 Facade 进行通讯，从而简化了它们之间的依赖关系。</p>
+<p><img src="https://upload.ismdeep.com/images/2020/08/07/4ac62bcb8c902cbafd900fd8f9ef8eb3-72939c.jpg" alt="photo_2019-11-25_20-57-37"></p>
+<pre><code class="python"># _*_coding:utf-8_*_
+__author__ = &#39;Alex Li&#39;
+
+
+# 外观模式（Facade），为子系统中的一组接口提供一个一致的界面，定义一个高层接口，这个接口使得这一子系统更加容易使用。
+# 在以下情况下可以考虑使用外观模式：
+# (1)设计初期阶段，应该有意识的将不同层分离，层与层之间建立外观模式。
+# (2) 开发阶段，子系统越来越复杂，增加外观模式提供一个简单的调用接口。
+# (3) 维护一个大型遗留系统的时候，可能这个系统已经非常难以维护和扩展，但又包含非常重要的功能，为其开发一个外观类，以便新系统与其交互。
+
+# 优点编辑
+# （1）实现了子系统与客户端之间的松耦合关系。
+# （2）客户端屏蔽了子系统组件，减少了客户端所需处理的对象数目，并使得子系统使用起来更加容易。
+
+
+def printInfo(info):
+    print(info)
+
+
+class Stock():
+    name = &#39;股票1&#39;
+
+    def buy(self):
+        printInfo(&#39;买 &#39; + self.name)
+
+    def sell(self):
+        printInfo(&#39;卖 &#39; + self.name)
+
+
+class ETF():
+    name = &#39;指数型基金&#39;
+
+    def buy(self):
+        printInfo(&#39;买 &#39; + self.name)
+
+    def sell(self):
+        printInfo(&#39;卖 &#39; + self.name)
+
+
+class Future():
+    name = &#39;期货&#39;
+
+    def buy(self):
+        printInfo(&#39;买 &#39; + self.name)
+
+    def sell(self):
+        printInfo(&#39;卖 &#39; + self.name)
+
+
+class NationDebt():
+    name = &#39;国债&#39;
+
+    def buy(self):
+        printInfo(&#39;买 &#39; + self.name)
+
+    def sell(self):
+        printInfo(&#39;卖 &#39; + self.name)
+
+
+class Option():
+    name = &#39;权证&#39;
+
+    def buy(self):
+        printInfo(&#39;买 &#39; + self.name)
+
+    def sell(self):
+        printInfo(&#39;卖 &#39; + self.name)
+
+
+# 基金
+class Fund():
+
+    def __init__(self):
+        self.stock = Stock()
+        self.etf = ETF()
+        self.future = Future()
+        self.debt = NationDebt()
+        self.option = Option()
+
+    def buyFund(self):
+        self.stock.buy()
+        self.etf.buy()
+        self.debt.buy()
+        self.future.buy()
+        self.option.buy()
+
+    def sellFund(self):
+        self.stock.sell()
+        self.etf.sell()
+        self.future.sell()
+        self.debt.sell()
+        self.option.sell()
+
+
+def clientUI():
+    myFund = Fund()
+    myFund.buyFund()
+    myFund.sellFund()
+    return
+
+
+if __name__ == &#39;__main__&#39;:
+    clientUI()
+</code></pre>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

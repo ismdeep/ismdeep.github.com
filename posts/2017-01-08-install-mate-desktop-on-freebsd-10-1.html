@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>在 FreeBSD 10.1中安装 Mate 桌面 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2017-01-08-install-mate-desktop-on-freebsd-10-1" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>在 FreeBSD 10.1中安装 Mate 桌面</h1>
+  
+
+      </header>
+      <div>
+      2017-01-08
+      
+        / 
+        
+          <span><a href="/tags/Hacker/">#Hacker</a></span>
+        
+          <span><a href="/tags/FreeBSD/">#FreeBSD</a></span>
+        
+          <span><a href="/tags/UNIX/">#UNIX</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#0x01-在-etc-rc-conf-中加入下面的行"><span class="toc-text">0x01 在 /etc/rc.conf 中加入下面的行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0x02-测试安装"><span class="toc-text">0x02 测试安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0x03-安装-Slim"><span class="toc-text">0x03 安装 Slim</span></a></li></ol>
+  </div>
+
+
+        </div>
+
+        <p>&nbsp;</p>
+<a id="more"></a>
+<p>编译自：<a href="http://www.unixmen.com/install-mate-desktop-freebsd-10-1/" target="_blank" rel="noopener">http://www.unixmen.com/install-mate-desktop-freebsd-10-1/</a><br>作者： M.el Khamlichi<br>原创：<a href="http://lctt.github.io/" target="_blank" rel="noopener">LCTT</a> <a href="https://linux.cn/article-5385-1.html" target="_blank" rel="noopener">https://linux.cn/article-5385-1.html</a><br>译者： geekpi<br>本文地址：<a href="https://linux.cn/article-5385-1.html" target="_blank" rel="noopener">https://linux.cn/article-5385-1.html</a></p>
+<p><img src="https://dn-linuxcn.qbox.me/data/attachment/album/201505/04/220515m790kl2qp910o5ol.jpg" alt></p>
+<p>FreeBSD是全文本模式的系统，然而有些新用户想要使用GUI桌面环境。这个教程就是帮助你在Freebsd 10.1中安装Mate桌面。</p>
+<p>下面是我的系统细节：</p>
+<pre><code class="bash">root@Freebsd-unixmen:~ \# uname -a
+FreeBSD Freebsd-unixmen 10.1-RELEASE FreeBSD 10.1-RELEASE \#0 r274401: Tue Nov 11 21:02:49 UTC 2014     root@releng1.nyi.freebsd.org:/usr/obj/usr/src/sys/GENERIC  amd64
+root@Freebsd-unixmen:~
+</code></pre>
+<p>要在FreeBSD 10.1 中开始安装Mate桌面，按照下面的步骤。</p>
+<pre><code class="bash">pkg install xf86-video-fbdev mate-desktop mate xorg
+</code></pre>
+<h3 id="0x01-在-etc-rc-conf-中加入下面的行"><a href="#0x01-在-etc-rc-conf-中加入下面的行" class="headerlink" title="0x01 在 /etc/rc.conf 中加入下面的行"></a>0x01 在 /etc/rc.conf 中加入下面的行</h3><pre><code class="bash">moused_enable=&quot;YES&quot;
+dbus_enable=&quot;YES&quot;
+hald_enable=&quot;YES&quot;
+</code></pre>
+<h3 id="0x02-测试安装"><a href="#0x02-测试安装" class="headerlink" title="0x02 测试安装"></a>0x02 测试安装</h3><pre><code class="bash">xinit mate-session
+</code></pre>
+<p><img src="https://dn-linuxcn.qbox.me/data/attachment/album/201505/04/220538dby0rtzzfx0yyegt.png" alt></p>
+<p>Mate本身没有显示管理器。因此我们会使用其他的显示管理器如XDM、GDM、slim等等来作为登录管理器。这里让我们看看如何在Mate桌面中配置Slim DM</p>
+<h3 id="0x03-安装-Slim"><a href="#0x03-安装-Slim" class="headerlink" title="0x03 安装 Slim"></a>0x03 安装 Slim</h3><pre><code class="bash">pkg install slim
+</code></pre>
+<p>在<strong>/etc/rc.conf</strong>中加入下面的行：</p>
+<pre><code class="bash">slim_enable=&quot;YES&quot;
+</code></pre>
+<p>在用户的家目录下的.xinitrc文件加入下面的行。</p>
+<pre><code class="bash">exec mate-session
+</code></pre>
+<p>重启电脑。现在在你登录Mate时就会进入Slim登录界面了。</p>
+<p><img src="https://dn-linuxcn.qbox.me/data/attachment/album/201505/04/220639iw1woom3jhpgz3dd.png" alt></p>
+<p><img src="https://dn-linuxcn.qbox.me/data/attachment/album/201505/04/220655e2fg9p3z3iuimzu7.png" alt></p>
+<p>就是这样。干杯！</p>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>通过 GCC 查看预处理（宏展开）之后的实际代码 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2019-11-19-show-preprocessing-code-with-gcc" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>通过 GCC 查看预处理（宏展开）之后的实际代码</h1>
+  
+
+      </header>
+      <div>
+      2019-11-19
+      
+        / 
+        
+          <span><a href="/tags/C/">#C</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#0x01-测试用的代码"><span class="toc-text">0x01 测试用的代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0x02-用-gcc-命令对测试用的代码进行预处理（不编译）"><span class="toc-text">0x02 用 gcc 命令对测试用的代码进行预处理（不编译）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0x03-来点稍微复杂的预处理看看"><span class="toc-text">0x03 来点稍微复杂的预处理看看</span></a></li></ol>
+  </div>
+
+
+        </div>
+
+        <p><strong>预处理</strong> 命令可以改变程序设计环境,提高编程效率,它们并不是 C 语言本身的组成部分,不能直接对 它们进行编译,必须在对程序进行编译之前,先对程序中这些特殊的命令进行“预处理” 。经过预处理后,程序就不再包括预处理命令了,最后再由编译程序对 <strong>预处理</strong> 之后的源程序进行 <strong>编译</strong> 处理,得到可供执行的目标代码。C 语言提供的预处理功能有三种,分别为 <strong>宏定义</strong>、文件包含和条件编译。</p>
+<p>如果想知道预处理后最终的代码，可以通过 GCC 来查看。</p>
+<h3 id="0x01-测试用的代码"><a href="#0x01-测试用的代码" class="headerlink" title="0x01 测试用的代码"></a>0x01 测试用的代码</h3><ol>
+<li>文件名为 <code>main.c</code></li>
+</ol>
+<pre><code class="c">#define MAXN 100
+
+int main() {
+    int a[MAXN];
+    for (int i = 0; i &lt; MAXN; i++) {
+        scanf(&quot;%d&quot;, &amp;a[i]);
+    }
+    return 0;
+}
+</code></pre>
+<h3 id="0x02-用-gcc-命令对测试用的代码进行预处理（不编译）"><a href="#0x02-用-gcc-命令对测试用的代码进行预处理（不编译）" class="headerlink" title="0x02 用 gcc 命令对测试用的代码进行预处理（不编译）"></a>0x02 用 gcc 命令对测试用的代码进行预处理（不编译）</h3><ol>
+<li><p>通过以下指令对 <code>main.c</code> 文件进行预处理，并输出到 <code>test.log</code> 中。</p>
+<pre><code class="bash"> gcc -E main.c -o test.log
+</code></pre>
+</li>
+</ol>
+<ol start="2">
+<li><code>test.log</code> 中的内容</li>
+</ol>
+<pre><code># 1 &quot;main.c&quot;
+# 1 &quot;&lt;built-in&gt;&quot; 1
+# 1 &quot;&lt;built-in&gt;&quot; 3
+# 362 &quot;&lt;built-in&gt;&quot; 3
+# 1 &quot;&lt;command line&gt;&quot; 1
+# 1 &quot;&lt;built-in&gt;&quot; 2
+# 1 &quot;main.c&quot; 2
+
+
+int main() {
+    int a[100];
+    for (int i = 0; i &lt; 100; i++) {
+        scanf(&quot;%d&quot;, &amp;a[i]);
+    }
+    return 0;
+}
+</code></pre><pre><code>能看到 `main.c` 源文件中的 `MAXN` 都被替换成了 `100`
+</code></pre><h3 id="0x03-来点稍微复杂的预处理看看"><a href="#0x03-来点稍微复杂的预处理看看" class="headerlink" title="0x03 来点稍微复杂的预处理看看"></a>0x03 来点稍微复杂的预处理看看</h3><ol>
+<li>源程序文件名为 <code>main.c</code></li>
+</ol>
+<pre><code class="c">#define MAXN 100
+#define FOR(id,size) for(int id = 0; id &lt; (size); id++)
+#define MUL(i,j) i*j
+#define MUL2(i,j) (i)*(j)
+
+int main() {
+    int a[MAXN];
+    FOR(i, MAXN) {
+        scanf(&quot;%d&quot;, &amp;a[i]);
+    }
+    MUL(2,3+4);
+    MUL2(2,3+4);
+    return 0;
+}
+</code></pre>
+<ol start="2">
+<li>接下来看看预处理之后的源代码</li>
+</ol>
+<pre><code class="c"># 1 &quot;main.c&quot;
+# 1 &quot;&lt;built-in&gt;&quot; 1
+# 1 &quot;&lt;built-in&gt;&quot; 3
+# 362 &quot;&lt;built-in&gt;&quot; 3
+# 1 &quot;&lt;command line&gt;&quot; 1
+# 1 &quot;&lt;built-in&gt;&quot; 2
+# 1 &quot;main.c&quot; 2
+
+
+
+
+
+int main() {
+    int a[100];
+    for(int i = 0; i &lt; (100); i++) {
+        scanf(&quot;%d&quot;, &amp;a[i]);
+    }
+    2*3+4;
+    (2)*(3+4);
+    return 0;
+}
+</code></pre>
+<ol start="3">
+<li><strong>分析：</strong> 这里我们发现，预处理其实就是对 C 语言的源程序进行替换。预处理只是编译时的东西，而不是运行时的。而且这里仅仅是对文本进行替换，就算程序不能通过编译，也可以通过预处理的。</li>
+</ol>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

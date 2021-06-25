@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>今天的计算机编程与20年前有何不同？ | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2020-02-04-how-is-computer-programming-different-today-than-20-years-ago" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>今天的计算机编程与20年前有何不同？</h1>
+  
+
+      </header>
+      <div>
+      2020-02-04
+      
+        / 
+        
+          <span><a href="/tags/Hacker/">#Hacker</a></span>
+        
+          <span><a href="/tags/Development/">#Development</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+
+        </div>
+
+        <p>这个问题是我在 Quora 上看到的，于是来回答回答。但是花了这么长时间，我才在这里转贴。</p>
+<p>以下是我注意到的过去 20 年发生的一些变化，顺序无前后：</p>
+<ul>
+<li>20 年前的大部分理论性的编程概念已经成为主流，包括许多函数式范式，例如不变性、尾递归、惰性求值、模式匹配、头等函数。并且鄙视一切不使用它们的人。</li>
+<li>现在的桌面软件意味着捆绑了浏览器的网页。</li>
+<li>尽管可能面向对象编程（OOP）仍然是最受欢迎的编程模型，但它已经失去了很多市场信誉。新的基于特征的编程模型在 Go 、Rust 和 Swift 等现代语言中更为普遍。组合优于继承。</li>
+<li>在你参加 \$2k 会议并从那里分享自拍照之前，你不再被正式视为程序员。</li>
+<li>由于多处理器 CPU 的大量增加，现在在编程语言级别上通常都支持并行编程，而不是20年前的原始操作系统的系统调用。 它引入了异步编程原语（sync/wait），并行协程（如Go语言中的goroutine或D中的管道），可组合性语义（如可观的反应式编程）。</li>
+<li>像素不再是相关的度量单位。</li>
+<li>垃圾回收已经成为安全编程的常用方法，但也出现了新的安全模型，例如 Rust 的生命周期语义和代码审查。</li>
+<li>30亿个设备运行Java。 在过去的十年中，这个数字没有改变。</li>
+<li>程序包管理生态系统对于现在的编程语言至关重要。 人们根本不想再经历寻找，下载和安装库的麻烦。 20年前，我们曾经访问过网站，下载了zip文件，将它们复制到正确的位置，将它们添加到构建配置中的路径中，并祈祷它们可以工作。</li>
+<li>现在，作为软件开发团队，所有团队成员都要执行神秘的仪式，早上起来15分钟，站起来，并用便利贴画出神秘的符号。</li>
+<li>今天，语言工具变得更加丰富。编程语言通常是编译器或许是调试器。今天，它们往往都附带 linter 、代码格式化、模版生成器、自更新能力以及用于与竞争者进行辩论的论据。</li>
+<li>甚至关于编程语言的 Tab 缩进和空格缩进都能引发争论。</li>
+<li>幸运的是，以往在网络上提供一些流畅的交互的唯一方法的 Adobe Flash 现在不再存在。现在，我们必须在三个编程模型完全不同的平台上进行开发，以提供相同级别的交互。</li>
+<li>IDE 和编程语言之间的距离越来越远。20年前，IDE 是专门为一种语言开发的，例如用来开发 Java 程序的 Eclipse，Visual Basic 等。现在我们有了诸如 VS Code 之类的文本编辑器，可以支持具有 IDE 等功能的任何编程语言。</li>
+<li>现在，代码必须运行在至少三个虚拟层之上。 在裸机上运行代码是没有必要的。</li>
+<li>由于移动设备、云服务器、嵌入式物联网系统等多种架构的存在，跨平台开发现已成为标准。 20年前几乎完全是PC。</li>
+<li>很少在本地运行代码。</li>
+<li>文档都是在线的，称之为 Google. 不再有什么离线文档之类的东西了，即使是有，也没什么人知道。</li>
+<li>如果教程不是一部视频，而其理解时间比其文本要长几个数量级，那么该教程并没有真正的作用。</li>
+<li>那时根本就不存在 StackOverflow，询问编程问题也都是问自己的同事。</li>
+<li>人们在 Mac 上开发软件。</li>
+<li>在线是常态，离线是例外。这与当时的情况正好相反。</li>
+<li>安全是我们现在必须要考虑的问题。</li>
+<li>现在，移动设备可以显示常规网页，因此不再需要在单独的子域上创建单独的WAP页面。 我们改为在单独的子域上创建移动页面。</li>
+<li>默认情况下，我们会开源所有内容，除了那些真正使我们难堪的代码。</li>
+<li>多亏每个反对歧视的人，现在该行业有更多有才华的妇女，有色人种和LGBT。 我仍然不能说我们已经完全平等，但是已经好很多了。</li>
+<li>被黑是常有的事。通常通过写一篇推荐更改密码的博客文章基本上就能避免丢失所有用户数据。而且无需道歉。</li>
+<li>得益于视频会议、无处不在的互联网和 Keurigs 等新技术，对程序员来说远程办公比以往任何时候都更容易了。</li>
+<li>我们不再使用 IRC 进行沟通了。我们更喜欢使用一种叫做 Slack 的臃肿软件，仅仅是因为我们不想再去输入服务器地址。</li>
+<li>我们现在在显卡上运行程序。</li>
+<li>除非包含区块链和AI，但您的项目目前没有任何商业价值，尽管基于规则的集中式版本将更快，更高效。</li>
+<li>在某些情况下，1 GB 存储空间已经不够用了。</li>
+<li>由于旁路攻击的出现，我们现在甚至无法再相信物理处理器了。</li>
+<li>现在，大部分的编程工作都在桌上足球桌上进行。</li>
+<li>由于我们现在有更快的CPU，因此数值计算是在 Python 中完成的，这比 Fortran 慢得多。 因此，数值计算所需的时间基本上与20年前没什么变化。</li>
+<li>创建一种新的编程语言或者甚至是创建新的硬件已经成为了一种普遍的爱好。</li>
+<li>单元测试已经大肆宣传，并且像所有有用的东西一样，它的好处被高估了，并且不可避免地变成了一种宗教。</li>
+<li>现在，以明文形式存储密码的做法已经不合时宜了，但是我们还是这样做。</li>
+</ul>
+<hr>
+<p>转载自 <a href="https://medium.com/swlh/how-is-computer-programming-different-today-than-20-years-ago-9d0154d1b6ce" target="_blank" rel="noopener">https://medium.com/swlh/how-is-computer-programming-different-today-than-20-years-ago-9d0154d1b6ce</a></p>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

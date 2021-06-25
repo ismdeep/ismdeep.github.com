@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>PicGo —— 图片上传新推荐 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2020-10-18-uploading-pictures-with-picgo" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>PicGo —— 图片上传新推荐</h1>
+  
+
+      </header>
+      <div>
+      2020-10-18
+      
+        / 
+        
+          <span><a href="/tags/Hexo/">#Hexo</a></span>
+        
+          <span><a href="/tags/PicGo/">#PicGo</a></span>
+        
+          <span><a href="/tags/Typora/">#Typora</a></span>
+        
+          <span><a href="/tags/GitHub/">#GitHub</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#0x00-创建一个-GitHub-Repository"><span class="toc-text">0x00 创建一个 GitHub Repository</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x01-为-GitHub-Repository-启用-GitHub-Pages-功能"><span class="toc-text">0x01 为 GitHub Repository 启用 GitHub Pages 功能</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x02-申请一个-GitHub-Token"><span class="toc-text">0x02 申请一个 GitHub Token</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x03-安装-PicGo-Core"><span class="toc-text">0x03 安装 PicGo-Core</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x04-安装-PicGo-使用的-picgo-plugin-rename-file-插件"><span class="toc-text">0x04 安装 PicGo 使用的 picgo-plugin-rename-file 插件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x05-配置-PicGo-Core"><span class="toc-text">0x05 配置 PicGo-Core</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x06-配置-Typora-并测试上传功能"><span class="toc-text">0x06 配置 Typora 并测试上传功能</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x07-使用-Typora-上传图片"><span class="toc-text">0x07 使用 Typora 上传图片</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x08-总结"><span class="toc-text">0x08 总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x09-常见问题"><span class="toc-text">0x09 常见问题</span></a></li></ol>
+  </div>
+
+
+        </div>
+
+        <p>一直以来，写博客文章都会遇到上传图片的问题。Hexo 自带的“将图片放置到assert文件夹，然后引用的方式” 显得不那么优雅，比如，在 Typora 这样的编辑器中，则无法正常显示图片，让人无法确定自己放置的是什么图片。所以我们都在不断寻找更加优雅的上传图片的方式。有人将图片上传至微博；有人将图片上传至 SM.MS 这样专业的图床网站；还有人剑走偏锋，选择百家号，腾讯云文档等这样的内容平台，上传图片。当然以上方式，笔者都觉得不那么“安全”、“稳定”。比如，哪天微信开始清理无效引用的图片，那么你上传的这些图片，可能就会丢失。这可能会得不偿失。那么笔者将在下文介绍一下自己探索出来的一种博客图片上传存储的方式。</p>
+<p><strong>本文使用到的工具：</strong></p>
+<ul>
+<li>Nodejs 环境</li>
+<li>Typora 编辑器</li>
+<li>PicGo-Core 命令行工具</li>
+<li>GitHub 账号</li>
+</ul>
+<h2 id="0x00-创建一个-GitHub-Repository"><a href="#0x00-创建一个-GitHub-Repository" class="headerlink" title="0x00 创建一个 GitHub Repository"></a>0x00 创建一个 GitHub Repository</h2><p>打开方式有两种：</p>
+<ul>
+<li>前往 <a href="https://github.com/new" target="_blank" rel="noopener">https://github.com/new</a></li>
+<li>打开 GitHub 网页右上角用户头像左边的下拉菜单中的 “New repository” 选项，前往创建新的 Repository.  （<strong>注：</strong> Repository 是库的意思）</li>
+</ul>
+<p>填写 Repo 名称，访问权限勾选 “Public” （不然其他人则无法访问），然后点击 “Create repository” 即可。</p>
+<p>本文使用 Repo 名称为：<code>upload</code></p>
+<h2 id="0x01-为-GitHub-Repository-启用-GitHub-Pages-功能"><a href="#0x01-为-GitHub-Repository-启用-GitHub-Pages-功能" class="headerlink" title="0x01 为 GitHub Repository 启用 GitHub Pages 功能"></a>0x01 为 GitHub Repository 启用 GitHub Pages 功能</h2><p>打开创建的 GitHub Repo 的 Settings，下滑页面找到 GitHub Pages，然后 Source 选择 main，然后点击 “Save”。</p>
+<h2 id="0x02-申请一个-GitHub-Token"><a href="#0x02-申请一个-GitHub-Token" class="headerlink" title="0x02 申请一个 GitHub Token"></a>0x02 申请一个 GitHub Token</h2><p>打开方式有两种：</p>
+<ul>
+<li>前往 <a href="https://github.com/settings/tokens" target="_blank" rel="noopener">https://github.com/settings/tokens</a></li>
+<li>打开 GitHub 网页右上角用户头像的下拉列表中 Settings 然后 “Developer settings - Personal access tokens” </li>
+</ul>
+<p>点击 “Generate new token” 进入生成 GitHub Token 的界面。Note 部分随便填写即可，用来描述此次申请 GitHub Token 用途即可，比如此处笔者填写 “PicGo Token” ；并且勾选 <code>repo</code> 下的 <code>public_repo</code> 即可。</p>
+<p><img src="https://upload.ismdeep.com/images/2020/10/18/628542963273dfecb0de6d9fe111f500-c2dd9a.png" alt="image-20201018195311002"></p>
+<p>然后点击 “Generate token” 即可跳转至生成 GitHub Token 结果页面，此页面会有一个随机生成的字符串。复制，并保存下来。（<strong>注意⚠️：</strong>切勿遗失或被盗。）</p>
+<p><img src="https://upload.ismdeep.com/images/2020/10/18/fa6509d272989010db3fccfd0448f8df-a7d7be.png" alt="image-20201018195444828"></p>
+<h2 id="0x03-安装-PicGo-Core"><a href="#0x03-安装-PicGo-Core" class="headerlink" title="0x03 安装 PicGo-Core"></a>0x03 安装 PicGo-Core</h2><p>打开命令行，输入以下命令安装 PicGo-Core：</p>
+<pre><code class="bash">npm install picgo -g
+</code></pre>
+<p>安装完成之后，可以输入以下命令，验证是否已经安装完成：</p>
+<pre><code class="bash">picgo -v
+</code></pre>
+<p><img src="https://upload.ismdeep.com/images/2020/10/18/0c0f61a0e7719cd362d81cc48f94db92-307c32.png" alt="image-20201018195811407"></p>
+<h2 id="0x04-安装-PicGo-使用的-picgo-plugin-rename-file-插件"><a href="#0x04-安装-PicGo-使用的-picgo-plugin-rename-file-插件" class="headerlink" title="0x04 安装 PicGo 使用的 picgo-plugin-rename-file 插件"></a>0x04 安装 PicGo 使用的 <code>picgo-plugin-rename-file</code> 插件</h2><p>在用户目录（笔者这里为 <code>C:\Users\ismdeep</code>）下，<code>cd .picgo</code> 进入配置文件目录。并输入 <code>npm i picgo-plugin-rename-file</code> 命令进行安装重命名文件插件。</p>
+<p><img src="https://upload.ismdeep.com/images/2020/10/18/13375ab62d55e75ad3b1fd894038e30a-0b1fde.png" alt="image-20201018200104970"></p>
+<h2 id="0x05-配置-PicGo-Core"><a href="#0x05-配置-PicGo-Core" class="headerlink" title="0x05 配置 PicGo-Core"></a>0x05 配置 PicGo-Core</h2><p>打开用户目录下的 <code>.picgo</code> 文件夹中的 <code>config.json</code> 文件。笔者使用的配置文件如下：</p>
+<pre><code class="json">{
+  &quot;picBed&quot;: {
+    &quot;current&quot;: &quot;github&quot;,
+    &quot;github&quot;: {
+      &quot;repo&quot;: &quot;ismdeep/upload&quot;,
+      &quot;branch&quot;: &quot;main&quot;,
+      &quot;token&quot;: &quot;ad6d*******************************389c3&quot;,
+      &quot;path&quot;: &quot;images/&quot;,
+      &quot;customUrl&quot;: &quot;https://ismdeep.github.io/upload&quot;
+    }
+  },
+  &quot;picgoPlugins&quot;: {
+    &quot;picgo-plugin-rename-file&quot;: true
+  },
+  &quot;picgo-plugin-rename-file&quot;: {
+    &quot;format&quot;: &quot;{y}/{m}/{d}/{hash}-{rand:6}&quot;
+  }
+}
+</code></pre>
+<p>配置文件需要修改的参数说明如下：</p>
+<ul>
+<li><code>repo</code> 替换成自己的用户名和 Repo 名称</li>
+<li><code>token</code> 填写自己生成的 GitHub Token</li>
+<li><code>path</code> 可直接填写 <code>images</code> ，看完上传图片后返回的 URL 你就懂了。</li>
+<li><code>customUrl</code> 需要将 <code>ismdeep</code> 和 <code>upload</code> 换成自己的用户名和 Repo 名称</li>
+</ul>
+<h2 id="0x06-配置-Typora-并测试上传功能"><a href="#0x06-配置-Typora-并测试上传功能" class="headerlink" title="0x06 配置 Typora 并测试上传功能"></a>0x06 配置 Typora 并测试上传功能</h2><p>打开 Typora “文件 - 偏好设置” ，在打开的设置窗口中选择图像设置页面。其中 “上传服务设定” 选择 “Custom command”，并在自定义命令中填写 <code>picgo upload</code></p>
+<p>接下来点击 “验证图片上传选项” 进行验证即可。</p>
+<h2 id="0x07-使用-Typora-上传图片"><a href="#0x07-使用-Typora-上传图片" class="headerlink" title="0x07 使用 Typora 上传图片"></a>0x07 使用 Typora 上传图片</h2><p>上传图片可使用以下几种方式：</p>
+<ul>
+<li>复制图片至 Typora 编辑器中，然后右键图片上传即可。（复制图片可以复制图片文件，当然大部分截图软件截图后都自动将图片放到剪切板中，此处直接粘贴即可。）</li>
+<li>拖拽图片文件至 Typora 编辑器中，然后右键图片上传即可。</li>
+</ul>
+<p><strong>注：</strong>上传文件需要等一段时间才可访问，因为 GitHub Page 有一个同步时间。</p>
+<h2 id="0x08-总结"><a href="#0x08-总结" class="headerlink" title="0x08 总结"></a>0x08 总结</h2><p>方便安装，配置起来也简单，但是需要注意一点的是，图片访问在国内网络环境下，可能会有点慢，但图片存储在 GitHub 上，至少会比国内的平台上，安全稳定。需要为存储图片的 GitHub Repo 启用 GitHub Pages 功能，不然国内用户则无法访问图片。</p>
+<h2 id="0x09-常见问题"><a href="#0x09-常见问题" class="headerlink" title="0x09 常见问题"></a>0x09 常见问题</h2>
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

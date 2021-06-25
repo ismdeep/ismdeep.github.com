@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>Fibonacci 序列通项公式推导 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2019-06-22-fibonacci-sequence-general-term-derivation" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>Fibonacci 序列通项公式推导</h1>
+  
+
+      </header>
+      <div>
+      2019-06-22
+      
+        / 
+        
+          <span><a href="/tags/Math/">#Math</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+
+        </div>
+
+        <p>Fibonacci sequence: $a_1 = 1, a_2 = 1, a_n = a_{n-1} + a_{n-2}$</p>
+<p>Derivation:</p>
+<p>Let $a_n + x a_{n-1} = y(a_{n-1} + x a_{n-2})$</p>
+<p>$a_n + x a_{n - 1} = y a_{n-1} + xya_{n-2}$</p>
+<p>$a_{n} = (y-x) a_{n-1} + x y a_{n-2}$</p>
+<p>Then:</p>
+<p>$\begin{cases} y - x = 1 \ xy = 1 \end{cases} \Rightarrow \begin{cases} x = \frac{\sqrt{5} - 1}{2} \ y = \frac{\sqrt{5} + 1}{2} \end{cases}$</p>
+<p>$a_n + \frac{\sqrt{5} - 1}{2} a_{n-1} =\frac{\sqrt{5} + 1}{2} (a_{n-1} + \frac{\sqrt{5} - 1}{2} a_{n-2})$</p>
+<p>Let: $b_n = a_n + \frac{\sqrt{5} - 1}{2} a_{n-1}$</p>
+<p>Then: $b_n = \frac{\sqrt{5}+1}{2}b_{n-1}$</p>
+<p>And: $b_2 = a_2 + \frac{\sqrt{5} - 1}{2} a_1 = 1 + \frac{\sqrt{5} - 1}{2} = \frac{\sqrt{5} + 1}{2}$</p>
+<p>So: $b_n = (\frac{\sqrt{5} + 1}{2}) ^ {n-1}$</p>
+<p>$b_n = \frac{(\frac{\sqrt{5} + 1}{2}) ^ {n-1} \sqrt{5}}{\sqrt{5}} \ = \frac{(\frac{\sqrt{5} + 1}{2}) ^ {n-1} \frac{2\sqrt{5}}{2}}{\sqrt{5}} \ = \frac{(\frac{\sqrt{5} + 1}{2}) ^ {n-1} (\frac{1 + \sqrt{5}}{2} - \frac{1 - \sqrt{5}}{2}))}{\sqrt{5}} \ = \frac{(\frac{1 + \sqrt{5}}{2}) ^ {n} - (\frac{1 - \sqrt{5}}{2})(\frac{\sqrt{5} + 1}{2}) ^ {n-1}}{\sqrt{5}} = \frac{(\frac{1 + \sqrt{5}}{2}) ^ {n}}{\sqrt{5}} - \frac{(\frac{1 - \sqrt{5}}{2})(\frac{1 + \sqrt{5}}{2}) ^ {n-1}}{\sqrt{5}}$</p>
+<p>$\because b_n = a_n + \frac{\sqrt{5} - 1}{2} a_{n-1}$</p>
+<p>$\therefore a_n -\frac{(\frac{1 + \sqrt{5}}{2}) ^ {n}}{\sqrt{5}} = \frac{1 - \sqrt{5}}{2} a_{n-1} - \frac{(\frac{1 - \sqrt{5}}{2})(\frac{1 + \sqrt{5}}{2})^{n-1}}{\sqrt{5}}$</p>
+<p>$a_n -\frac{(\frac{1 + \sqrt{5}}{2}) ^ {n}}{\sqrt{5}} = \frac{1 - \sqrt{5}}{2} ( a_{n-1} - \frac{(\frac{1 + \sqrt{5}}{2})^{n-1}}{\sqrt{5}} )$</p>
+<p>Let: $C_n = a_n - \frac{(\frac{1 + \sqrt{5}}{2}) ^ {n}}{\sqrt{5}}$</p>
+<p>$C_1 = a_1 - \frac{(\frac{1 + \sqrt{5}}{2}) ^ {1}}{\sqrt{5}} = \frac{\sqrt{5} - 1}{2\sqrt{5}}$</p>
+<p>$C_n = \frac{\sqrt{5} - 1}{2\sqrt{5}} (\frac{1 - \sqrt{5}}{2})^{n-1}$</p>
+<p>Then:</p>
+<p>$a_n = \frac{(\frac{1 + \sqrt{5}}{2}) ^ {n}}{\sqrt{5}} + C_n \ = \frac{(\frac{1 + \sqrt{5}}{2}) ^ {n}}{\sqrt{5}} + \frac{\sqrt{5} - 1}{2\sqrt{5}} (\frac{1 - \sqrt{5}}{2})^{n-1} \ = \frac{(\frac{1+\sqrt{5}}{2})^{n} - (\frac{1-\sqrt{5}}{2})^{n}}{\sqrt{5}}$</p>
+
+
+        
+        <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  "HTML-CSS": {
+    preferredFont: "TeX",
+    availableFonts: ["STIX","TeX"],
+    linebreaks: { automatic:true },
+    EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+  },
+  tex2jax: {
+    inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+    processEscapes: true,
+    ignoreClass: "tex2jax_ignore|dno",
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  TeX: {
+    noUndefined: {
+      attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" }
+    },
+    Macros: { href: "{}" }
+  },
+  messageStyle: "none"
+});
+</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Queue(function() {
+  var all = MathJax.Hub.getAllJax(), i;
+  for(i=0; i < all.length; i += 1) {
+    all[i].SourceElement().parentNode.className += ' has-jax';
+  }
+});
+</script>
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

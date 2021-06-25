@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>MySQL 安装 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2020-04-29-mysql-install" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>MySQL 安装</h1>
+  
+
+      </header>
+      <div>
+      2020-04-29
+      
+        / 
+        
+          <span><a href="/tags/MySQL/">#MySQL</a></span>
+        
+          <span><a href="/tags/Development/">#Development</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#01-为什么会有这么多版本？"><span class="toc-text">01 为什么会有这么多版本？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#02-MySQL-版本有哪些？"><span class="toc-text">02 MySQL 版本有哪些？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#03-下载-MySQL数据库"><span class="toc-text">03 下载 MySQL数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#04-编辑配置文件"><span class="toc-text">04 编辑配置文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#05-安装-MySQL-服务"><span class="toc-text">05 安装 MySQL 服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#06-启动-MySQL-服务"><span class="toc-text">06 启动 MySQL 服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#07-关闭-MySQL-服务"><span class="toc-text">07 关闭 MySQL 服务</span></a></li></ol>
+  </div>
+
+
+        </div>
+
+        <p>工欲善其事，必先利其器。几乎所有的计算机类教程中，对新手来说最重要的一篇教程就是如何安装需要使用到的软件，从 C 语言到大数据，再到云计算，到处都充斥着各种各样的开发软件及运行系统。至于为什么需要这么软件，主要原因在于，你安装了这些软件，就如同站在了巨人的肩膀上。前人已经把一些工作做完了，你可以直接拿过来用了。</p>
+<p>话不多说，我们来看看如何安装？</p>
+<p>如教程介绍中一样，我们使用 MySQL 5.7 版本。</p>
+<h3 id="01-为什么会有这么多版本？"><a href="#01-为什么会有这么多版本？" class="headerlink" title="01 为什么会有这么多版本？"></a>01 为什么会有这么多版本？</h3><p>数据库其实也是一套软件，软件都是处于不断更新迭代的过程的，无论是如 QQ、微信这样的聊天软件，还是像 Windows 这样的操作系统，都会为了各种各样的目的，不断更新软件的版本。其目的有修复已知BUG，推出新的功能等等。</p>
+<h3 id="02-MySQL-版本有哪些？"><a href="#02-MySQL-版本有哪些？" class="headerlink" title="02 MySQL 版本有哪些？"></a>02 MySQL 版本有哪些？</h3><p>目前 MySQL 已知主流的版本有 5.0、5.1、5.5、5.6、5.7、8.0 版本号越大说明软件越新，当然功能及稳定性、安全性等<strong>应该</strong>更强。那么，本文我们将使用 MySQL 5.7 作为安装及学习的一个版本。</p>
+<h3 id="03-下载-MySQL数据库"><a href="#03-下载-MySQL数据库" class="headerlink" title="03 下载 MySQL数据库"></a>03 下载 MySQL数据库</h3><p>安装软件的第一步工作就是下载这个软件，当今网络环境，下载软件、安装软件都已经成为了一项技术活，因为一个不小心，都有可能会安装上一些神奇的软件。作为一名程序员，我希望我的系统尽量的干净简单，因为某些神奇的软件会影响我正在运行的服务（这些服务就会包括 MySQL 数据库服务）。</p>
+<p>首先打开 MySQL 官网：<a href="https://www.mysql.com" target="_blank" rel="noopener">https://www.mysql.com</a> 当然，你也可以去某度上搜索，记住要看清楚你需要打开的网址，不然跳到某个奇怪的页面，笔者可不负责。</p>
+<p>打开之后，你会看到一个类似下图这样的网页</p>
+<p><img src="https://upload.ismdeep.com/images/2020/08/07/5e75c83723faa920fb43dd7a66912006-8e6669.png" alt="20200429205757.png"></p>
+<p>接下来点击网站顶部导航栏中的 <code>DOWNLOADS</code> 进入 MySQL 下载主页，并将页面往下滑，看到这样的一个页面</p>
+<p><img src="https://upload.ismdeep.com/images/2020/08/07/88c7d88dd48e6ccfcf95c9d896985b96-9dce22.png" alt="20200429205948.png"></p>
+<p>接下来点击页面上的 <code>MySQL Community(GPL) Downloads</code> 链接。</p>
+<p><img src="https://upload.ismdeep.com/images/2020/08/07/d1ee3c68b972eaf05258f4852c110277-264f60.png" alt="image-20200429210309455"></p>
+<p>在进入这个页面之后点击 <code>MySQL Community Server</code> 链接进入 MySQL 下载选择页面。</p>
+<p><img src="https://upload.ismdeep.com/images/2020/08/07/c725b86298c4c69a0b5cfbf2bf6ccf11-134614.png" alt="image-20200429211027662"></p>
+<p>由于目前（2020-04-29） MySQL 最新版版本已经是 MySQL 8.0.20 了，我们需要下载的 MySQL 5.7 已经不在下载选择页面的默认页了。我们需要点击页面上的 <code>Archives</code> 切换导存档 MySQL 下载页面。</p>
+<p><img src="https://upload.ismdeep.com/images/2020/08/07/65161ecfbe4dae08f47300f14cb2e871-336aa0.png" alt="image-20200429211244674"></p>
+<p>在进入到这样的页面之后，我们依次选择 <code>Product Version</code> , <code>Operating System</code> 选项，就可以筛选出对应的版本及操作系统的 MySQL 数据库服务器软件了。本教程使用是 MySQL 5.7 版本，我们下拉筛选的时候选择 5.7版本最大的即可。由于大部分同学用的都是 Windows 64位的操作系统，按上图选择即可。最后筛选出来会有两个文件： <code>ZIP Archive</code> 和 <code>ZIP Archive, Debug Binaries &amp; Test Suite</code> ，这里下载第一个 <code>ZIP Archive</code> 即可。</p>
+<p>点击后面的 <code>Download</code> 即可下载。当然，这里下载速度可能会比较感人，笔者顺便给大家安利一个 Windows 下用来下载国外资源很快的软件 <a href="https://www.internetdownloadmanager.com" target="_blank" rel="noopener">IDM</a></p>
+<p>如果下载速度还是比较慢的话，可以前往 <a href="https://mirrors.ustc.edu.cn/mysql-ftp/Downloads/MySQL-5.7/" target="_blank" rel="noopener">https://mirrors.ustc.edu.cn/mysql-ftp/Downloads/MySQL-5.7/</a> 找相应的下载包。如 MySQL 5.7.29 x64 版本对应名称为：mysql-5.7.29-winx64.zip</p>
+<p>下载之后你会看到名称为 mysql-5.7.xx-winx64.zip 的一个压缩包文件</p>
+<p><img src="https://upload.ismdeep.com/images/2020/08/07/d5574082ca97277200aa64cec25ecf43-77b980.png" alt="image-20200429213606350"></p>
+<p>接下来将这个压缩包文件复制到一个用于存放软件的目录中（<strong>重点：这个目录的完整地址中最好不要出现空格和中文字符以及一些奇怪的符号。尽量用英文即可。</strong>）笔者这里则将其复制到 <code>C:\apps</code> 里面。目录没有可以自己新建。为了避免踩坑，建议大家跟我一样选择 <code>C:\apps</code> 文件来存放我们的压缩包文件。</p>
+<p><img src="https://upload.ismdeep.com/images/2020/08/07/7621ce307dfee6ef1be00f82dbfc2463-615b27.png" alt="image-20200429214243271"></p>
+<p>将这个文件解压。（嗨呀，我又要来安利软件了，那就是 <a href="https://www.7-zip.org" target="_blank" rel="noopener">7-Zip</a> 特点：小巧，才 1MB；效率，解压速度快；安全无捆绑；嗨呀，还是各种国内压缩软件的爷爷，国内这些基本都是拿着人家内核过来加上捆绑的广告就成了自主研发的。）</p>
+<p><img src="https://upload.ismdeep.com/images/2020/08/07/9fb3dd4118a4c84df855de6d5b4fb8ad-a541ce.png" alt="image-20200429214627808"></p>
+<h3 id="04-编辑配置文件"><a href="#04-编辑配置文件" class="headerlink" title="04 编辑配置文件"></a>04 编辑配置文件</h3><p>在 MySQL 目录下新建两个文件 <code>my-default.ini</code> 与 <code>my.ini</code> ，并都保存一下文本。（如果你存放 MySQL 的目录与本文不同则需要对应地修改 <code>basedir</code> 与 <code>datadir</code>）</p>
+<pre><code class="text">[mysqld]
+port = 3306
+basedir=C:\apps\mysql-5.7.29-winx64
+datadir=C:\apps\mysql-5.7.29-winx64\data
+max_connections=200
+character-set-server=utf8mb4
+default-storage-engine=INNODB
+sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES
+
+[mysql]
+default-character-set=utf8mb4
+</code></pre>
+<p>接下来打开命令行，并切换到 <code>C:\apps\mysql-5.7.29-winx64</code> 目录下，再执行以下命令。</p>
+<pre><code class="bash">bin\mysqld.exe --initialize-insecure
+</code></pre>
+<p>如下图</p>
+<p><img src="https://upload.ismdeep.com/images/2020/08/07/11b3a8c907f5b0f9f2956aeb3f39b4f6-fc1e29.png" alt="image-20200504110714003"></p>
+<p>这里是初始化一份MySQL的数据，而且这里初始化后的 root 账号密码是空。后续可以根据需求自行修改。</p>
+<p><strong>注：</strong>在这部分执行命令时可能会弹出 <code>msvcr120.dll</code> <code>msvcp120.dll</code> 缺少这样的错误提示。可前往 <a href="https://www.techpowerup.com/download/visual-c-redistributable-runtime-package-all-in-one/" target="_blank" rel="noopener">https://www.techpowerup.com/download/visual-c-redistributable-runtime-package-all-in-one/</a> 下载并安装 Visual C++ 运行时依赖即可。</p>
+<h3 id="05-安装-MySQL-服务"><a href="#05-安装-MySQL-服务" class="headerlink" title="05 安装 MySQL 服务"></a>05 安装 MySQL 服务</h3><p>先说一说这样安装的特点吧， <strong>与系统关联不大，没有多余的系统资源占用，卸载方便，迁移方便</strong> 。</p>
+<p>通过下载的安装包，MySQL 是可以直接运行的，安装时其实只需要注册一个 Windows 服务，卸载时只需要将这个服务删除即可。</p>
+<p>在安装之前，你需要知道如何打开 Windows 命令提示符，包括如何以管理员身份打开 Windows 命令提示符。并且知道如何切换到指定目录。</p>
+<p><strong>首先</strong>，打开 Windows 命令提示符。无论是 Windows 7 还是 Windows 10，都可以通过 <code>C:\Windows\System32</code> 目录找到一个名称为 <code>cmd.exe</code> 的文件。</p>
+<p><img src="https://upload.ismdeep.com/images/2020/08/07/3e0fb95c2b8f678cada3cc5daadf9b1f-ea63be.png" alt="image-20200430083519324"></p>
+<p>选中 <code>cmd.exe</code> 右键 - 以管理员身份运行，接下来可能会弹出一个授权窗口，点击确定。就能以管理员身份打开命令提示符了。</p>
+<p>由于我们这里存放 MySQL 数据库的目录是 <code>C:\apps</code> ，那么接下来我们在命令提示符中输入 <code>cd C:\apps</code> 并输入 <code>dir</code> 就能看到 MySQL 解压后的目录。</p>
+<p><img src="https://upload.ismdeep.com/images/2020/08/07/d2ff2d5602b2231111387f9284d1148a-d4710d.png" alt="image-20200430084106633"></p>
+<p>接下来输入 <code>cd mysql-5.7.29-winx64</code> 就能进入此目录了，并继续 <code>cd bin</code> 进入 MySQL 的 <code>bin</code> 目录。</p>
+<p><em>小技巧：在命令提示符中输入 <code>cd mysql</code> 之后直接按 tab 键，能自动补全后面的信息，非常方便。</em></p>
+<p><img src="https://upload.ismdeep.com/images/2020/08/07/565e866763ff6b90ff541fd403e28b3a-a1288a.png" alt="image-20200430084521583"></p>
+<p>在此处执行 <code>mysqld --install</code> 即可安装 MySQL 到 Windows 服务。</p>
+<p><img src="https://upload.ismdeep.com/images/2020/08/07/c62fccfa9fc267f0e9ac121a01070afa-5e9bac.png" alt="image-20200504111045615"></p>
+<p>在 Windows 服务列表中就能看到 MySQL 了，如果你不希望 MySQL 服务开机自启动可以选择设置启动类型为手动。</p>
+<h3 id="06-启动-MySQL-服务"><a href="#06-启动-MySQL-服务" class="headerlink" title="06 启动 MySQL 服务"></a>06 启动 MySQL 服务</h3><p>打开命令行可以通过 <code>net start mysql</code> 启动 MySQL 服务。</p>
+<h3 id="07-关闭-MySQL-服务"><a href="#07-关闭-MySQL-服务" class="headerlink" title="07 关闭 MySQL 服务"></a>07 关闭 MySQL 服务</h3><p>打开命令行可以通过 <code>net stop mysql</code> 关闭 MySQL 服务。</p>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

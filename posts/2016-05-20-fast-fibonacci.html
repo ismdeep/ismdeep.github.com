@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>快速 Fibonacci 数列 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2016-05-20-fast-fibonacci" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>快速 Fibonacci 数列</h1>
+  
+
+      </header>
+      <div>
+      2016-05-20
+      
+        / 
+        
+          <span><a href="/tags/ACM-ICPC/">#ACM-ICPC</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+
+        </div>
+
+        <p>Fibonacci 数列是一个非常经典的例子，说得最通俗易懂的话就是： 1, 1, 2, 3, 5, 8, … 这样的一个数列，在数学上用数列形式表示为：$a_0 = 1$, $a_1 = 1$, $a_n = a_{n - 1} + a_{n - 2}$.</p>
+<p>那么在计算 Fibonacci 数列这个问题上，当然大家应该都知道可以通过递推的方式来计算。</p>
+<pre><code class="c">/* Fibonacci 下标从 0 开始 */
+int fib(int n) {
+    if (n &lt;= 1) {
+        return 1;
+    }
+
+    int f0 = 1;
+    int f1 = 1;
+    int t;
+
+    for (int i = 2; i &lt;= n; i++) {
+        t = f0 + f1;
+        f0 = f1;
+        f1 = t;
+    }
+
+    return f1;
+}
+</code></pre>
+<p>当然，以上的程序效率非常高，复杂度很明显就是：$O(n)$ .</p>
+<p>以下我们来看看 Fibonacci 数列通过递归方式实现：</p>
+<pre><code class="c">/* Fibonacci 下标从 0 开始 */
+int fib(int n) {
+    if (n &lt;= 1) {
+        return 1;
+    }
+
+    return fib(n - 1) + fib(n - 2);
+}
+</code></pre>
+<p>当然，递归实现方式效率很慢，复杂度是：$O(2^n)$</p>
+<p>那么本文后面将通过<strong>增加一张记录表</strong>的方式来实现递归搜索的时候能够避免重复子程序搜索。</p>
+<pre><code class="c">/**
+  * 快速 fibonacci 数列
+  *
+  * Author: L. Jiang &lt;l.jiang.1024@gmail.com&gt;
+  */
+#include &lt;iostream&gt;
+
+using namespace std;
+
+/* MAXN 给1000肯定是会溢出的，这里只是给一个例子，快速 fibonacci */
+#define MAXN 1000
+
+int fib[MAXN];
+
+/* 初始化 */
+void init() {
+    for (int i = 0; i &lt; MAXN; i++) {
+        fib[i] = -1; // 因为fibonacci数列里面不可能出现-1，所以这里给每个数值都赋值为-1作为是否计算出结果的标记
+    }
+    fib[0] = 0;
+    fib[1] = 1;
+}
+
+// 递归去搜索
+// 这里不需要递归的临界判断，因为下标0和下标1都一定不为-1，一定可以return结果的。
+int search_fib(int index) {
+    if (-1 != fib[index]) {
+        return fib[index];
+    } else {
+        fib[index] = search_fib(index - 1) + search_fib(index - 2);
+        return fib[index];
+    }
+}
+
+int main() {
+    init();
+    int n;
+    while (scanf(&quot;%d&quot;, &amp;n) != EOF) {
+        int ans = search_fib(n);
+        printf(&quot;%d\n&quot;, ans);
+    }
+}
+</code></pre>
+
+
+        
+        <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  "HTML-CSS": {
+    preferredFont: "TeX",
+    availableFonts: ["STIX","TeX"],
+    linebreaks: { automatic:true },
+    EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+  },
+  tex2jax: {
+    inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+    processEscapes: true,
+    ignoreClass: "tex2jax_ignore|dno",
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  TeX: {
+    noUndefined: {
+      attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" }
+    },
+    Macros: { href: "{}" }
+  },
+  messageStyle: "none"
+});
+</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Queue(function() {
+  var all = MathJax.Hub.getAllJax(), i;
+  for(i=0; i < all.length; i += 1) {
+    all[i].SourceElement().parentNode.className += ' has-jax';
+  }
+});
+</script>
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>

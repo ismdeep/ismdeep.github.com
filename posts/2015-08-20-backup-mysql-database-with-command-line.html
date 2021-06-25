@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>mysql命令行备份数据库 | ismdeep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="alternate" href="/atom.xml" title="ismdeep" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+<a class="site-title" href="/" id="logo">ismdeep</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+  <a href="/resource">Resource</a>
+
+  <a href="/archives">Archives</a>
+
+  <a href="/about">About</a>
+
+</header>
+<hr>
+      <div class="outer">
+        <div id="main"><article id="post-2015-08-20-backup-mysql-database-with-command-line" itemscope itemprop="blogPost">
+  <div>
+    
+    
+      <header class="article-header">
+        
+  
+    <h1>mysql命令行备份数据库</h1>
+  
+
+      </header>
+      <div>
+      2015-08-20
+      
+        / 
+        
+          <span><a href="/tags/MySQL/">#MySQL</a></span>
+        
+      
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="toc-container">
+          
+
+        </div>
+
+        <p>MySQL数据库使用命令行备份|MySQL数据库备份命令</p>
+<p>例如：</p>
+<p>数据库地址：127.0.0.1</p>
+<p>数据库用户名：root</p>
+<p>数据库密码：pass</p>
+<p>数据库名称：myweb</p>
+<p>备份数据库到D盘跟目录</p>
+<pre><code class="bash">mysqldump -h127.0.0.1 -uroot -ppass myweb &gt; backupfile.sql
+</code></pre>
+<p>备份到当前目录 备份MySQL数据库为带删除表的格式，能够让该备份覆盖已有数据库而不需要手动删除原有数据库</p>
+<pre><code class="bash">mysqldump --add-drop-table -h127.0.0.1 -uroot -ppass myweb &gt; backupfile.sql
+</code></pre>
+<p>直接将MySQL数据库压缩备份  备份到D盘跟目录</p>
+<pre><code class="bash">mysqldump -h127.0.0.1 -uroot -ppass myweb | gzip &gt; d:/backupfile.sql.gz
+</code></pre>
+<p>备份MySQL数据库某个(些)表。此例备份table1表和table2表。备份到linux主机的/home下</p>
+<pre><code class="bash">mysqldump -h127.0.0.1 -uroot -ppass myweb table1 table2 &gt; /home/backupfile.sql
+</code></pre>
+<p>同时备份多个MySQL数据库</p>
+<pre><code class="bash">mysqldump -h127.0.0.1 -uroot -ppass --databases myweb myweb2 &gt; multibackupfile.sql
+</code></pre>
+<p>仅仅备份数据库结构。同时备份名为myweb数据库和名为myweb2数据库</p>
+<pre><code class="bash">mysqldump --no-data -h127.0.0.1 -uroot -ppass --databases myweb myweb2 &gt; structurebackupfile.sql
+</code></pre>
+<p>备份服务器上所有数据库</p>
+<pre><code class="bash">mysqldump --all-databases -h127.0.0.1 -uroot -ppass &gt; allbackupfile.sql
+</code></pre>
+<p>还原MySQL数据库的命令。还原当前备份名为backupfile.sql的数据库</p>
+<pre><code class="bash">mysql -h127.0.0.1 -uroot -ppass myweb &lt; backupfile.sql
+</code></pre>
+<p>还原压缩的MySQL数据库</p>
+<pre><code class="bash">gunzip &lt; backupfile.sql.gz | mysql -h127.0.0.1 -uroot -ppass myweb
+</code></pre>
+<p>将数据库转移到新服务器。此例为将本地数据库myweb复制到远程数据库名为serweb中，其中远程数据库必须有名为serweb的数据库</p>
+<pre><code class="bash">mysqldump -h127.0.0.1 -uroot -ppass myweb | mysql --host=***.***.***.*** -u数据库用户名 -p数据库密码 -C serweb
+</code></pre>
+
+
+        
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'fbdbc0d8c335f558f9b7',
+    clientSecret: 'ee8a5301d43b6a7334ac0f34081006c097f75aa9',
+    repo: 'ismdeep.github.io',
+    owner: 'ismdeep',
+    admin: ['ismdeep'],
+    id: md5(location.pathname),
+    language: 'en'
+  })
+  gitalk.render('gitalk-container')
+</script>
+        
+      
+    </div>
+  </div>
+</article></div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 ismdeep
+    </div>
+  </div>
+</footer>
+    </div>
+  </div>
+</body>
+</html>
